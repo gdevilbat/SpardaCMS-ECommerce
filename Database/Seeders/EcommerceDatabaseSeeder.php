@@ -17,6 +17,7 @@ class EcommerceDatabaseSeeder extends Seeder
         Model::unguard();
 
         $this->call(EcommerceModuleTableSeeder::class);
+        $this->call(TaxonomyTableSeeder::class);
         $this->call(EcommerceTableSeeder::class);
     }
 }
