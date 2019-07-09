@@ -71,3 +71,15 @@ Route::group(['prefix' => 'control', 'middleware' => 'core.menu'], function() {
         
 	});
 });
+
+Route::group(['middleware' => 'appearance.navbars'], function() {
+
+	/*====================================
+	=            Show Product            =
+	====================================*/
+	
+		Route::get('product/{slug}', 'ProductController@show');
+	
+	/*=====  End of Show Product  ======*/
+	
+});
