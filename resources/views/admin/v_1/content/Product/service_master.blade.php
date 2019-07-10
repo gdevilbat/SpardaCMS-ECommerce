@@ -4,6 +4,9 @@
             Actions
         </a>
         <div class="dropdown-menu dropdown-menu-left">
+            <button class="dropdown-item" type="button">
+                <a class="m-link m-link--state m-link--warning" href="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\BlogProductController@show', ['slug' => $post->post_slug])}}" target="_blank"><i class="fa fa-eye"> Preview</i></a>
+            </button>
             @can('update-ecommerce', $post)
                 <button class="dropdown-item" type="button">
                     <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@create').'?code='.encrypt($post->getKey())}}"><i class="fa fa-edit"> Edit</i></a>

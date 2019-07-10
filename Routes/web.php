@@ -78,7 +78,7 @@ Route::group(['middleware' => 'appearance.navbars'], function() {
 	=            Show Product            =
 	====================================*/
 	
-		Route::get('product/{slug}', 'ProductController@show');
+		Route::get('product/{slug}', 'BlogProductController@show');
 	
 	/*=====  End of Show Product  ======*/
 	
