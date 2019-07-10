@@ -11,7 +11,7 @@
     "require": {
         "gdevilbat/sparda-cms-core-module": "^5.7.5",
         "gdevilbat/sparda-cms-post-module": "^2.2",
-        "gdevilbat/sparda-cms-blog-module": "^1.0"
+        "gdevilbat/sparda-cms-blog-module": "^1.2"
     },
     "extra": {
         "laravel": {
