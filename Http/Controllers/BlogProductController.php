@@ -19,7 +19,12 @@ class BlogProductController extends AbstractBlog
     {
         $this->data['post'] = $this->post_m::with('postMeta', 'author')
                                             ->where(['post_slug' => $slug, 'post_type' => $this->getPostType(), 'post_status' => 'publish'])
-                                            ->firstOrFail();
+                                            ->first();
+
+        if(empty($this->data['post']))
+        {
+            return $this->throwError(404);
+        }
 
         $this->data['recent_posts'] = $this->post_m->with('postMeta')
                                             ->where(['post_type' =>  $this->getPostType(), 'post_status' => 'publish'])
@@ -37,12 +42,6 @@ class BlogProductController extends AbstractBlog
                                         }, 'taxonomies.term'])->taxonomies;
 
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
-
-        if(empty($this->data['post']))
-        {
-            return response()
-                ->view($path_view, $this->data, 404);
-        }
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->getKey().'.blade.php')))
         {
