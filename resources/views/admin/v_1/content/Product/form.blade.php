@@ -34,7 +34,7 @@
 <div class="row">
     <div class="col-sm-12">
 
-        <form class="m-form m-form--fit m-form--label-align-right" action="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@store')}}" method="post" enctype="multipart/form-data">
+        <form class="m-form m-form--fit m-form--label-align-right" action="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@store', ['callback' => 'productMetaStore'])}}" method="post" enctype="multipart/form-data">
             <!--begin::Portlet-->
             <div class="row">
                 <div class="col-md-8">
@@ -75,19 +75,35 @@
                                     @endif
                                 </div>
                                 <div class="form-group m-form__group d-flex px-0">
-                                    <div class="col-3 d-flex justify-content-end py-3">
+                                    <div class="col-4 d-flex justify-content-end py-3">
                                         <label for="exampleInputEmail1">Product Title<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                     </div>
-                                    <div class="col-9">
+                                    <div class="col">
                                         <input type="text" class="form-control m-input slugify" data-target="slug" placeholder="Product Title" name="post[post_title]" value="{{old('post.post_title') ? old('post.post_title') : (!empty($post) ? $post->post_title : '')}}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group d-flex px-0">
-                                    <div class="col-3 d-flex justify-content-end py-3">
+                                    <div class="col-4 d-flex justify-content-end py-3">
                                         <label for="exampleInputEmail1">Product Slug<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                     </div>
-                                    <div class="col-9">
+                                    <div class="col">
                                         <input type="text" class="form-control m-input" id="slug" placeholder="Product Slug" name="post[post_slug]" value="{{old('post.post_slug') ? old('post.post_slug') : (!empty($post) ? $post->post_slug : '')}}">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group d-flex px-0">
+                                    <div class="col-4 d-flex justify-content-end py-3">
+                                        <label for="exampleInputEmail1">Product Price<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="number" min="0" class="form-control m-input" placeholder="Product Price" name="product_meta[product_price]" value="{{old('product_meta.product_price') ? old('product_meta.product_price') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_price : '')}}">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group d-flex px-0">
+                                    <div class="col-4 d-flex justify-content-end py-3">
+                                        <label for="exampleInputEmail1">Product Sale<span class="ml-1 m--font-warning" aria-required="true">(Optional)</span></label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="number" min="0" class="form-control m-input" placeholder="Product Sale" name="product_meta[product_sale]" value="{{old('product_meta.product_sale') ? old('product_meta.product_sale') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_sale : '')}}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group d-flex px-0">

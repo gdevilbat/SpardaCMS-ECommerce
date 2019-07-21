@@ -30,6 +30,8 @@ class ProductTest extends DuskTestCase
                     ->AssertSee('Product Form')
                     ->type('post[post_title]', $faker->name)
                     ->type('post[post_slug]', $faker->name)
+                    ->type('product_meta[product_price]', $faker->randomNumber(6))
+                    ->type('product_meta[product_sale]', $faker->randomNumber(6))
                     ->type('meta[meta_title]', $faker->name)
                     ->type('meta[meta_description]', $faker->text);
 
@@ -68,6 +70,8 @@ class ProductTest extends DuskTestCase
                     ->AssertSee('Product Form')
                     ->type('post[post_title]', $faker->name)
                     ->type('post[post_slug]', $faker->name)
+                    ->type('product_meta[product_price]', $faker->randomNumber(6))
+                    ->type('product_meta[product_sale]', $faker->randomNumber(6))
                     ->type('meta[meta_title]', $faker->name)
                     ->type('meta[meta_description]', $faker->text);
 
