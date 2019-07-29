@@ -74,44 +74,109 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="form-group m-form__group d-flex px-0">
-                                    <div class="col-4 d-flex justify-content-end py-3">
-                                        <label for="exampleInputEmail1">Product Title<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#" data-target="#content">Content</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#" data-target="#gallery">Gallery</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="content" role="tabpanel">
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Product Title<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control m-input slugify" data-target="slug" placeholder="Product Title" name="post[post_title]" value="{{old('post.post_title') ? old('post.post_title') : (!empty($post) ? $post->post_title : '')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Product Slug<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control m-input" id="slug" placeholder="Product Slug" name="post[post_slug]" value="{{old('post.post_slug') ? old('post.post_slug') : (!empty($post) ? $post->post_slug : '')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Product Price<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="number" min="0" class="form-control m-input" placeholder="Product Price" name="product_meta[product_price]" value="{{old('product_meta.product_price') ? old('product_meta.product_price') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_price : '')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Product Sale<span class="ml-1 m--font-warning" aria-required="true">(Optional)</span></label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="number" min="0" class="form-control m-input" placeholder="Product Sale" name="product_meta[product_sale]" value="{{old('product_meta.product_sale') ? old('product_meta.product_sale') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_sale : '')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0 flex-wrap">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Category</label>
+                                            </div>
+                                            <div class="col">
+                                                <select class="form-control m-input select2" name="taxonomy[category][]">
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{$category->getKey()}}" {{!empty($post->taxonomies) && in_array($category->getKey(), $post->taxonomies->pluck(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey())->toArray()) ? 'selected' : ''}}>{{$category->term->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0 flex-wrap">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Tag</label>
+                                            </div>
+                                            <div class="col">
+                                                <select class="form-control m-input select2" name="taxonomy[tag][]" multiple>
+                                                    @foreach ($tags as $tag)
+                                                        <option value="{{$tag->getKey()}}" {{!empty($post->taxonomies) && in_array($tag->getKey(), $post->taxonomies->pluck(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey())->toArray()) ? 'selected' : ''}}>{{$tag->term->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-12">
+                                                <textarea class="form-control m-input texteditor" placeholder="Product Content" name="post[post_content]">{{old('post.post_content') ? old('post.post_content') : (!empty($post) ? $post->post_content : '')}}</textarea>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="post[post_excerpt]" value="{{old('post.post_excerpt') ? old('post.post_excerpt') : (!empty($post) ? $post->post_excerpt : '')}}">
                                     </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control m-input slugify" data-target="slug" placeholder="Product Title" name="post[post_title]" value="{{old('post.post_title') ? old('post.post_title') : (!empty($post) ? $post->post_title : '')}}">
+                                    <div class="tab-pane" id="gallery" role="tabpanel">
+                                        <div class="form-group m-form__group d-flex">
+                                            <div class="col">
+                                                <div v-for="(item, index) in (components)">
+                                                    <div class="d-flex my-1">
+                                                        <div class="col-md-10">
+                                                            <div class="input-group">
+                                                               <span class="input-group-btn">
+                                                                 <a v-bind:data-input="'input-photo-'+(index)" v-bind:data-preview="'image-photo-'+(index)" class="btn btn-file btn-accent m-btn m-btn--air m-btn--custom filemanager-image">
+                                                                   <i class="fa fa-picture-o"></i> Choose
+                                                                 </a>
+                                                               </span>
+                                                               <input v-bind:id="'input-photo-'+(index)" class="form-control file-input" v-bind:data-index="index" v-bind:data-name="'photo'" type="text" v-bind:name="'meta[gallery]['+(index)+'][photo]'" v-model="components[index]['photo']" required readonly>
+                                                            </div>
+                                                           <img v-bind:id="'image-photo-'+(index)" style="margin-top:15px;max-height:100px;" v-bind:src="components[index]['photo'] != null ? window.base+components[index]['photo'] : ''">
+                                                        </div>
+                                                        <div class="col">
+                                                            <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeComponent(index)"><span><i class="fa fa-minus"></i></span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button type="button" class="btn btn-success" v-on:click="addComponent">Add Photo</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group m-form__group d-flex px-0">
-                                    <div class="col-4 d-flex justify-content-end py-3">
-                                        <label for="exampleInputEmail1">Product Slug<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control m-input" id="slug" placeholder="Product Slug" name="post[post_slug]" value="{{old('post.post_slug') ? old('post.post_slug') : (!empty($post) ? $post->post_slug : '')}}">
-                                    </div>
-                                </div>
-                                <div class="form-group m-form__group d-flex px-0">
-                                    <div class="col-4 d-flex justify-content-end py-3">
-                                        <label for="exampleInputEmail1">Product Price<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="number" min="0" class="form-control m-input" placeholder="Product Price" name="product_meta[product_price]" value="{{old('product_meta.product_price') ? old('product_meta.product_price') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_price : '')}}">
-                                    </div>
-                                </div>
-                                <div class="form-group m-form__group d-flex px-0">
-                                    <div class="col-4 d-flex justify-content-end py-3">
-                                        <label for="exampleInputEmail1">Product Sale<span class="ml-1 m--font-warning" aria-required="true">(Optional)</span></label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="number" min="0" class="form-control m-input" placeholder="Product Sale" name="product_meta[product_sale]" value="{{old('product_meta.product_sale') ? old('product_meta.product_sale') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_sale : '')}}">
-                                    </div>
-                                </div>
-                                <div class="form-group m-form__group d-flex px-0">
-                                    <div class="col-12">
-                                        <textarea class="form-control m-input texteditor" placeholder="Product Content" name="post[post_content]">{{old('post.post_content') ? old('post.post_content') : (!empty($post) ? $post->post_content : '')}}</textarea>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="post[post_excerpt]" value="{{old('post.post_excerpt') ? old('post.post_excerpt') : (!empty($post) ? $post->post_excerpt : '')}}">
                             </div>
                             {{csrf_field()}}
                             @if(isset($_GET['code']))
@@ -175,26 +240,26 @@
                                 <div class="m-portlet__body px-0">
                                     <div class="form-group m-form__group d-flex px-0 flex-wrap">
                                         <div class="col-12 d-flex py-3">
-                                            <label for="exampleInputEmail1">Category</label>
+                                            <label for="exampleInputEmail1">Feature Image</label>
                                         </div>
                                         <div class="col-12">
-                                            <select class="form-control m-input select2" name="taxonomy[category][]">
-                                                @foreach ($categories as $category)
-                                                    <option value="{{$category->getKey()}}" {{!empty($post->taxonomies) && in_array($category->getKey(), $post->taxonomies->pluck(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey())->toArray()) ? 'selected' : ''}}>{{$category->term->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group m-form__group d-flex px-0 flex-wrap">
-                                        <div class="col-12 d-flex py-3">
-                                            <label for="exampleInputEmail1">Tag</label>
-                                        </div>
-                                        <div class="col-12">
-                                            <select class="form-control m-input select2" name="taxonomy[tag][]" multiple>
-                                                @foreach ($tags as $tag)
-                                                    <option value="{{$tag->getKey()}}" {{!empty($post->taxonomies) && in_array($tag->getKey(), $post->taxonomies->pluck(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey())->toArray()) ? 'selected' : ''}}>{{$tag->term->name}}</option>
-                                                @endforeach
-                                            </select>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                    @if(!empty($post) && !empty($post->postMeta->where('meta_key', 'feature_image')->first()) && $post->postMeta->where('meta_key', 'feature_image')->first()->meta_value != null)
+                                                        <img src="{{url('public/storage/'.$post->postMeta->where('meta_key', 'feature_image')->first()->meta_value)}}" alt=""> 
+                                                    @else
+                                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt=""> 
+                                                    @endif
+                                                </div>
+                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                <div>
+                                                    <span class="btn btn-file btn-accent m-btn m-btn--air m-btn--custom">
+                                                        <span class="fileinput-new"> Select image </span>
+                                                        <span class="fileinput-exists"> Change </span>
+                                                        <input type="file" name="meta[feature_image]"> </span>
+                                                    <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -262,38 +327,6 @@
                             <!--end::Form-->
                         </div>
                     </div>
-                    <div class="col-12 px-0">
-                        <div class="m-portlet m-portlet--tab">
-                            <!--begin::Form-->
-                                <div class="m-portlet__body px-0">
-                                    <div class="form-group m-form__group d-flex px-0 flex-wrap">
-                                        <div class="col-12 d-flex py-3">
-                                            <label for="exampleInputEmail1">Feature Image</label>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                    @if(!empty($post) && !empty($post->postMeta->where('meta_key', 'feature_image')->first()) && $post->postMeta->where('meta_key', 'feature_image')->first()->meta_value != null)
-                                                        <img src="{{url('public/storage/'.$post->postMeta->where('meta_key', 'feature_image')->first()->meta_value)}}" alt=""> 
-                                                    @else
-                                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt=""> 
-                                                    @endif
-                                                </div>
-                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                                <div>
-                                                    <span class="btn btn-file btn-accent m-btn m-btn--air m-btn--custom">
-                                                        <span class="fileinput-new"> Select image </span>
-                                                        <span class="fileinput-exists"> Change </span>
-                                                        <input type="file" name="meta[feature_image]"> </span>
-                                                    <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <!--end::Form-->
-                        </div>
-                    </div>
                 </div>
             </div>
             <!--end::Portlet-->
@@ -311,4 +344,17 @@
     {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/ckeditor_4/ckeditor.js'))}}
     {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js'))}}
     {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'))}}
+    {{Html::script('vendor/laravel-filemanager/js/lfm.js')}}
+@endsection
+
+@section('page_script_js')
+    <script type="text/javascript">
+        var Gallery = new Vue({
+            mixins: [componentMixin],
+            el: "#gallery",
+            data: {
+                components: {!! !empty($post) && !empty($post->postMeta->where('meta_key', 'gallery')->first()) ? json_encode($post->postMeta->where('meta_key', 'gallery')->first()->meta_value) : json_encode(array(array())) !!},
+            },
+        });
+    </script>
 @endsection

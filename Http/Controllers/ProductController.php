@@ -79,6 +79,7 @@ class ProductController extends AbstractPost
         $validator = parent::validatePost($request);
 
         $validator->addRules([
+                'meta.gallery.*.photo' => 'required',
                 'product_meta.product_price' => 'required|numeric',
         ]);
 
