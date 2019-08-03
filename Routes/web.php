@@ -78,6 +78,7 @@ Route::group(['middleware' => 'appearance.navbars'], function() {
 	=            Show Product            =
 	====================================*/
 	
+		Route::get('product-category/{slug}', 'BlogProductController@taxonomyPost')->where('slug','[0-9A-Za-z-/]+');
 		Route::get('product/{slug}', 'BlogProductController@show');
 	
 	/*=====  End of Show Product  ======*/
