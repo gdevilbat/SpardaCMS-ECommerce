@@ -16,9 +16,23 @@ class ProductMeta extends Model
      * @param  string  $value
      * @return void
      */
+    
+    public function setProductPriceAttribute($value)
+    {
+        $this->attributes['product_price'] = preg_replace('/[,_]/', '',$value);
+    }
+    
     public function setProductSaleAttribute($value)
     {
-        return false;
+        if(empty($value))
+        {
+            $this->attributes['product_sale'] = 0;
+        }
+        else
+        {
+            $this->attributes['product_sale'] = preg_replace('/[,_]/', '',$value);
+        }
+
     }
 
     public static function getTableName()

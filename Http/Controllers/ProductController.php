@@ -80,13 +80,13 @@ class ProductController extends AbstractPost
 
         $validator->addRules([
                 'meta.gallery.*.photo' => 'required',
-                'product_meta.product_price' => 'required|numeric',
+                'product_meta.product_price' => 'required|max:11',
         ]);
 
         if(!empty($request->input('product_meta.product_sale')))
         {
             $validator->addRules([
-                    'product_meta.product_sale' => 'numeric'
+                    'product_meta.product_sale' => 'max:11'
             ]);
         }
 

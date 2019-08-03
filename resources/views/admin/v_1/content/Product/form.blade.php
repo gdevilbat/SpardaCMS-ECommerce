@@ -105,7 +105,7 @@
                                                 <label for="exampleInputEmail1">Product Price<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                             </div>
                                             <div class="col">
-                                                <input type="number" min="0" class="form-control m-input" placeholder="Product Price" name="product_meta[product_price]" value="{{old('product_meta.product_price') ? old('product_meta.product_price') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_price : '')}}">
+                                                <input type="text" min="0" class="form-control m-input money-masking" placeholder="Product Price" name="product_meta[product_price]" value="{{old('product_meta.product_price') ? old('product_meta.product_price') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_price : '')}}">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group d-flex px-0">
@@ -113,7 +113,7 @@
                                                 <label for="exampleInputEmail1">Product Sale<span class="ml-1 m--font-warning" aria-required="true">(Optional)</span></label>
                                             </div>
                                             <div class="col">
-                                                <input type="number" min="0" class="form-control m-input" placeholder="Product Sale" name="product_meta[product_sale]" value="{{old('product_meta.product_sale') ? old('product_meta.product_sale') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_sale : '')}}">
+                                                <input type="text" min="0" class="form-control m-input money-masking" placeholder="Product Sale" name="product_meta[product_sale]" value="{{old('product_meta.product_sale') ? old('product_meta.product_sale') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_sale : '')}}">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group d-flex px-0 flex-wrap">
@@ -348,6 +348,13 @@
 @endsection
 
 @section('page_script_js')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".money-masking").inputmask('999,999,999', {
+                numericInput: true,
+            });
+        });
+    </script>
     <script type="text/javascript">
         var Gallery = new Vue({
             mixins: [componentMixin],
