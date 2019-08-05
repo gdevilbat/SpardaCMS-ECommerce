@@ -50,8 +50,14 @@ class ProductController extends AbstractPost
                 {
                     $data[$i][] = $post->getKey();
                     $data[$i][] = $post->post_title;
-                    $data[$i][] = $post->productMeta->product_price;
-                    $data[$i][] = $post->productMeta->product_sale;
+
+                    if(!empty($post->productMeta))
+                    {
+                        $data[$i][] = $post->productMeta->product_price;
+                        $data[$i][] = $post->productMeta->product_sale;
+
+                    }
+                    
                     $data[$i][] = $post->author->name;
 
                     $categories = $post->taxonomies->where('taxonomy', $this->getCategory());
