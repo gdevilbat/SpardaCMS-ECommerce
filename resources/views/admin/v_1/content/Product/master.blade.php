@@ -77,18 +77,20 @@
                 @endcan
 
                 <!--begin: Datatable -->
-                <table class="table table-striped" id="data-product" width="100%">
+                <table class="table table-striped display responsive nowrap" id="data-product" width="100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Title</th>
+                            <th data-priority="1">ID</th>
+                            <th data-priority="2">Title</th>
+                            <th class="no-sort" data-priority="3">Product Price</th>
+                            <th class="no-sort" data-priority="4">Product Sale</th>
                             <th class="no-sort">Author</th>
                             <th class="no-sort">Categories</th>
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
                             <th class="no-sort">Status</th>
                             <th>Created At</th>
-                            <th class="no-sort">Action</th>
+                            <th class="no-sort" data-priority="5">Action</th>
                         </tr>
                     </thead>
                     <tbody>

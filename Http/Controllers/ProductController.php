@@ -11,6 +11,8 @@ use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
 use Gdevilbat\SpardaCMS\Modules\Core\Repositories\Repository;
 
+use Auth;
+
 class ProductController extends AbstractPost
 {
     /**
@@ -27,6 +29,79 @@ class ProductController extends AbstractPost
 
         $this->module = 'ecommerce';
         $this->post_type = 'product';
+    }
+
+    public function getColumnOrder()
+    {
+        return [Product::getPrimaryKey(), 'post_title', 'product_price', 'product_sale', 'author', 'categories', 'tags','comment', 'status','created_at'];
+    }
+
+    public function parsingDataTable($posts)
+    {
+        /*=========================================
+        =            Parsing Datatable            =
+        =========================================*/
+            
+            $data = array();
+            $i = 0;
+            foreach ($posts as $key_post => $post) 
+            {
+                if(Auth::user()->can('read-'.$this->getModule(), $post))
+                {
+                    $data[$i][] = $post->getKey();
+                    $data[$i][] = $post->post_title;
+                    $data[$i][] = $post->productMeta->product_price;
+                    $data[$i][] = $post->productMeta->product_sale;
+                    $data[$i][] = $post->author->name;
+
+                    $categories = $post->taxonomies->where('taxonomy', $this->getCategory());
+                    if($categories->count() > 0)
+                    {
+                        $data[$i][] = '';
+                        foreach ($categories as $key => $category) 
+                        {
+                            $data[$i][count($data[$i]) - 1] .= '<span class="badge badge-danger mx-1">'.$category->term->name.'</span>';
+                        }
+                    }
+                    else
+                    {
+                        $data[$i][] = '-';
+                    }
+
+                    $tags = $post->taxonomies->where('taxonomy', 'tag');
+                    if($tags->count() > 0)
+                    {
+                        $data[$i][] = '';
+                        foreach ($tags as $key => $tag) 
+                        {
+                            $data[$i][count($data[$i]) - 1] .= '<span class="badge badge-danger mx-1">'.$tag->term->name.'</span>';
+                        }
+                    }
+                    else
+                    {
+                        $data[$i][] = '-';
+                    }
+
+                    $data[$i][] = '';
+
+                    if($post->post_status_bool)
+                    {
+                        $data[$i][] = '<a href="#" class="btn btn-success p-1">'.$post->post_status.'</a>';;
+                    }
+                    else
+                    {
+                        $data[$i][] = '<a href="#" class="btn btn-warning p-1">'.$post->post_status.'</a>';;
+                    }
+
+                    $data[$i][] = $post->created_at->toDateTimeString();
+                    $data[$i][] = $this->getActionTable($post);
+                    $i++;
+                }
+            }
+
+            return $data;
+        
+        /*=====  End of Parsing Datatable  ======*/
     }
 
     /**
