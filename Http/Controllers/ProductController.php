@@ -55,9 +55,13 @@ class ProductController extends AbstractPost
                     {
                         $data[$i][] = $post->productMeta->product_price;
                         $data[$i][] = $post->productMeta->product_sale;
-
                     }
-                    
+                    else
+                    {
+                        $data[$i][] = '-';
+                        $data[$i][] = '-';
+                    }
+
                     $data[$i][] = $post->author->name;
 
                     $categories = $post->taxonomies->where('taxonomy', $this->getCategory());
