@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 
 use Gdevilbat\SpardaCMS\Modules\Blog\Foundation\AbstractBlog;
 
+use Auth;
+
 class BlogProductController extends AbstractBlog
 {
     public function __construct()
@@ -17,21 +19,48 @@ class BlogProductController extends AbstractBlog
 
     public function show($slug)
     {
-        $this->data['post'] = $this->post_m::with('postMeta', 'author')
-                                            ->where(['post_slug' => $slug, 'post_type' => $this->getPostType(), 'post_status' => 'publish'])
-                                            ->first();
+        /*===============================
+        =            Product            =
+        ===============================*/
+        
+            
+            $query = $this->post_m::with('postMeta', 'author')
+                                                ->where(['post_slug' => $slug, 'post_type' => $this->getPostType()]);
 
-        if(empty($this->data['post']))
-        {
-            return $this->throwError(404);
-        }
+            if(!Auth::check())
+            {
+                $query = $query->where('post_status',  'publish');
+            }
 
-        $this->data['recent_posts'] = $this->post_m->with('postMeta')
-                                            ->where(['post_type' =>  $this->getPostType(), 'post_status' => 'publish'])
-                                            ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
-                                            ->latest('created_at')
-                                            ->limit(5)
-                                            ->get();
+            $this->data['post'] = $query->first();
+
+            if(empty($this->data['post']))
+            {
+                return $this->throwError(404);
+            }
+        
+        /*=====  End of Product  ======*/
+
+        /*===========================================
+        =            Recent Suggest Post            =
+        ===========================================*/
+        
+            $query = $this->post_m->with('postMeta')
+                                                ->where(['post_type' =>  $this->getPostType()])
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->latest('created_at')
+                                                ->limit(5);
+
+            if(!Auth::check())
+            {
+                $query = $query->where('post_status',  'publish');
+            }
+
+            $this->data['recent_posts'] = $query->get();
+        
+        /*=====  End of Recent Suggest Post  ======*/
+        
+
 
         $this->data['post_categories'] = $this->data['post']->load(['taxonomies' => function($query){
                                             $query->where('taxonomy', 'category');
