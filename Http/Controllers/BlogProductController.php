@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Gdevilbat\SpardaCMS\Modules\Blog\Foundation\AbstractBlog;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 
 use Auth;
 
@@ -15,6 +16,7 @@ class BlogProductController extends AbstractBlog
     {
         parent::__construct();
         $this->post_type = 'product';
+        $this->post_m = new Product;
     }
 
     public function show($slug)
@@ -24,7 +26,7 @@ class BlogProductController extends AbstractBlog
         ===============================*/
         
             
-            $query = $this->post_m::with('postMeta', 'author')
+            $query = $this->post_m::with('postMeta', 'author', 'productMeta')
                                                 ->where(['post_slug' => $slug, 'post_type' => $this->getPostType()]);
 
             if(!Auth::check())
@@ -83,6 +85,10 @@ class BlogProductController extends AbstractBlog
         elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_slug.'.blade.php')))
         {
             $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_slug;
+        }
+        elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'.blade.php')))
+        {
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type;
         }
         else
         {
