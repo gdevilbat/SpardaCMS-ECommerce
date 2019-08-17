@@ -77,7 +77,7 @@
                 @endcan
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap" id="data-product" width="100%">
+                <table class="table table-striped display responsive nowrap data-table" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}">
                     <thead>
                         <tr>
                             <th data-priority="1">ID</th>
@@ -109,25 +109,4 @@
 </div>
 {{-- End of Row --}}
 
-@endsection
-
-@section('page_script_js')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#data-product').DataTable( {
-                "processing": true,
-                "serverSide": true,
-                "order": [],
-                "ajax": $.fn.dataTable.pipeline( {
-                    url: '{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}',
-                    pages: 5 // number of pages to cache
-                }),
-                 "columnDefs": [
-                ],
-                "drawCallback": function( settings ) {
-                    deleteData();
-                }
-            } );
-        } );
-    </script>
 @endsection
