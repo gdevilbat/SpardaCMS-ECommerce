@@ -77,7 +77,7 @@
                 @endcan
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap data-table" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}">
+                <table class="table table-striped display responsive nowrap data-table-ajax" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}">
                     <thead>
                         <tr>
                             <th data-priority="1">ID</th>
