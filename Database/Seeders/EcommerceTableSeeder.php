@@ -20,7 +20,7 @@ class EcommerceTableSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
 
-        DB::table('posts')->insert([
+        $id = DB::table('posts')->insertGetId(
             [
                 'post_title' => $faker->word,
                 'post_slug' => str_slug($faker->word),
@@ -30,6 +30,14 @@ class EcommerceTableSeeder extends Seeder
                 'post_type' => 'product',
                 'created_by' => 1,
                 'modified_by' => 1,
+                'created_at' => \Carbon\Carbon::now()
+            ]
+        );
+
+        DB::table('product_meta')->insert([
+            [
+                'product_id' => $id,
+                'product_price' => 100000,
                 'created_at' => \Carbon\Carbon::now()
             ]
         ]);
