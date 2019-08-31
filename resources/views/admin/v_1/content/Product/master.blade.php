@@ -85,7 +85,7 @@
                             <th class="no-sort" data-priority="3">Product Price</th>
                             <th class="no-sort" data-priority="4">Product Sale</th>
                             <th class="no-sort">Author</th>
-                            <th class="no-sort">Categories</th>
+                            <th class="no-sort" data-priority="7">Categories</th>
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
                             <th class="no-sort" data-priority="6">Status</th>
