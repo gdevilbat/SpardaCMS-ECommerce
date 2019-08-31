@@ -96,11 +96,20 @@ class ProductController extends AbstractPost
 
                     if($post->post_status_bool)
                     {
-                        $data[$i][] = '<a href="#" class="btn btn-success p-1">'.$post->post_status.'</a>';;
+                        $data[$i][] = '<a href="#" class="btn btn-success p-1">'.$post->post_status.'</a>';
                     }
                     else
                     {
-                        $data[$i][] = '<a href="#" class="btn btn-warning p-1">'.$post->post_status.'</a>';;
+                        $data[$i][] = '<a href="#" class="btn btn-warning p-1">'.$post->post_status.'</a>';
+                    }
+
+                    if(!empty($post->tokopedia_slug))
+                    {
+                        $data[$i][] = '<a href="https://tokopedia.com/sparda-store/'.$post->tokopedia_slug.'" target="_blank">'.'https://tokopedia.com/sparda-store/'.$post->tokopedia_slug.'</a>';
+                    }
+                    else
+                    {
+                        $data[$i][] = '-';
                     }
 
                     $data[$i][] = $post->created_at->toDateTimeString();

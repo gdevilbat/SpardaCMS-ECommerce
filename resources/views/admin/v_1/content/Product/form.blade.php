@@ -79,6 +79,9 @@
                                         <a class="nav-link active" data-toggle="tab" href="#" data-target="#content">Content</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#" data-target="#shipping">Shipping</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" data-toggle="tab" href="#" data-target="#gallery">Gallery</a>
                                     </li>
                                 </ul>
@@ -146,6 +149,16 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="post[post_excerpt]" value="{{old('post.post_excerpt') ? old('post.post_excerpt') : (!empty($post) ? $post->post_excerpt : '')}}">
+                                    </div>
+                                    <div class="tab-pane" id="shipping" role="tabpanel">
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Tokopedia Slug</label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[tokopedia_slug]" value="{{old('meta.tokopedia_slug') ? old('meta.tokopedia_slug') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_slug')->first() ? $post->postMeta->where('meta_key', 'tokopedia_slug')->first()->meta_value : '')}}">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="tab-pane" id="gallery" role="tabpanel">
                                         <div class="form-group m-form__group d-flex">

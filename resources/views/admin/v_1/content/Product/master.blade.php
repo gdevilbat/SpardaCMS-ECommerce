@@ -89,6 +89,7 @@
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
                             <th class="no-sort" data-priority="6">Status</th>
+                            <th class="no-sort">Tokopedia Link</th>
                             <th>Created At</th>
                             <th class="no-sort" data-priority="5">Action</th>
                         </tr>
