@@ -24,7 +24,6 @@ class BlogProductController extends AbstractBlog
         /*===============================
         =            Product            =
         ===============================*/
-        
             
             $query = $this->post_m::with('postMeta', 'author', 'productMeta')
                                                 ->where(['post_slug' => $slug, 'post_type' => $this->getPostType()]);
@@ -42,6 +41,16 @@ class BlogProductController extends AbstractBlog
             }
         
         /*=====  End of Product  ======*/
+
+
+        $this->data['post_categories'] = $this->data['post']->load(['taxonomies' => function($query){
+                                            $query->where('taxonomy', 'product-category');
+                                        }, 'taxonomies.term'])->taxonomies;
+
+        $this->data['post_tags'] = $this->data['post']->load(['taxonomies' => function($query){
+                                            $query->where('taxonomy', 'tag');
+                                        }, 'taxonomies.term'])->taxonomies;
+
 
         /*===========================================
         =            Recent Suggest Post            =
@@ -63,14 +72,40 @@ class BlogProductController extends AbstractBlog
         /*=====  End of Recent Suggest Post  ======*/
         
 
+        /*===========================================
+        =            Related Post            =
+        ===========================================*/
+        
+            $query = $this->buildPostByTaxonomy($this->data['post_categories']->first())
+                                                ->with('postMeta')
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->inRandomOrder()
+                                                ->limit(5);
 
-        $this->data['post_categories'] = $this->data['post']->load(['taxonomies' => function($query){
-                                            $query->where('taxonomy', 'category');
-                                        }, 'taxonomies.term'])->taxonomies;
+            $this->data['related_posts'] = $query->get();
+        
+        /*=====  End of Related Post  ======*/
 
-        $this->data['post_tags'] = $this->data['post']->load(['taxonomies' => function($query){
-                                            $query->where('taxonomy', 'tag');
-                                        }, 'taxonomies.term'])->taxonomies;
+
+        /*===========================================
+        =            Recomended Post            =
+        ===========================================*/
+        
+            $query = $this->post_m->with('postMeta')
+                                                ->where(['post_type' =>  $this->getPostType()])
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->inRandomOrder()
+                                                ->limit(5);
+
+            if(!Auth::check())
+            {
+                $query = $query->where('post_status',  'publish');
+            }
+
+            $this->data['recomended_posts'] = $query->get();
+        
+        /*=====  End of Recomended Post  ======*/
+
 
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
