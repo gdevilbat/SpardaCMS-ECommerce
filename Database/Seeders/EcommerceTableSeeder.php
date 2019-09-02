@@ -41,5 +41,13 @@ class EcommerceTableSeeder extends Seeder
                 'created_at' => \Carbon\Carbon::now()
             ]
         ]);
+
+        DB::table('term_relationships')->insert([
+            [
+                'term_taxonomy_id' => 3,
+                'object_id' => $id,
+                'created_at' => \Carbon\Carbon::now()
+            ]
+        ]);
     }
 }
