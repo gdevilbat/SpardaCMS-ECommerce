@@ -60,7 +60,7 @@ class BlogProductController extends AbstractBlog
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->latest('created_at')
-                                                ->limit(5);
+                                                ->limit(3);
 
             if(!Auth::check())
             {
@@ -80,7 +80,7 @@ class BlogProductController extends AbstractBlog
                                                 ->with('postMeta')
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
-                                                ->limit(5);
+                                                ->limit(3);
 
             $this->data['related_posts'] = $query->get();
         
@@ -95,7 +95,7 @@ class BlogProductController extends AbstractBlog
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
-                                                ->limit(5);
+                                                ->limit(3);
 
             if(!Auth::check())
             {
