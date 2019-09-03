@@ -288,7 +288,8 @@
                                             <label for="exampleInputEmail1">Meta Title</label>
                                         </div>
                                         <div class="col-12">
-                                            <input type="text" class="form-control m-input" placeholder="Meta Title" name="meta[meta_title]" value="{{old('meta.meta_title') ? old('meta.meta_title') : (!empty($post) && $post->postMeta->where('meta_key', 'meta_title')->first() ? $post->postMeta->where('meta_key', 'meta_title')->first()->meta_value : '')}}">
+                                            <input type="text" class="form-control m-input count-textarea" placeholder="Meta Title" name="meta[meta_title]" data-target-count-text="#meta-title" value="{{old('meta.meta_title') ? old('meta.meta_title') : (!empty($post) && $post->postMeta->where('meta_key', 'meta_title')->first() ? $post->postMeta->where('meta_key', 'meta_title')->first()->meta_value : '')}}">
+                                            <div class="pt-1"><span id="meta-title"></span> Character</div>
                                         </div>
                                     </div>
                                     <div class="form-group m-form__group d-flex px-0 flex-wrap">
@@ -304,7 +305,8 @@
                                             <label for="exampleInputEmail1">Meta Description</label>
                                         </div>
                                         <div class="col-12">
-                                            <textarea class="form-control m-input autosize" placeholder="Meta Description" name="meta[meta_description]">{{old('meta.meta_description') ? old('meta.meta_description') : (!empty($post) && $post->postMeta->where('meta_key', 'meta_description')->first() ? $post->postMeta->where('meta_key', 'meta_description')->first()->meta_value : '')}}</textarea>
+                                            <textarea class="form-control m-input autosize count-textarea" placeholder="Meta Description" name="meta[meta_description]" data-target-count-text="#meta-description">{{old('meta.meta_description') ? old('meta.meta_description') : (!empty($post) && $post->postMeta->where('meta_key', 'meta_description')->first() ? $post->postMeta->where('meta_key', 'meta_description')->first()->meta_value : '')}}</textarea>
+                                            <div class="pt-1"><span id="meta-description"></span> Character</div>
                                         </div>
                                     </div>
                                 </div>
