@@ -153,10 +153,34 @@
                                     <div class="tab-pane" id="shipping" role="tabpanel">
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Tokopedia Store</label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Store" name="meta[tokopedia_store]" value="{{old('meta.tokopedia_store') ? old('meta.tokopedia_store') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_store')->first() ? $post->postMeta->where('meta_key', 'tokopedia_slug')->first()->meta_value : '')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
                                                 <label for="exampleInputEmail1">Tokopedia Slug</label>
                                             </div>
                                             <div class="col">
                                                 <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[tokopedia_slug]" value="{{old('meta.tokopedia_slug') ? old('meta.tokopedia_slug') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_slug')->first() ? $post->postMeta->where('meta_key', 'tokopedia_slug')->first()->meta_value : '')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Tokopedia Supplier</label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Supplier" name="meta[tokopedia_supplier]" value="{{old('meta.tokopedia_supplier') ? old('meta.tokopedia_supplier') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_supplier')->first() ? $post->postMeta->where('meta_key', 'tokopedia_supplier')->first()->meta_value : '')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Tokopedia Source</label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Source" name="meta[tokopedia_source]" value="{{old('meta.tokopedia_source') ? old('meta.tokopedia_source') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_source')->first() ? $post->postMeta->where('meta_key', 'tokopedia_source')->first()->meta_value : '')}}">
                                             </div>
                                         </div>
                                     </div>
