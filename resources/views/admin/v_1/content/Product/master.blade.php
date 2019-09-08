@@ -82,8 +82,8 @@
                         <tr>
                             <th data-priority="1">ID</th>
                             <th data-priority="2">Title</th>
-                            <th class="no-sort" data-priority="3">Product Price</th>
-                            <th class="no-sort" data-priority="4">Product Sale</th>
+                            <th data-priority="3">Product Price</th>
+                            <th data-priority="4">Product Sale</th>
                             <th class="no-sort">Author</th>
                             <th class="no-sort" data-priority="7">Categories</th>
                             <th class="no-sort">Tags</th>

@@ -33,7 +33,17 @@ class ProductController extends AbstractPost
 
     public function getColumnOrder()
     {
-        return [Product::getPrimaryKey(), 'post_title', 'product_price', 'product_sale', 'author', 'categories', 'tags','comment', 'status','created_at'];
+        return [Product::getPrimaryKey(), 'post_title', 'product_price', 'product_sale', 'author', 'categories', 'tags','comment', 'status', 'tokopedia_slug','created_at'];
+    }
+
+    public function getQuerybuilder($column, $dir)
+    {
+        $query = parent::getQuerybuilder($column, $dir);
+
+        $query = $query->leftJoin($this->product_meta_m::getTableName(), $this->post_m->getTableName().'.'.$this->post_m->getPrimaryKey(), '=', $this->product_meta_m::getTableName().'.product_id')
+                        ->select([$this->post_m->getTableName().'.*' , $this->product_meta_m::getTableName().'.product_price', $this->product_meta_m::getTableName().'.product_sale']);
+
+        return $query;
     }
 
     public function parsingDataTable($posts)
