@@ -156,7 +156,7 @@
                                                 <label for="exampleInputEmail1">Tokopedia Store</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Store" name="meta[tokopedia_store]" value="{{old('meta.tokopedia_store') ? old('meta.tokopedia_store') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_store')->first() ? $post->postMeta->where('meta_key', 'tokopedia_slug')->first()->meta_value : '')}}">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Store" name="meta[tokopedia_store]" value="{{old('meta.tokopedia_store') ? old('meta.tokopedia_store') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_store')->first() ? $post->postMeta->where('meta_key', 'tokopedia_store')->first()->meta_value : '')}}">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group d-flex px-0">
