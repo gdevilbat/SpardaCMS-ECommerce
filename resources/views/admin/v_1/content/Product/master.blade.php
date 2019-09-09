@@ -77,7 +77,7 @@
                 @endcan
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap data-table-ajax" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}">
+                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}">
                     <thead>
                         <tr>
                             <th data-priority="1">ID</th>
@@ -85,12 +85,12 @@
                             <th data-priority="3">Product Price</th>
                             <th data-priority="4">Product Sale</th>
                             <th class="no-sort">Author</th>
-                            <th class="no-sort" data-priority="7">Categories</th>
+                            <th class="no-sort" data-priority="6">Categories</th>
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
-                            <th class="no-sort" data-priority="6">Status</th>
-                            <th class="no-sort">Tokopedia Link</th>
-                            <th class="no-sort">Tokopedia Source</th>
+                            <th class="no-sort" data-priority="9">Status</th>
+                            <th class="no-sort" data-priority="7">Tokopedia Link</th>
+                            <th class="no-sort" data-priority="8">Tokopedia Source</th>
                             <th>Created At</th>
                             <th class="no-sort" data-priority="5">Action</th>
                         </tr>
@@ -111,4 +111,29 @@
 </div>
 {{-- End of Row --}}
 
+@endsection
+
+@section('page_script_js')
+    {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/scrapper.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/scrapper.js')))}}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#data-product").DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "order": [],
+                "searchDelay": 1000,
+                "ajax": $.fn.dataTable.pipeline( {
+                    url: $(this).attr('data-ajax'),
+                    pages: 5 // number of pages to cache
+                }),
+                 "columnDefs": [
+                ],
+                "drawCallback": function( settings ) {
+                    deleteData();
+                    tokopediaScrap();
+                }
+            } );
+        });
+    </script>
 @endsection
