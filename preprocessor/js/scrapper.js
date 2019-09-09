@@ -38,7 +38,9 @@ window.tokopediaScrap = function(){
                                 price: cheerioJquery(this).children('[itemprop="price"]').attr('content')
                             }      
                         });
-                        shop_price = devtoList[0].price;
+
+
+                        let shop_price = devtoList[0].price;
                         $(this).html(currencyFormat(shop_price) + ', <br/>');
 
                         axios.get($('#scrapping-supplier-'+$(this).attr('data-index')).attr('data-url'))
@@ -52,9 +54,7 @@ window.tokopediaScrap = function(){
                                                 price: cheerioJquery(this).children('[itemprop="price"]').attr('content')
                                             }      
                                         });
-                                        supllier_price = devtoList[0].price;
-                                        window.console.log(supllier_price);
-                                        window.console.log( $('#scrapping-supplier-'+$(this).attr('data-index')).attr('data-url'));
+                                        let supllier_price = devtoList[0].price;
                                         $('#scrapping-supplier-'+$(this).attr('data-index')).html(currencyFormat(supllier_price) + '<br/>('+(shop_price-supllier_price)+'),<br/>');
                                     }
                             }, (error) => console.log(err) );
