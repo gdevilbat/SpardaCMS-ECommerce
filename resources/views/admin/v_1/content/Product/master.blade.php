@@ -85,14 +85,14 @@
                             <th data-priority="3">Product Price</th>
                             <th data-priority="4">Product Sale</th>
                             <th class="no-sort">Author</th>
-                            <th class="no-sort" data-priority="6">Categories</th>
+                            <th class="no-sort" data-priority="8">Categories</th>
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
                             <th class="no-sort" data-priority="9">Status</th>
-                            <th class="no-sort" data-priority="7">Tokopedia Link</th>
-                            <th class="no-sort" data-priority="8">Tokopedia Source</th>
+                            <th class="no-sort" data-priority="5">Tokopedia Link</th>
+                            <th class="no-sort" data-priority="6">Tokopedia Source</th>
                             <th>Created At</th>
-                            <th class="no-sort" data-priority="5">Action</th>
+                            <th class="no-sort" data-priority="7">Action</th>
                         </tr>
                     </thead>
                     <tbody>
