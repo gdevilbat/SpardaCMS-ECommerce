@@ -55,7 +55,7 @@ window.tokopediaScrap = function(){
                                             }      
                                         });
                                         let supllier_price = devtoList[0].price;
-                                        $('#scrapping-supplier-'+$(this).attr('data-index')).html(currencyFormat(supllier_price) + '<br/>('+(shop_price-supllier_price)+'),<br/>');
+                                        $('#scrapping-supplier-'+$(this).attr('data-index')).html(currencyFormat(supllier_price) + '<br/><span class="text-danger">('+(shop_price-supllier_price)+')</span>,<br/>');
                                     }
                             }, (error) => console.log(err) );
                     }
