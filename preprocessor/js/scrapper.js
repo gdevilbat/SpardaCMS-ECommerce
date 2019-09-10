@@ -35,13 +35,14 @@ window.tokopediaScrap = function(){
                         let devtoList = [];
                         cheerioJquery('.rvm-price').each(function(i, elem) {
                             devtoList[i] = {
-                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content')
+                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
+                                status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
                             }      
                         });
 
 
                         let shop_price = devtoList[0].price;
-                        $(this).html(currencyFormat(shop_price) + ', <br/>');
+                        $(this).html(currencyFormat(shop_price) + ', <br/><span class="badge '+ (devtoList[0].status == "empty" ? "badge-dark" : "badge-info") +'">' + devtoList[0].status + '</span><br/>');
 
                         axios.get($('#scrapping-supplier-'+$(this).attr('data-index')).attr('data-url'))
                             .then((response) => {
@@ -51,11 +52,12 @@ window.tokopediaScrap = function(){
                                         let devtoList = [];
                                         cheerioJquery('.rvm-price').each(function(i, elem) {
                                             devtoList[i] = {
-                                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content')
+                                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
+                                                status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
                                             }      
                                         });
                                         let supllier_price = devtoList[0].price;
-                                        $('#scrapping-supplier-'+$(this).attr('data-index')).html(currencyFormat(supllier_price) + '<br/><span class="text-danger">('+(shop_price-supllier_price)+')</span>,<br/>');
+                                        $('#scrapping-supplier-'+$(this).attr('data-index')).html(currencyFormat(supllier_price) + '<br/><span class="text-danger">('+(shop_price-supllier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
                                     }
                             }, (error) => console.log(err) );
                     }
