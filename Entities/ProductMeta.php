@@ -17,6 +17,11 @@ class ProductMeta extends Model
      * @return void
      */
     
+    public function getDiscountAttribute()
+    {
+        return round($this->product_sale*100/$this->product_price, 2);
+    }
+    
     public function setProductPriceAttribute($value)
     {
         $this->attributes['product_price'] = preg_replace('/[,_]/', '',$value);
