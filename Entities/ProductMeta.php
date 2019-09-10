@@ -19,7 +19,10 @@ class ProductMeta extends Model
     
     public function getDiscountAttribute()
     {
-        return round(($this->product_price - $this->product_sale)*100/$this->product_price, 2);
+        if($this->product_sale > 0)
+            return round(($this->product_price - $this->product_sale)*100/$this->product_price, 2);
+
+        return 0;
     }
     
     public function setProductPriceAttribute($value)
