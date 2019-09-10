@@ -115,7 +115,7 @@ class ProductController extends AbstractPost
 
                     if(!empty($post->tokopedia_slug) && !empty($post->tokopedia_store))
                     {
-                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'" target="_blank">'.'<span data-index='.$key_post.' class="scrapping-shop" id="scrapping-shop-'.$key_post.'" data-url="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'"></span> Kunjungi Toko</a>';
+                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-shop" id="scrapping-shop-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'"></span> Kunjungi Toko</a>';
                     }
                     else
                     {
@@ -124,7 +124,7 @@ class ProductController extends AbstractPost
 
                     if(!empty($post->tokopedia_source) && !empty($post->tokopedia_supplier))
                     {
-                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" target="_blank">'.'<span data-index='.$key_post.' class="scrapping-supplier" id="scrapping-supplier-'.$key_post.'" data-url="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'"></span> Kunjungi Supplier'.'</a>';
+                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'"></span> Kunjungi Supplier'.'</a>';
                     }
                     else
                     {
