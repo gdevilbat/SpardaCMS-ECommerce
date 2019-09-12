@@ -5,6 +5,8 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\Rule;
+
 
 use Gdevilbat\SpardaCMS\Modules\Post\Foundation\AbstractPost;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
@@ -131,6 +133,7 @@ class ProductController extends AbstractPost
                         $data[$i][] = '-';
                     }
 
+                    $data[$i][] = $post->productMeta->availability;
                     $data[$i][] = $post->created_at->toDateTimeString();
                     $data[$i][] = $this->getActionTable($post);
                     $i++;
@@ -194,6 +197,14 @@ class ProductController extends AbstractPost
         $validator->addRules([
                 'meta.gallery.*.photo' => 'required',
                 'product_meta.product_price' => 'required|max:11',
+                'product_meta.availability' => [
+                        'required',
+                        Rule::in(['in stock', 'out of stock', 'preorder', 'available for order', 'discontinued'])
+                    ],
+                'product_meta.condition' => [
+                        'required',
+                        Rule::in(['new', 'refurbished', 'used'])
+                    ]
         ]);
 
         if(!empty($request->input('product_meta.product_sale')))

@@ -59,7 +59,7 @@ class ProductControllerTest extends TestCase
                          ->from(action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@create'))
                          ->post(action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@store', ['callback' => 'productMetaStore']), [
                                 'post' => ['post_title' => $name, 'post_slug' => $slug, 'post_content' => $faker->text, 'post_parent' => $post->getKey()],
-                                'product_meta' => ['product_price' => 2000000, 'product_sale' => 2000000],
+                                'product_meta' => ['product_price' => 2000000, 'product_sale' => 2000000, 'availability' => 'in stock', 'condition' => 'new'],
                                 'taxonomy' => ['category' => [$category->getKey()], 'tag' => [$tag->getKey()]]
                             ])
                          ->assertStatus(302)
@@ -104,7 +104,7 @@ class ProductControllerTest extends TestCase
                         ->from(action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@create').'?code='.encrypt($post->getKey()))
                         ->post(action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@store'), [
                             'post' => ['post_title' => $post->post_title, 'post_slug' => $post->post_slug, 'post_content' => $post->post_content, 'post_parent' => $post->getKey()],
-                            'product_meta' => ['product_price' => 2000000, 'product_sale' => 2000000],
+                            'product_meta' => ['product_price' => 2000000, 'product_sale' => 2000000, 'availability' => 'in stock', 'condition' => 'new'],
                             $post->getKeyName() => encrypt($post->getKey()),
                             '_method' => 'PUT'
                         ])

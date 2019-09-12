@@ -119,6 +119,60 @@
                                                 <input type="text" min="0" class="form-control m-input money-masking" placeholder="Product Sale" name="product_meta[product_sale]" value="{{old('product_meta.product_sale') ? old('product_meta.product_sale') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_sale : '')}}">
                                             </div>
                                         </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Product Availablity<span class="ml-1 m--font-warning" aria-required="true">*</span></label>
+                                            </div>
+                                            <div class="col d-flex align-items-center">
+                                                <div class="m-form__group form-group">
+                                                    <div class="m-radio-inline">
+                                                        <label class="m-radio">
+                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'in stock') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'in stock') ? 'checked' : '')}} value="in stock"> In Stock
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="m-radio">
+                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'out of stock') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'out of stock') ? 'checked' : '')}} value="out of stock"> Out Of Stock
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="m-radio">
+                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'preorder') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'preorder') ? 'checked' : '')}} value="preorder"> Preorder
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="m-radio">
+                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'available for order') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'available for order') ? 'checked' : '')}} value="available for order"> Available For Order
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="m-radio">
+                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'discontinued') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'discontinued') ? 'checked' : '')}} value="discontinued"> Discontinued
+                                                            <span></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Product Condition<span class="ml-1 m--font-warning" aria-required="true">*</span></label>
+                                            </div>
+                                            <div class="col d-flex align-items-center">
+                                                <div class="m-form__group form-group">
+                                                    <div class="m-radio-inline">
+                                                        <label class="m-radio">
+                                                            <input type="radio" name="product_meta[condition]" {{old('product_meta.condition') && (old('product_meta.condition') == 'new') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->condition == 'new') ? 'checked' : '')}} value="new"> New
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="m-radio">
+                                                            <input type="radio" name="product_meta[condition]" {{old('product_meta.condition') && (old('product_meta.condition') == 'refurbished') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->condition == 'refurbished') ? 'checked' : '')}} value="refurbished"> Refurbished
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="m-radio">
+                                                            <input type="radio" name="product_meta[condition]" {{old('product_meta.condition') && (old('product_meta.condition') == 'used') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->condition == 'used') ? 'checked' : '')}} value="used"> Used
+                                                            <span></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group m-form__group d-flex px-0 flex-wrap">
                                             <div class="col-4 d-flex justify-content-end py-3">
                                                 <label for="exampleInputEmail1">Category</label>

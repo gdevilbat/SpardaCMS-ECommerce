@@ -24,6 +24,43 @@ class ProductMeta extends Model
 
         return 0;
     }
+
+    public function getSchemaAvailabilityAttribute()
+    {
+        if($this->availability == 'in stock')
+            return 'http://schema.org/InStock';
+
+        if($this->availability == 'out of stock')
+            return 'http://schema.org/OutOfStock';
+
+        if($this->availability == 'preorder')
+            return 'http://schema.org/PreOrder';
+
+        if($this->availability == 'available for order')
+            return 'http://schema.org/LimitedAvailability';
+
+        if($this->availability == 'discontinued')
+            return 'http://schema.org/Discontinued';
+
+        return 'http://schema.org/InStock';;
+    }
+
+    public function getSchemaConditionAttribute()
+    {
+        if($this->availability == 'new')
+            return 'http://schema.org/NewCondition';
+
+        if($this->availability == 'refurbished')
+            return 'http://schema.org/RefurbishedCondition';
+
+        if($this->availability == 'used')
+            return 'http://schema.org/UsedCondition';
+
+        if($this->availability == 'available for order')
+            return 'http://schema.org/LimitedAvailability';
+
+        return 'http://schema.org/NewCondition';;
+    }
     
     public function setProductPriceAttribute($value)
     {
