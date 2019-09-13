@@ -72,6 +72,8 @@ Route::group(['prefix' => 'control', 'middleware' => 'core.menu'], function() {
 	});
 });
 
+Route::get('sitemap/ecommerce.xml', 'SitemapController@index');
+
 Route::group(['middleware' => 'appearance.navbars'], function() {
 
 	/*====================================
