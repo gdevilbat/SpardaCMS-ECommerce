@@ -39,6 +39,8 @@ class ProductTest extends DuskTestCase
             $browser->script('document.getElementsByName("post[post_status]")[0].checked = true');
             $browser->script('document.getElementsByName("post[comment_status]")[0].checked = true');
             $browser->script('document.getElementsByName("post[post_parent]")[0].selectedIndex = 1');
+            $browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
+            $browser->script('document.getElementsByName("product_meta[condition]")[0].checked = true');
             $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 0');
             $browser->script('document.getElementsByName("taxonomy[tag][]")[0].selectedIndex = 0');
             $browser->script('document.getElementsByName("meta[meta_keyword]")[0].value = "'.$faker->name.'"');
