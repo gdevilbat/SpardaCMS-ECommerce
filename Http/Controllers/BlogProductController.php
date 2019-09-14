@@ -53,12 +53,15 @@ class BlogProductController extends AbstractBlog
 
 
         /*===========================================
-        =            Recent Suggest Post            =
+        =            Recent Suggest Product            =
         ===========================================*/
         
             $query = $this->post_m->with('postMeta')
+                                                ->whereHas('productMeta', function($query){
+                                                    $query->where('availability', 'in stock');
+                                                })
                                                 ->where(['post_type' =>  $this->getPostType()])
-                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->latest('created_at')
                                                 ->limit(3);
 
@@ -69,31 +72,37 @@ class BlogProductController extends AbstractBlog
 
             $this->data['recent_posts'] = $query->get();
         
-        /*=====  End of Recent Suggest Post  ======*/
+        /*=====  End of Recent Suggest Product  ======*/
         
 
         /*===========================================
-        =            Related Post            =
+        =            Related Product            =
         ===========================================*/
         
             $query = $this->buildPostByTaxonomy($this->data['post_categories']->first())
                                                 ->with('postMeta')
-                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->whereHas('productMeta', function($query){
+                                                    $query->where('availability', 'in stock');
+                                                })
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
                                                 ->limit(3);
 
             $this->data['related_posts'] = $query->get();
         
-        /*=====  End of Related Post  ======*/
+        /*=====  End of Related Product  ======*/
 
 
         /*===========================================
-        =            Recomended Post            =
+        =            Recomended Product            =
         ===========================================*/
         
             $query = $this->post_m->with('postMeta')
                                                 ->where(['post_type' =>  $this->getPostType()])
-                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->whereHas('productMeta', function($query){
+                                                    $query->where('availability', 'in stock');
+                                                })
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
                                                 ->limit(3);
 
@@ -104,7 +113,7 @@ class BlogProductController extends AbstractBlog
 
             $this->data['recomended_posts'] = $query->get();
         
-        /*=====  End of Recomended Post  ======*/
+        /*=====  End of Recomended Product  ======*/
 
 
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
