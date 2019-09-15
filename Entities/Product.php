@@ -42,4 +42,27 @@ class Product extends Post
 
         return null;
     }
+
+    public function scopeFilterSort($query, \Illuminate\Http\Request $request)
+    {
+        if(count($request->input()) > 0)
+        {
+            $query = $query->leftJoin(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName(), function($join){
+                                $join->on(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'.'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '=', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName().'.'.'product_id');
+                            });
+
+            if($request->has('lowest_price') && $request->has('highest_price'))
+            {
+                $query = $query->where('product_price', '>=', $request->input('lowest_price'))
+                               ->where('product_price', '<=', $request->input('highest_price'));
+            }
+
+            if($request->has('order_by') && $request->has('order_mode'))
+            {
+                $query = $query->orderBy($request->input('order_by'), $request->input('order_mode'));
+            }
+        }
+
+        return $query;
+    }
 }
