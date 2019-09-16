@@ -51,13 +51,13 @@ class Product extends Post
                                 $join->on(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'.'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '=', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName().'.'.'product_id');
                             });
 
-            if($request->has('lowest_price') && $request->has('highest_price'))
+            if(!empty($request->input('lowest_price')) && !empty($request->input('highest_price')))
             {
                 $query = $query->where('product_price', '>=', $request->input('lowest_price'))
                                ->where('product_price', '<=', $request->input('highest_price'));
             }
 
-            if($request->has('order_by') && $request->has('order_mode'))
+            if(!empty($request->input('order_by')) && !empty($request->input('order_mode')))
             {
                 $query = $query->orderBy($request->input('order_by'), $request->input('order_mode'));
             }
