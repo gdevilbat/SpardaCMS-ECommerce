@@ -89,4 +89,9 @@ class ProductMeta extends Model
     {
         return with(new Static)->getKeyName();
     }
+
+    public static function getTableColumns()
+    {
+        return with(new Static)->getConnection()->getSchemaBuilder()->getColumnListing(with(new Static)->getTable());
+    }
 }
