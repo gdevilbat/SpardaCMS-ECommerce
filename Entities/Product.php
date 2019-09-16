@@ -48,7 +48,8 @@ class Product extends Post
         if(count($request->input()) > 0)
         {
             $query = $query->leftJoin(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName(), function($join){
-                                $join->on(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'.'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '=', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName().'.'.'product_id');
+                                $join->on(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'.'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '=', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName().'.'.'product_id')
+                                    ->select(array_diff(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableColumns(), ['created_at', 'updated_at']));
                             });
 
             if(!empty($request->input('lowest_price')) && !empty($request->input('highest_price')))
