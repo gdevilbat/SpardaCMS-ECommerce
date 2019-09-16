@@ -61,6 +61,10 @@ class Product extends Post
             {
                 $query = $query->orderBy($request->input('order_by'), $request->input('order_mode'));
             }
+            else
+            {
+                $query = $query->latest();
+            }
         }
 
         return $query;
