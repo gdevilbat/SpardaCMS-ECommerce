@@ -63,7 +63,7 @@ class Product extends Post
             }
             else
             {
-                $query = $query->latest();
+                $query = $query->orderBy(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'created_at', 'desc');
             }
         }
 
