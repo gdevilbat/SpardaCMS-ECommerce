@@ -139,7 +139,7 @@ class ProductController extends AbstractPost
                     }
                     else
                     {
-                        $data[$i][] = '<span class="badge badge-dark">'.$post->productMeta->availability;.'</span>';
+                        $data[$i][] = '<span class="badge badge-dark">'.$post->productMeta->availability.'</span>';
                     }
 
                     $data[$i][] = $post->productMeta->availability;
