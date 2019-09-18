@@ -142,7 +142,6 @@ class ProductController extends AbstractPost
                         $data[$i][] = '<span class="badge badge-dark">'.$post->productMeta->availability.'</span>';
                     }
 
-                    $data[$i][] = $post->productMeta->availability;
                     $data[$i][] = $post->created_at->toDateTimeString();
                     $data[$i][] = $this->getActionTable($post);
                     $i++;
