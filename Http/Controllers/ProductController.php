@@ -125,14 +125,7 @@ class ProductController extends AbstractPost
                         $data[$i][] = '-';
                     }
 
-                    if(!empty($post->tokopedia_slug) && !empty($post->tokopedia_store))
-                    {
-                        $data[$i][] = $this->getStoreLink($post);
-                    }
-                    else
-                    {
-                        $data[$i][] = '-';
-                    }
+                    $data[$i][] = $this->getStoreLink($post);
 
                     if($post->productMeta->availability == 'in stock')
                     {
