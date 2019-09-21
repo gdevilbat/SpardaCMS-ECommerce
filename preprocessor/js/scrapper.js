@@ -26,43 +26,6 @@ let cheerio = require('cheerio');
 //
 
 window.tokopediaScrap = function(){
-    /*$(".scrapping-store").each(function(index, el) {
-        axios.get($(this).attr('data-url'))
-            .then((response) => {
-                    if(response.status === 200) {
-                        let html = response.data;
-                        let cheerioJquery = cheerio.load(html);
-                        let devtoList = [];
-                        cheerioJquery('.rvm-price').each(function(i, elem) {
-                            devtoList[i] = {
-                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
-                                status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
-                            }      
-                        });
-
-
-                        let shop_price = devtoList[0].price;
-                        $(this).html(currencyFormat(shop_price) + ', <br/><span class="badge '+ (devtoList[0].status == "empty" ? "badge-dark" : "badge-info") +'">' + devtoList[0].status + '</span><br/>');
-
-                        axios.get($('#scrapping-supplier-'+$(this).attr('data-index')).attr('data-url'))
-                            .then((response) => {
-                                    if(response.status === 200) {
-                                        let html = response.data;
-                                        let cheerioJquery = cheerio.load(html);
-                                        let devtoList = [];
-                                        cheerioJquery('.rvm-price').each(function(i, elem) {
-                                            devtoList[i] = {
-                                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
-                                                status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
-                                            }      
-                                        });
-                                        let supllier_price = devtoList[0].price;
-                                        $('#scrapping-supplier-'+$(this).attr('data-index')).html(currencyFormat(supllier_price) + '<br/><span class="text-danger">('+(shop_price-supllier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
-                                    }
-                            }, (error) => console.log(err) );
-                    }
-            }, (error) => console.log(err) );
-    });*/
     $(".scrapping-supplier").each(function(index, el) {
         axios.get($(this).attr('data-url'))
             .then((response) => {
@@ -81,22 +44,53 @@ window.tokopediaScrap = function(){
                         let supplier_price = devtoList[0].price;
                         $(this).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (devtoList[0].status == "empty" ? "badge-dark" : "badge-info") +'">' + devtoList[0].status + '</span><br/>');
 
-                        axios.get($('#scrapping-store-'+$(this).attr('data-index')).attr('data-url'))
-                            .then((response) => {
-                                    if(response.status === 200) {
-                                        let html = response.data;
-                                        let cheerioJquery = cheerio.load(html);
-                                        let devtoList = [];
-                                        cheerioJquery('.rvm-price').each(function(i, elem) {
-                                            devtoList[i] = {
-                                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
-                                                status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
-                                            }      
-                                        });
-                                        let store_price = devtoList[0].price;
-                                        $('#scrapping-store-'+$(this).attr('data-index')).html(currencyFormat(store_price) + '<br/><span class="text-danger">('+(store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
-                                    }
-                            }, (error) => console.log(err) );
+                        /*=================================
+                        =            Tokopedia            =
+                        =================================*/
+                        
+                            axios.get($('#tokopedia-store-'+$(this).attr('data-index')).attr('data-url'))
+                                .then((response) => {
+                                        if(response.status === 200) {
+                                            let html = response.data;
+                                            let cheerioJquery = cheerio.load(html);
+                                            let devtoList = [];
+                                            cheerioJquery('.rvm-price').each(function(i, elem) {
+                                                devtoList[i] = {
+                                                    price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
+                                                    status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
+                                                }      
+                                            });
+                                            let tokopedia_store_price = devtoList[0].price;
+                                            $('#tokopedia-store-'+$(this).attr('data-index')).html(currencyFormat(tokopedia_store_price) + '<br/><span class="text-danger">('+(tokopedia_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
+                                        }
+                                }, (error) => console.log(err) );
+                        
+                        /*=====  End of Tokopedia  ======*/
+
+                        /*=============================================
+                        =            Shopee comment block            =
+                        =============================================*/
+                        
+                            let url = $('#shopee-store-'+$(this).attr('data-index')).attr('data-url')
+                            let shopee = url.split('.').slice(-2);
+
+                            axios.get('https://shopee.co.id/api/v2/item/get?shopid='+shopee[0]+'&itemid='+shopee[1])
+                                .then((response) => {
+                                        if(response.status === 200) {
+                                            let html = response.data;
+                                            let devtoList = [];
+                                            devtoList[0] = {
+                                                price: (html.item.price)/100000,
+                                                status: html.item.status == 0 ? 'empty' : 'available'
+                                            }
+                                            let shopee_store_price = devtoList[0].price;
+                                            $('#shopee-store-'+$(this).attr('data-index')).html(currencyFormat(shopee_store_price) + '<br/><span class="text-danger">('+(shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
+                                        }
+                                }, (error) => console.log(err) );
+                        
+                        /*=====  End of Shopee comment block  ======*/
+                        
+                        
                     }
             }, (error) => console.log(err) );       
     });

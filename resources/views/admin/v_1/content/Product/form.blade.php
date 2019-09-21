@@ -238,6 +238,14 @@
                                                 <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[tokopedia_slug]" value="{{old('meta.tokopedia_slug') ? old('meta.tokopedia_slug') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_slug')->first() ? $post->postMeta->where('meta_key', 'tokopedia_slug')->first()->meta_value : '')}}">
                                             </div>
                                         </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Shopee Slug</label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control m-input" placeholder="Shopee Slug" name="meta[shopee_slug]" value="{{old('meta.shopee_slug') ? old('meta.shopee_slug') : (!empty($post) && $post->postMeta->where('meta_key', 'shopee_slug')->first() ? $post->postMeta->where('meta_key', 'shopee_slug')->first()->meta_value : '')}}">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="tab-pane" id="gallery" role="tabpanel">
                                         <div class="form-group m-form__group d-flex">
