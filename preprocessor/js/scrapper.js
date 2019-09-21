@@ -26,7 +26,7 @@ let cheerio = require('cheerio');
 //
 
 window.tokopediaScrap = function(){
-    $(".scrapping-shop").each(function(index, el) {
+    /*$(".scrapping-store").each(function(index, el) {
         axios.get($(this).attr('data-url'))
             .then((response) => {
                     if(response.status === 200) {
@@ -62,6 +62,43 @@ window.tokopediaScrap = function(){
                             }, (error) => console.log(err) );
                     }
             }, (error) => console.log(err) );
+    });*/
+    $(".scrapping-supplier").each(function(index, el) {
+        axios.get($(this).attr('data-url'))
+            .then((response) => {
+                    if(response.status === 200) {
+                        let html = response.data;
+                        let cheerioJquery = cheerio.load(html);
+                        let devtoList = [];
+                        cheerioJquery('.rvm-price').each(function(i, elem) {
+                            devtoList[i] = {
+                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
+                                status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
+                            }      
+                        });
+
+
+                        let supplier_price = devtoList[0].price;
+                        $(this).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (devtoList[0].status == "empty" ? "badge-dark" : "badge-info") +'">' + devtoList[0].status + '</span><br/>');
+
+                        axios.get($('#scrapping-store-'+$(this).attr('data-index')).attr('data-url'))
+                            .then((response) => {
+                                    if(response.status === 200) {
+                                        let html = response.data;
+                                        let cheerioJquery = cheerio.load(html);
+                                        let devtoList = [];
+                                        cheerioJquery('.rvm-price').each(function(i, elem) {
+                                            devtoList[i] = {
+                                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
+                                                status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
+                                            }      
+                                        });
+                                        let store_price = devtoList[0].price;
+                                        $('#scrapping-store-'+$(this).attr('data-index')).html(currencyFormat(store_price) + '<br/><span class="text-danger">('+(store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
+                                    }
+                            }, (error) => console.log(err) );
+                    }
+            }, (error) => console.log(err) );       
     });
 }
 

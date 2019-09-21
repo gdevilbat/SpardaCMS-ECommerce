@@ -115,18 +115,18 @@ class ProductController extends AbstractPost
                         $data[$i][] = '<a href="#" class="btn btn-warning p-1">'.$post->post_status.'</a>';
                     }
 
-                    if(!empty($post->tokopedia_slug) && !empty($post->tokopedia_store))
+                    if(!empty($post->tokopedia_source) && !empty($post->tokopedia_supplier))
                     {
-                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-shop" id="scrapping-shop-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'"></span> Kunjungi Toko</a>';
+                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'"></span> Tokopedia'.'</a>';
                     }
                     else
                     {
                         $data[$i][] = '-';
                     }
 
-                    if(!empty($post->tokopedia_source) && !empty($post->tokopedia_supplier))
+                    if(!empty($post->tokopedia_slug) && !empty($post->tokopedia_store))
                     {
-                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'"></span> Kunjungi Supplier'.'</a>';
+                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-store" id="scrapping-store-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'"></span> Tokopedia</a>';
                     }
                     else
                     {

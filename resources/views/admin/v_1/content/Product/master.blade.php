@@ -95,8 +95,8 @@
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
                             <th class="no-sort" data-priority="10">Status</th>
-                            <th class="no-sort" data-priority="5">Tokopedia Store</th>
-                            <th class="no-sort" data-priority="6">Tokopedia Supplier</th>
+                            <th class="no-sort" data-priority="6">Supplier</th>
+                            <th class="no-sort" data-priority="5">Store</th>
                             <th class="no-sort" data-priority="8">Availability</th>
                             <th>Created At</th>
                             <th class="no-sort" data-priority="7">Action</th>
