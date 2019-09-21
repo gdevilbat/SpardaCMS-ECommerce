@@ -314,7 +314,7 @@
             mixins: [componentMixin],
             el: "#gallery",
             data: {
-                components: {!! !empty($post) && !empty($post->postMeta->where('meta_key', 'gallery')->first()) ? json_encode($post->postMeta->where('meta_key', 'gallery')->first()->meta_value) : json_encode(array()) !!},
+                components: {!! old('meta.gallery') ? json_encode(old('meta.gallery')) : (!empty($post) && !empty($post->postMeta->where('meta_key', 'gallery')->first()) ? json_encode($post->postMeta->where('meta_key', 'gallery')->first()->meta_value) : json_encode(array())) !!},
             },
         });
     </script>
