@@ -75,7 +75,7 @@ window.tokopediaScrap = function(){
 
                             if(url != undefined)
                             {
-                                let shopee = url.split('.').slice(-2);
+                                let shopee = url.split('/').slice(-2);
 
                                 axios.get('https://shopee.co.id/api/v2/item/get?shopid='+shopee[0]+'&itemid='+shopee[1])
                                     .then((response) => {
