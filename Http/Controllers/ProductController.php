@@ -14,6 +14,7 @@ use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
 use Gdevilbat\SpardaCMS\Modules\Core\Repositories\Repository;
 
 use Auth;
+use View;
 
 class ProductController extends AbstractPost
 {
@@ -126,7 +127,7 @@ class ProductController extends AbstractPost
 
                     if(!empty($post->tokopedia_slug) && !empty($post->tokopedia_store))
                     {
-                        $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-store" id="scrapping-store-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_store.'/'.$post->tokopedia_slug.'"></span> Tokopedia</a>';
+                        $data[$i][] = $this->getStoreLink($post);
                     }
                     else
                     {
@@ -151,6 +152,17 @@ class ProductController extends AbstractPost
             return $data;
         
         /*=====  End of Parsing Datatable  ======*/
+    }
+
+    public function getStoreLink($post)
+    {
+        $view = View::make($this->getModule().'::admin.'.$this->data['theme_cms']->value.'.partials'.'.store_link', [
+            'post' => $post
+        ]);
+
+        $html = $view->render();
+       
+       return $html;
     }
 
     /**
