@@ -72,21 +72,25 @@ window.tokopediaScrap = function(){
                         =============================================*/
                         
                             let url = $('#shopee-store-'+$(this).attr('data-index')).attr('data-url')
-                            let shopee = url.split('.').slice(-2);
 
-                            axios.get('https://shopee.co.id/api/v2/item/get?shopid='+shopee[0]+'&itemid='+shopee[1])
-                                .then((response) => {
-                                        if(response.status === 200) {
-                                            let html = response.data;
-                                            let devtoList = [];
-                                            devtoList[0] = {
-                                                price: (html.item.price)/100000,
-                                                status: html.item.status == 0 ? 'empty' : 'available'
+                            if(url != undefined)
+                            {
+                                let shopee = url.split('.').slice(-2);
+
+                                axios.get('https://shopee.co.id/api/v2/item/get?shopid='+shopee[0]+'&itemid='+shopee[1])
+                                    .then((response) => {
+                                            if(response.status === 200) {
+                                                let html = response.data;
+                                                let devtoList = [];
+                                                devtoList[0] = {
+                                                    price: (html.item.price)/100000,
+                                                    status: html.item.stock > 0 ? 'empty' : 'available'
+                                                }
+                                                let shopee_store_price = devtoList[0].price;
+                                                $('#shopee-store-'+$(this).attr('data-index')).html(currencyFormat(shopee_store_price) + '<br/><span class="text-danger">('+(shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
                                             }
-                                            let shopee_store_price = devtoList[0].price;
-                                            $('#shopee-store-'+$(this).attr('data-index')).html(currencyFormat(shopee_store_price) + '<br/><span class="text-danger">('+(shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
-                                        }
-                                }, (error) => console.log(err) );
+                                    }, (error) => console.log(err) );
+                            }
                         
                         /*=====  End of Shopee comment block  ======*/
                         
