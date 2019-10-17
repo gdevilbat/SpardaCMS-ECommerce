@@ -43,6 +43,7 @@ window.tokopediaScrap = function(){
 
                         let supplier_price = devtoList[0].price;
                         $(this).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (devtoList[0].status == "empty" ? "badge-dark" : "badge-info") +'">' + devtoList[0].status + '</span><br/>');
+                        $('#web-price-'+$(this).attr('data-index')).append('<br/><span class="text-danger">('+($('#web-price-'+$(this).attr('data-index')).attr('data-price') - supplier_price)+')</span>');
 
                         /*=================================
                         =            Tokopedia            =

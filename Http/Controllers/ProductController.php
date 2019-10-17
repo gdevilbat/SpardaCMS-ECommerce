@@ -66,8 +66,8 @@ class ProductController extends AbstractPost
 
                     if(!empty($post->productMeta))
                     {
-                        $data[$i][] = $post->productMeta->product_price;
-                        $data[$i][] = $post->productMeta->product_sale;
+                        $data[$i][] = '<span id="'.($post->productMeta->product_sale == 0 ? "web-price-".$post->getKey() : "#").'" data-price="'.$post->productMeta->product_price.'" data-index="'.$post->getKey().'">'.$post->productMeta->product_price.'</span>';
+                        $data[$i][] = '<span id="'.($post->productMeta->product_sale > 0 ? "web-price-".$post->getKey() : "#").'" data-price="'.$post->productMeta->product_sale.'" data-index="'.$post->getKey().'">'.$post->productMeta->product_sale.'</span>';
                     }
                     else
                     {
@@ -223,10 +223,22 @@ class ProductController extends AbstractPost
         if(!empty($request->input('product_meta.product_sale')))
         {
             $validator->addRules([
-                    'product_meta.product_sale' => 'max:11'
+                    'product_meta.product_sale' => [
+                        'max:11',
+                        function ($attribute, $value, $fail) use ($request) {
+                            if ($this->pricetTagToInteger($value) > $this->pricetTagToInteger($request->input('product_meta.product_price'))) {
+                                $fail($attribute.' Must Be Smaller Than Product Price.');
+                            }
+                        },
+                ],      
             ]);
         }
 
         return $validator;
+    }
+
+    public function pricetTagToInteger($value)
+    {
+        return preg_replace('/[,_]/', '',$value);
     }
 }
