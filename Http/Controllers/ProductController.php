@@ -64,17 +64,6 @@ class ProductController extends AbstractPost
                     $data[$i][] = $post->getKey();
                     $data[$i][] = $post->post_title;
 
-                    if(!empty($post->productMeta))
-                    {
-                        $data[$i][] = '<span id="'.($post->productMeta->product_sale == 0 ? "web-price-".$post->getKey() : "#").'" data-price="'.$post->productMeta->product_price.'" data-index="'.$post->getKey().'">'.$post->productMeta->product_price.'</span>';
-                        $data[$i][] = '<span id="'.($post->productMeta->product_sale > 0 ? "web-price-".$post->getKey() : "#").'" data-price="'.$post->productMeta->product_sale.'" data-index="'.$post->getKey().'">'.$post->productMeta->product_sale.'</span>';
-                    }
-                    else
-                    {
-                        $data[$i][] = '-';
-                        $data[$i][] = '-';
-                    }
-
                     $data[$i][] = $post->author->name;
 
                     $categories = $post->taxonomies->where('taxonomy', $this->getCategory());
@@ -114,6 +103,17 @@ class ProductController extends AbstractPost
                     else
                     {
                         $data[$i][] = '<a href="#" class="btn btn-warning p-1">'.$post->post_status.'</a>';
+                    }
+
+                    if(!empty($post->productMeta))
+                    {
+                        $data[$i][] = '<span id="'.($post->productMeta->product_sale == 0 ? "web-price-".$post->getKey() : "#").'" data-price="'.$post->productMeta->product_price.'" data-index="'.$post->getKey().'">'.$post->productMeta->product_price.'</span>';
+                        $data[$i][] = '<span id="'.($post->productMeta->product_sale > 0 ? "web-price-".$post->getKey() : "#").'" data-price="'.$post->productMeta->product_sale.'" data-index="'.$post->getKey().'">'.$post->productMeta->product_sale.'</span>';
+                    }
+                    else
+                    {
+                        $data[$i][] = '-';
+                        $data[$i][] = '-';
                     }
 
                     if(!empty($post->tokopedia_source) && !empty($post->tokopedia_supplier))

@@ -82,6 +82,11 @@
                         <tr>
                             <th data-priority="1">ID</th>
                             <th data-priority="2">Title</th>
+                            <th class="no-sort">Author</th>
+                            <th class="no-sort" data-priority="9">Categories</th>
+                            <th class="no-sort">Tags</th>
+                            <th class="no-sort">Comment</th>
+                            <th class="no-sort" data-priority="10">Status</th>
                             <th data-priority="3">
                                 Product <br>
                                 Price
@@ -90,11 +95,6 @@
                                 Product <br>
                                 Sale
                             </th>
-                            <th class="no-sort">Author</th>
-                            <th class="no-sort" data-priority="9">Categories</th>
-                            <th class="no-sort">Tags</th>
-                            <th class="no-sort">Comment</th>
-                            <th class="no-sort" data-priority="10">Status</th>
                             <th class="no-sort" data-priority="6">Supplier</th>
                             <th class="no-sort" data-priority="5">Store</th>
                             <th class="no-sort" data-priority="8">Availability</th>
