@@ -81,13 +81,14 @@ class TagControllerTest extends TestCase
         $user = \Gdevilbat\SpardaCMS\Modules\Core\Entities\User::with('role')->find(1);
 
         $faker = \Faker\Factory::create();
+        $slug = $faker->word();
 
         $taxonomy = \Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::with('term')->first();
 
         $response = $this->actingAs($user)
                         ->from(action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\TagController@create').'?code='.encrypt($taxonomy->getKey()))
                         ->post(action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\TagController@store'), [
-                            'term' => ['name' => $taxonomy->term->name, 'slug' => $taxonomy->term->slug],
+                            'term' => ['name' => $taxonomy->term->name, 'slug' => $slug],
                             'taxonomy' => ['description' => $faker->text, 'taxonomy' => 'tag'],
                             $taxonomy->getKeyName() => encrypt($taxonomy->getKey()),
                             '_method' => 'PUT'
