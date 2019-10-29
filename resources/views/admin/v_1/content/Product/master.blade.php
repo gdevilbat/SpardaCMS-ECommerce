@@ -126,10 +126,10 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#data-product").DataTable( {
+                "pagingType": "full_numbers",
                 "processing": true,
                 "serverSide": true,
                 "order": [],
-                "searchDelay": 1000,
                 "ajax": $.fn.dataTable.pipeline( {
                     url: $(this).attr('data-ajax'),
                     pages: 5 // number of pages to cache
@@ -139,6 +139,15 @@
                 "drawCallback": function( settings ) {
                     deleteData();
                     tokopediaScrap();
+                },
+                "initComplete": function(settings, json) {
+                    var $searchBox = $("div.dataTables_filter input");
+                    $searchBox.unbind();
+                    var searchDebouncedFn = debounce(function() {
+                        var api = new $.fn.dataTable.Api( settings );
+                        api.search( this.value ).draw();
+                    }, 1000);
+                    $searchBox.on("keyup", searchDebouncedFn);
                 }
             } );
         });
