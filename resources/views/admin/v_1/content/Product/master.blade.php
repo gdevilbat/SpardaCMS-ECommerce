@@ -86,7 +86,7 @@
                             <th class="no-sort" data-priority="9">Categories</th>
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
-                            <th class="no-sort" data-priority="10">Status</th>
+                            <th data-priority="10">Status</th>
                             <th data-priority="3">
                                 Product <br>
                                 Price

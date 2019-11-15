@@ -36,7 +36,7 @@ class ProductController extends AbstractPost
 
     public function getColumnOrder()
     {
-        return [Product::getPrimaryKey(), 'post_title', 'product_price', 'product_sale', 'author', 'categories', 'tags','comment', 'status', 'tokopedia_slug', 'tokopedia_source', 'created_at'];
+        return [Product::getPrimaryKey(), 'post_title', 'author', 'categories', 'tags','comment', 'post_status', 'product_price', 'product_sale', 'tokopedia_slug', 'tokopedia_source', 'created_at'];
     }
 
     public function getQuerybuilder($column, $dir)
