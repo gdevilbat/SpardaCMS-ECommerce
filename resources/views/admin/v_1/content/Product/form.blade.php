@@ -342,13 +342,15 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var tag = new Bloodhound({
-              datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+              datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
               queryTokenizer: Bloodhound.tokenizers.whitespace,
               prefetch: {
                 url: "{{action('\Gdevilbat\SpardaCMS\Modules\Taxonomy\Http\Controllers\TaxonomyController@getSuggestionTag')}}",
+                cache: false,
                 filter: function(list) {
                   return $.map(list, function(tag) {
-                    return { name: tag }; });
+                    return { name: tag };
+                    });
                 }
               }
             });
