@@ -194,14 +194,18 @@
                                                 <label for="exampleInputEmail1">Tag</label>
                                             </div>
                                             <div class="col">
-                                                <select class="form-control m-input select2" name="taxonomy[tag][]" multiple>
-                                                    @foreach ($tags as $tag)
-                                                        @if(old('taxonomy.tag'))
-                                                            <option value="{{$tag->getKey()}}" {{in_array($tag->getKey(), old('taxonomy.tag')) ? 'selected' : ''}}>{{$tag->term->name}}</option>
-                                                        @else
-                                                            <option value="{{$tag->getKey()}}" {{!empty($post->taxonomies) && in_array($tag->getKey(), $post->taxonomies->pluck(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey())->toArray()) ? 'selected' : ''}}>{{$tag->term->name}}</option>
-                                                        @endif
-                                                    @endforeach
+                                                <select class="form-control m-input taginput w-100" name="taxonomy[tag][]" multiple>
+                                                    @if(old('taxonomy.tag'))
+                                                        @foreach(old('taxonomy.tag') as $tag)
+                                                            <option value="{{$tag}}">{{$tag}}</option>
+                                                        @endforeach
+                                                    @else
+                                                        @foreach ($tags as $tag)
+                                                            @if(!empty($post->taxonomies) && in_array($tag->getKey(), $post->taxonomies->pluck(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey())->toArray()))
+                                                                <option value="{{$tag->term->name}}">{{$tag->term->name}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -332,6 +336,31 @@
             data: {
                 components: {!! old('meta.gallery') ? json_encode(old('meta.gallery')) : (!empty($post) && !empty($post->postMeta->where('meta_key', 'gallery')->first()) ? json_encode($post->postMeta->where('meta_key', 'gallery')->first()->meta_value) : json_encode(array())) !!},
             },
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var tag = new Bloodhound({
+              datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+              queryTokenizer: Bloodhound.tokenizers.whitespace,
+              prefetch: {
+                url: "{{action('\Gdevilbat\SpardaCMS\Modules\Taxonomy\Http\Controllers\TaxonomyController@getSuggestionTag')}}",
+                filter: function(list) {
+                  return $.map(list, function(tag) {
+                    return { name: tag }; });
+                }
+              }
+            });
+            tag.initialize();
+
+            $('.taginput').tagsinput({
+              typeaheadjs: {
+                name: 'tag',
+                displayKey: 'name',
+                valueKey: 'name',
+                source: tag.ttAdapter()
+              }
+            });
         });
     </script>
 @endsection

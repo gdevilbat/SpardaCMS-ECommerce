@@ -10,7 +10,7 @@
     ],
     "require": {
         "gdevilbat/sparda-cms-core-module": "^5.7.5",
-        "gdevilbat/sparda-cms-post-module": "^2.4",
+        "gdevilbat/sparda-cms-post-module": "^2.9",
         "gdevilbat/sparda-cms-blog-module": "^1.2"
     },
     "extra": {
