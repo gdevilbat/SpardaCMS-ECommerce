@@ -129,11 +129,15 @@ class ProductController extends AbstractPost
 
                     if($post->productMeta->availability == 'in stock')
                     {
-                        $data[$i][] = $post->productMeta->availability;
+                        $data[$i][] = '<span class="badge badge-info">'.$post->productMeta->availability.'</span>';
+                    }
+                    elseif($post->productMeta->availability == 'out of stock')
+                    {
+                        $data[$i][] = '<span class="badge badge-dark">'.$post->productMeta->availability.'</span>';
                     }
                     else
                     {
-                        $data[$i][] = '<span class="badge badge-dark">'.$post->productMeta->availability.'</span>';
+                        $data[$i][] = $post->productMeta->availability;
                     }
 
                     $data[$i][] = $post->created_at->toDateTimeString();
