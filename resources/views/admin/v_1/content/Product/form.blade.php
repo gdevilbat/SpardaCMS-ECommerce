@@ -318,6 +318,7 @@
     {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/ckeditor_4/ckeditor.js'))}}
     {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js'))}}
     {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'))}}
+    {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/typeahead/typeahead.bundle.min.js'))}}
     {{Html::script('vendor/laravel-filemanager/js/lfm.js')}}
 @endsection
 
