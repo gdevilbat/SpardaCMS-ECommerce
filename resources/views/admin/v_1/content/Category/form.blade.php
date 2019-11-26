@@ -92,7 +92,7 @@
                             <label for="exampleInputEmail1">Category Parent</label>
                         </div>
                         <div class="col-md-8">
-                            <select name="taxonomy[parent_id]" class="form-control m-input m-input--solid">
+                            <select name="taxonomy[parent_id]" class="form-control m-input m-input--solid select2">
                                 <option value="" selected>-- Non Parent --</option>
                                 @foreach ($parents as $parent)
                                     <option value="{{$parent->getKey()}}" {{old('taxonomy.parent_id') && old('taxonomy.parent_id') == $parent->getKey() ? 'selected' : (!empty($taxonomy->parent) && $taxonomy->parent->getKey() == $parent->getKey() ? 'selected' : '')}}>-- {{ucfirst($parent->name)}} --</option>
