@@ -30,7 +30,6 @@ class ProductTest extends DuskTestCase
                     ->AssertSee('Product Form')
                     ->type('post[post_title]', $faker->name)
                     ->type('post[post_slug]', $faker->name)
-                    ->type('product_meta[product_price]', $faker->randomNumber(6))
                     ->type('product_meta[product_sale]', $faker->randomNumber(6))
                     ->type('meta[meta_title]', $faker->name)
                     ->type('meta[meta_description]', $faker->text);
@@ -38,7 +37,8 @@ class ProductTest extends DuskTestCase
             $browser->script('document.getElementsByName("post[post_content]")[0].value = "'.$faker->text.'"');
             $browser->script('document.getElementsByName("post[post_status]")[0].checked = true');
             $browser->script('document.getElementsByName("post[comment_status]")[0].checked = true');
-            $browser->script('document.getElementsByName("post[post_parent]")[0].selectedIndex = 1');
+            //$browser->script('document.getElementsByName("post[post_parent]")[0].selectedIndex = 1'); Disable For A While
+            $browser->script('document.getElementsByName("product_meta[product_price]")[0].value = "'.$faker->randomNumber(6).'"');
             $browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
             $browser->script('document.getElementsByName("product_meta[condition]")[0].checked = true');
             $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 0');
@@ -72,7 +72,6 @@ class ProductTest extends DuskTestCase
                     ->AssertSee('Product Form')
                     ->type('post[post_title]', $faker->name)
                     ->type('post[post_slug]', $faker->name)
-                    ->type('product_meta[product_price]', $faker->randomNumber(6))
                     ->type('product_meta[product_sale]', $faker->randomNumber(6))
                     ->type('meta[meta_title]', $faker->name)
                     ->type('meta[meta_description]', $faker->text);
@@ -80,7 +79,10 @@ class ProductTest extends DuskTestCase
             $browser->script('document.getElementsByName("post[post_content]")[0].value = "'.$faker->text.'"');
             $browser->script('document.getElementsByName("post[post_status]")[0].checked = true');
             $browser->script('document.getElementsByName("post[comment_status]")[0].checked = true');
-            $browser->script('document.getElementsByName("post[post_parent]")[0].selectedIndex = 1');
+            //$browser->script('document.getElementsByName("post[post_parent]")[0].selectedIndex = 1'); Disable For A While
+            $browser->script('document.getElementsByName("product_meta[product_price]")[0].value = "'.$faker->randomNumber(6).'"');
+            $browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
+            $browser->script('document.getElementsByName("product_meta[condition]")[0].checked = true');
             $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 0');
             $browser->script('document.getElementsByName("taxonomy[tag][]")[0].selectedIndex = 0');
             $browser->script('document.getElementsByName("meta[meta_keyword]")[0].value = "'.$faker->name.'"');
