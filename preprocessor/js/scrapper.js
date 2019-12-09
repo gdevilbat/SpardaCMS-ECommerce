@@ -33,12 +33,11 @@ window.tokopediaScrap = function(){
                         let html = response.data;
                         let cheerioJquery = cheerio.load(html);
                         let devtoList = [];
-                        cheerioJquery('.rvm-price').each(function(i, elem) {
-                            devtoList[i] = {
-                                price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
-                                status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
-                            }      
-                        });
+
+                        devtoList[0] = {
+                            price: cheerioJquery('meta[property="product:price:amount"]').attr('content'),
+                            status: cheerioJquery('[data-merchant-test="txtPDPWarningEmptyStock"]').length > 0 ? 'empty' : 'available'
+                        }
 
 
                         let supplier_price = devtoList[0].price;
@@ -55,12 +54,12 @@ window.tokopediaScrap = function(){
                                             let html = response.data;
                                             let cheerioJquery = cheerio.load(html);
                                             let devtoList = [];
-                                            cheerioJquery('.rvm-price').each(function(i, elem) {
-                                                devtoList[i] = {
-                                                    price: cheerioJquery(this).children('[itemprop="price"]').attr('content'),
-                                                    status: cheerioJquery(".alert-block-not-available").length > 0 ? 'empty' : 'available'
-                                                }      
-                                            });
+
+                                            devtoList[0] = {
+                                                price: cheerioJquery('meta[property="product:price:amount"]').attr('content'),
+                                                status: cheerioJquery('[data-merchant-test="txtPDPWarningEmptyStock"]').length > 0 ? 'empty' : 'available'
+                                            }
+                                            
                                             let tokopedia_store_price = devtoList[0].price;
                                             $('#tokopedia-store-'+$(this).attr('data-index')).html(currencyFormat(tokopedia_store_price) + '<br/><span class="text-danger">('+(tokopedia_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
                                         }
