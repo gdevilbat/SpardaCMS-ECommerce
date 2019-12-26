@@ -26,7 +26,7 @@ class ProductController extends AbstractPost
     {
         parent::__construct($post_repository);
         $this->product_meta_m = new ProductMeta;
-        $this->product_meta_repository = new Repository(new ProductMeta);
+        $this->product_meta_repository = new Repository(new ProductMeta, resolve(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class));
 
         $this->setModule('ecommerce');
         $this->setPostType('product');
