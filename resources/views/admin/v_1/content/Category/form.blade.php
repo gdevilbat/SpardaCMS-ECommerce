@@ -95,7 +95,11 @@
                             <select name="taxonomy[parent_id]" class="form-control m-input m-input--solid select2">
                                 <option value="" selected>-- Non Parent --</option>
                                 @foreach ($parents as $parent)
-                                    <option value="{{$parent->getKey()}}" {{old('taxonomy.parent_id') && old('taxonomy.parent_id') == $parent->getKey() ? 'selected' : (!empty($taxonomy->parent) && $taxonomy->parent->getKey() == $parent->getKey() ? 'selected' : '')}}>-- {{ucfirst($parent->name)}} --</option>
+                                    @if(old('taxonomy.parent_id'))
+                                        <option value="{{$parent->getKey()}}" {{old('taxonomy.parent_id') && old('taxonomy.parent_id') == $parent->getKey() ? 'selected' : ''}}>-- {{ucfirst($parent->term->name)}} --</option>
+                                    @else
+                                        <option value="{{$parent->getKey()}}" {{!empty($taxonomy->parent) && $taxonomy->parent->getKey() == $parent->getKey() ? 'selected' : ''}}>-- {{ucfirst($parent->term->name)}} --</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
