@@ -12,9 +12,9 @@ use Auth;
 
 class BlogProductController extends AbstractBlog
 {
-    public function __construct()
+    public function __construct(\Gdevilbat\SpardaCMS\Modules\Post\Repositories\PostRepository $post_repository)
     {
-        parent::__construct();
+        parent::__construct($post_repository);
         $this->post_type = 'product';
         $this->post_m = new Product;
     }
