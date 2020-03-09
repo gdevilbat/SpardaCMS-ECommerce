@@ -36,7 +36,7 @@ window.tokopediaScrap = function(){
 
                         devtoList[0] = {
                             price: cheerioJquery('meta[property="product:price:amount"]').attr('content'),
-                            status: cheerioJquery('[data-merchant-test="txtPDPWarningEmptyStock"]').length > 0 ? 'empty' : 'available'
+                            status: cheerioJquery('[data-testid="txtPDPWarningEmptyStock"]').length > 0 ? 'empty' : 'available'
                         }
 
 
