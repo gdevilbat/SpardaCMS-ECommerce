@@ -9,9 +9,8 @@
         }
     ],
     "require": {
-        "gdevilbat/sparda-cms-core-module": "^5.7.25",
-        "gdevilbat/sparda-cms-post-module": "^3.3",
-        "gdevilbat/sparda-cms-blog-module": "^3.1"
+        "gdevilbat/sparda-cms-core-module": "^5.8",
+        "gdevilbat/sparda-cms-blog-module": "^4.0"
     },
     "extra": {
         "laravel": {
