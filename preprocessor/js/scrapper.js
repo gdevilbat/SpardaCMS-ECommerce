@@ -71,7 +71,7 @@ window.tokopediaScrap = function(){
                 }
                 else
                 {
-                    if(response[0].data.getPDPInfo.stock.value == 999999 || response[0].data.getPDPInfo.stock.value == 0)
+                    if(response[0].data.getPDPInfo.stock.stockWording == "")
                     {
                         supplier_status = 'empty';
                     }
