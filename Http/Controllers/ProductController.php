@@ -115,7 +115,7 @@ class ProductController extends AbstractPost
 
                 if(!empty($post->tokopedia_source) && !empty($post->tokopedia_supplier))
                 {
-                    $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'"></span> Tokopedia'.'</a>';
+                    $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" data-shop-domain="'.$post->tokopedia_supplier.'" data-product-key="'.$post->tokopedia_source.'"></span> Tokopedia'.'</a>';
                 }
                 else
                 {
