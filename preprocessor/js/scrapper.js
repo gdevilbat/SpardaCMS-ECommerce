@@ -36,100 +36,108 @@ window.tokopediaScrap = function(){
 
         $.ajax(settings).done(function (response) {
 
-            let supplier_status;
-            let supplier_price = response[0].data.getPDPInfo.basic.price;
-            $('#web-price-'+$(self).attr('data-index')).append('<br/><span class="text-danger">('+($('#web-price-'+$(self).attr('data-index')).attr('data-price') - supplier_price)+')</span>');
-
-            if(response[0].data.getPDPInfo.variant.isVariant)
+            if(response[0].data != null)
             {
-                let settings = {
-                  "url": "https://gql.tokopedia.com/",
-                  "method": "POST",
-                  "data": "[\r\n    {\r\n        \"operationName\": \"ProductVariantQuery\",\r\n        \"variables\": {\r\n            \"productID\": \""+response[0].data.getPDPInfo.basic.id+"\",\r\n            \"includeCampaign\": true\r\n        },\r\n        \"query\": \"query ProductVariantQuery($productID: String!, $includeCampaign: Boolean!) {\\n  getProductVariant(productID: $productID, option: {userID: \\\"0\\\", includeCampaign: $includeCampaign}) {\\n    parentID\\n    defaultChild\\n    variant {\\n      productVariantID\\n      variantID\\n      variantUnitID\\n      name\\n      identifier\\n      unitName\\n      position\\n      option {\\n        productVariantOptionID\\n        variantUnitValueID\\n        value\\n        hex\\n        picture {\\n          urlOriginal: url\\n          urlThumbnail: url200\\n          __typename\\n        }\\n        __typename\\n      }\\n      __typename\\n    }\\n    children {\\n      productID\\n      price\\n      priceFmt\\n      sku\\n      optionID\\n      productName\\n      productURL\\n      picture {\\n        urlOriginal: url\\n        urlThumbnail: url200\\n        __typename\\n      }\\n      stock {\\n        stock\\n        isBuyable\\n        alwaysAvailable\\n        isLimitedStock\\n        stockWording\\n        stockWordingHTML\\n        otherVariantStock\\n        minimumOrder\\n        maximumOrder\\n        __typename\\n      }\\n      isCOD\\n      isWishlist\\n      campaignInfo {\\n        stock\\n        originalStock\\n        endDateUnix\\n        isActive\\n        appLinks\\n        startDate\\n        campaignID\\n        isAppsOnly\\n        campaignType\\n        originalPrice\\n        discountPrice\\n        originalPriceFmt\\n        discountPriceFmt\\n        campaignTypeName\\n        discountPercentage\\n        hideGimmick\\n        __typename\\n      }\\n      __typename\\n    }\\n    sizeChart\\n    enabled\\n    alwaysAvailable\\n    stock\\n    __typename\\n  }\\n}\\n\"\r\n    }\r\n]",
-                };
+                let supplier_status;
+                let supplier_price = response[0].data.getPDPInfo.basic.price;
+                $('#web-price-'+$(self).attr('data-index')).append('<br/><span class="text-danger">('+($('#web-price-'+$(self).attr('data-index')).attr('data-price') - supplier_price)+')</span>');
 
-                $.ajax(settings).done(function (response) {
-                    let status_boolean = false;
-                    $.each(response[0].data.getProductVariant.children, function(index, val) {
-                        if(val.stock.otherVariantStock == 'available')
-                            status_boolean = true; 
-                    });
-
-                    if(status_boolean)
-                    {
-                        supplier_status = 'available';
-                    }
-                    else
-                    {
-                        supplier_status = 'empty';
-                    }
-
-                    $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
-                });
-            }
-            else
-            {
-                if(response[0].data.getPDPInfo.stock.value == 999999 || response[0].data.getPDPInfo.stock.value == 0)
+                if(response[0].data.getPDPInfo.variant.isVariant)
                 {
-                    supplier_status = 'empty';
+                    let settings = {
+                      "url": "https://gql.tokopedia.com/",
+                      "method": "POST",
+                      "data": "[\r\n    {\r\n        \"operationName\": \"ProductVariantQuery\",\r\n        \"variables\": {\r\n            \"productID\": \""+response[0].data.getPDPInfo.basic.id+"\",\r\n            \"includeCampaign\": true\r\n        },\r\n        \"query\": \"query ProductVariantQuery($productID: String!, $includeCampaign: Boolean!) {\\n  getProductVariant(productID: $productID, option: {userID: \\\"0\\\", includeCampaign: $includeCampaign}) {\\n    parentID\\n    defaultChild\\n    variant {\\n      productVariantID\\n      variantID\\n      variantUnitID\\n      name\\n      identifier\\n      unitName\\n      position\\n      option {\\n        productVariantOptionID\\n        variantUnitValueID\\n        value\\n        hex\\n        picture {\\n          urlOriginal: url\\n          urlThumbnail: url200\\n          __typename\\n        }\\n        __typename\\n      }\\n      __typename\\n    }\\n    children {\\n      productID\\n      price\\n      priceFmt\\n      sku\\n      optionID\\n      productName\\n      productURL\\n      picture {\\n        urlOriginal: url\\n        urlThumbnail: url200\\n        __typename\\n      }\\n      stock {\\n        stock\\n        isBuyable\\n        alwaysAvailable\\n        isLimitedStock\\n        stockWording\\n        stockWordingHTML\\n        otherVariantStock\\n        minimumOrder\\n        maximumOrder\\n        __typename\\n      }\\n      isCOD\\n      isWishlist\\n      campaignInfo {\\n        stock\\n        originalStock\\n        endDateUnix\\n        isActive\\n        appLinks\\n        startDate\\n        campaignID\\n        isAppsOnly\\n        campaignType\\n        originalPrice\\n        discountPrice\\n        originalPriceFmt\\n        discountPriceFmt\\n        campaignTypeName\\n        discountPercentage\\n        hideGimmick\\n        __typename\\n      }\\n      __typename\\n    }\\n    sizeChart\\n    enabled\\n    alwaysAvailable\\n    stock\\n    __typename\\n  }\\n}\\n\"\r\n    }\r\n]",
+                    };
+
+                    $.ajax(settings).done(function (response) {
+                        let status_boolean = false;
+                        $.each(response[0].data.getProductVariant.children, function(index, val) {
+                            if(val.stock.otherVariantStock == 'available')
+                                status_boolean = true; 
+                        });
+
+                        if(status_boolean)
+                        {
+                            supplier_status = 'available';
+                        }
+                        else
+                        {
+                            supplier_status = 'empty';
+                        }
+
+                        $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
+                    });
                 }
                 else
                 {
-                    supplier_status = 'available';
+                    if(response[0].data.getPDPInfo.stock.value == 999999 || response[0].data.getPDPInfo.stock.value == 0)
+                    {
+                        supplier_status = 'empty';
+                    }
+                    else
+                    {
+                        supplier_status = 'available';
+                    }
+
+                    $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
                 }
 
-                $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
-            }
-
-            /*=================================
-            =            Tokopedia            =
-            =================================*/
-            
-                /*axios.get($('#tokopedia-store-'+$(this).attr('data-index')).attr('data-url'))
-                    .then((response) => {
-                            if(response.status === 200) {
-                                let html = response.data;
-                                let cheerioJquery = cheerio.load(html);
-                                let devtoList = [];
-
-                                devtoList[0] = {
-                                    price: cheerioJquery('meta[property="product:price:amount"]').attr('content'),
-                                    status: cheerioJquery('[data-merchant-test="txtPDPWarningEmptyStock"]').length > 0 ? 'empty' : 'available'
-                                }
-                                
-                                let tokopedia_store_price = devtoList[0].price;
-                                $('#tokopedia-store-'+$(this).attr('data-index')).html(currencyFormat(tokopedia_store_price) + '<br/><span class="text-danger">('+(tokopedia_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
-                            }
-                    }, (error) => console.log(err) );*/
-            
-            /*=====  End of Tokopedia  ======*/
-
-            /*=============================================
-            =            Shopee comment block            =
-            =============================================*/
-            
-                let url = $('#shopee-store-'+$(self).attr('data-index')).attr('data-url')
-
-                if(url != undefined)
-                {
-                    let shopee = url.split('/').slice(-2);
-
-                    axios.get('https://shopee.co.id/api/v2/item/get?shopid='+shopee[0]+'&itemid='+shopee[1])
+                /*=================================
+                =            Tokopedia            =
+                =================================*/
+                
+                    /*axios.get($('#tokopedia-store-'+$(this).attr('data-index')).attr('data-url'))
                         .then((response) => {
                                 if(response.status === 200) {
                                     let html = response.data;
+                                    let cheerioJquery = cheerio.load(html);
                                     let devtoList = [];
+
                                     devtoList[0] = {
-                                        price: (html.item.price)/100000,
-                                        status: html.item.stock > 0 ? 'available' : 'empty'
+                                        price: cheerioJquery('meta[property="product:price:amount"]').attr('content'),
+                                        status: cheerioJquery('[data-merchant-test="txtPDPWarningEmptyStock"]').length > 0 ? 'empty' : 'available'
                                     }
-                                    let shopee_store_price = devtoList[0].price;
-                                    $('#shopee-store-'+$(self).attr('data-index')).html(currencyFormat(shopee_store_price) + '<br/><span class="text-danger">('+(shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
+                                    
+                                    let tokopedia_store_price = devtoList[0].price;
+                                    $('#tokopedia-store-'+$(this).attr('data-index')).html(currencyFormat(tokopedia_store_price) + '<br/><span class="text-danger">('+(tokopedia_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
                                 }
-                        }, (error) => console.log(err) );
-                }
-            
-            /*=====  End of Shopee comment block  ======*/
+                        }, (error) => console.log(err) );*/
+                
+                /*=====  End of Tokopedia  ======*/
+
+                /*=============================================
+                =            Shopee comment block            =
+                =============================================*/
+                
+                    let url = $('#shopee-store-'+$(self).attr('data-index')).attr('data-url')
+
+                    if(url != undefined)
+                    {
+                        let shopee = url.split('/').slice(-2);
+
+                        axios.get('https://shopee.co.id/api/v2/item/get?shopid='+shopee[0]+'&itemid='+shopee[1])
+                            .then((response) => {
+                                    if(response.status === 200) {
+                                        let html = response.data;
+                                        let devtoList = [];
+                                        devtoList[0] = {
+                                            price: (html.item.price)/100000,
+                                            status: html.item.stock > 0 ? 'available' : 'empty'
+                                        }
+                                        let shopee_store_price = devtoList[0].price;
+                                        $('#shopee-store-'+$(self).attr('data-index')).html(currencyFormat(shopee_store_price) + '<br/><span class="text-danger">('+(shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
+                                    }
+                            }, (error) => console.log(err) );
+                    }
+                
+                /*=====  End of Shopee comment block  ======*/
+
+            }
+            else
+            {
+                $(self).html('<span class="badge badge-danger">' + "Not Found" + '</span><br/>');
+            }
 
         });
     });
