@@ -6,9 +6,16 @@ use Gdevilbat\SpardaCMS\Modules\Post\Entities\Post;
 
 class Product extends Post
 {
+    CONST POST_TYPE = 'product';
+
     public function productMeta()
     {
         return $this->hasOne('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getPrimaryKey());
+    }
+
+    public function getPostURLAttribute()
+    {
+        return url(SELF::POST_TYPE.'/'.$this->post_slug);
     }
 
     public function getTokopediaSupplierAttribute()
