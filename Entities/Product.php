@@ -13,11 +13,6 @@ class Product extends Post
         return $this->hasOne('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getPrimaryKey());
     }
 
-    public function getPostURLAttribute()
-    {
-        return url(SELF::POST_TYPE.'/'.$this->post_slug);
-    }
-
     public function getTokopediaSupplierAttribute()
     {
         if(!empty($this->postMeta->where('meta_key', 'tokopedia_supplier')->first()))
