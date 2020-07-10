@@ -63,18 +63,29 @@
                     @endif
                 </div>
 
-                @can('create-ecommerce')
+                @if(Auth::user()->can('create-ecommerce'))
                     <div class="row mb-4">
                         <div class="col-md-5">
                             <a href="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@create')}}" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
                                 <span>
-                                    <i class="la la-plus"></i>
+                                    <i class="la la-ban"></i>
                                     <span>Add New Product</span>
                                 </span>
                             </a>
                         </div>
                     </div>
-                @endcan
+                @else
+                    <div class="row mb-4">
+                        <div class="col-md-5">
+                            <a href="javascript:void(0)" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" data-toggle="m-popover" title="" data-content="You're not Allowed To Take This Action. Pleas Ask Admin !!!" data-original-title="Forbidden Action">
+                                <span>
+                                    <i class="la la-ban"></i>
+                                    <span>Add New Product</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                @endif
 
                 <!--begin: Datatable -->
                 <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}">
