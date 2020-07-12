@@ -68,7 +68,7 @@
                         <div class="col-md-5">
                             <a href="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@create')}}" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
                                 <span>
-                                    <i class="la la-ban"></i>
+                                    <i class="la la-plus"></i>
                                     <span>Add New Product</span>
                                 </span>
                             </a>
