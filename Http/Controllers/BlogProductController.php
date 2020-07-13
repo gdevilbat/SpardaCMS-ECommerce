@@ -116,31 +116,8 @@ class BlogProductController extends AbstractBlog
         /*=====  End of Recomended Product  ======*/
 
 
-        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
-
-        if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->getKey().'.blade.php')))
-        {
-            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->getKey();
-        }
-        elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug.'.blade.php')))
-        {
-            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug;
-        }
-        elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_slug.'.blade.php')))
-        {
-            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_slug;
-        }
-        elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'.blade.php')))
-        {
-            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type;
-        }
-        else
-        {
-            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.post';
-        }
-
         return response()
-            ->view($path_view, $this->data);
+            ->view($this->getPathView(), $this->data);
 
     }
 }
