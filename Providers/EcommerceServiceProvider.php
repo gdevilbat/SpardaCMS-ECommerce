@@ -49,10 +49,10 @@ class EcommerceServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('ecommerce.php'),
+            __DIR__.'/../Config/config.php' => config_path('cms-ecommerce.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php', 'ecommerce'
+            __DIR__.'/../Config/config.php', 'cms-ecommerce'
         );
     }
 
@@ -63,7 +63,7 @@ class EcommerceServiceProvider extends ServiceProvider
      */
     public function registerViews()
     {
-        $viewPath = resource_path('views/modules/ecommerce');
+        $viewPath = resource_path('views/Modules/SpardaCMS/ecommerce');
 
         $sourcePath = __DIR__.'/../resources/views';
 
@@ -72,7 +72,7 @@ class EcommerceServiceProvider extends ServiceProvider
         ],'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path . '/modules/ecommerce';
+            return $path . '/Modules/SpardaCMS/ecommerce';
         }, \Config::get('view.paths')), [$sourcePath]), 'ecommerce');
     }
 
@@ -83,7 +83,7 @@ class EcommerceServiceProvider extends ServiceProvider
      */
     public function registerTranslations()
     {
-        $langPath = resource_path('lang/modules/ecommerce');
+        $langPath = resource_path('lang/Modules/SpardaCMS/ecommerce');
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'ecommerce');
