@@ -69,7 +69,7 @@ class ProductController extends AbstractPost
                     $data[$i][] = '';
                     foreach ($categories as $key => $category) 
                     {
-                        $data[$i][count($data[$i]) - 1] .= '<span class="badge badge-danger mx-1">'.$category->term->name.'</span>';
+                        $data[$i][count($data[$i]) - 1] .= $this->getCategoryHtmlTag($this->getPostCategory($category)).'</br>';
                     }
                 }
                 else
