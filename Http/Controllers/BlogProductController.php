@@ -43,13 +43,9 @@ class BlogProductController extends AbstractBlog
         /*=====  End of Product  ======*/
 
 
-        $this->data['post_categories'] = $this->data['post']->load(['taxonomies' => function($query){
-                                            $query->where('taxonomy', 'product-category');
-                                        }, 'taxonomies.term'])->taxonomies;
+        $this->data['post_categories'] = $this->getPostCategory($this->data['post']);
 
-        $this->data['post_tags'] = $this->data['post']->load(['taxonomies' => function($query){
-                                            $query->where('taxonomy', 'tag');
-                                        }, 'taxonomies.term'])->taxonomies;
+        $this->data['post_tags'] = $this->getPostTag($this->data['post']);
 
 
         /*===========================================
@@ -119,5 +115,15 @@ class BlogProductController extends AbstractBlog
         return response()
             ->view($this->getPathView(), $this->data);
 
+    }
+
+    final protected function getCategoryType()
+    {
+        return 'product-category';
+    }
+
+    final protected function getTagType()
+    {
+        return 'tag';
     }
 }
