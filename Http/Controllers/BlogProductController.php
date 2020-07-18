@@ -54,7 +54,7 @@ class BlogProductController extends AbstractBlog
         
             $query = $this->post_m->with('postMeta')
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->where('availability', 'in stock');
+                                                    $query->whereNotIn('availability', ['out of stock', 'discontinued']);
                                                 })
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
@@ -78,7 +78,7 @@ class BlogProductController extends AbstractBlog
             $query = $this->buildPostByTaxonomy($this->data['post_categories']->first())
                                                 ->with('postMeta')
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->where('availability', 'in stock');
+                                                    $query->whereNotIn('availability', ['out of stock', 'discontinued']);
                                                 })
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
@@ -96,7 +96,7 @@ class BlogProductController extends AbstractBlog
             $query = $this->post_m->with('postMeta')
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->where('availability', 'in stock');
+                                                    $query->whereNotIn('availability', ['out of stock', 'discontinued']);
                                                 })
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
