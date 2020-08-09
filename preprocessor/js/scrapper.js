@@ -71,13 +71,13 @@ window.tokopediaScrap = function(){
                 }
                 else
                 {
-                    if(response[0].data.getPDPInfo.stock.stockWording == "")
+                    if(response[0].data.getPDPInfo.basic.status == "ACTIVE")
                     {
-                        supplier_status = 'empty';
+                        supplier_status = 'available';
                     }
                     else
                     {
-                        supplier_status = 'available';
+                        supplier_status = 'empty';
                     }
 
                     $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
