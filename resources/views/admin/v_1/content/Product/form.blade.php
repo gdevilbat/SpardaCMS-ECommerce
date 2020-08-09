@@ -180,6 +180,7 @@
                                             </div>
                                             <div class="col">
                                                 <select class="form-control m-input select2" name="taxonomy[category][]">
+                                                    <option value="" selected disabled>-Select Category-</option>
                                                     @foreach ($categories as $category)
                                                         @if(old('taxonomy.category'))
                                                             <option value="{{$category->getKey()}}" {{in_array($category->getKey(), old('taxonomy.category')) ? 'selected' : ''}}>{{$category->term->name}}</option>
