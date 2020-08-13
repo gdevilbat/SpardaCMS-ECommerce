@@ -38,8 +38,6 @@ window.tokopediaScrap = function(){
 
         $.ajax(settings).done(function (response) {
 
-        	window.console.log(response[0].data);
-
             if(response[0].data != null)
             {
                 let supplier_status;
