@@ -29,6 +29,8 @@ Route::group(['prefix' => 'control', 'middleware' => 'core.auth'], function() {
 
 		    Route::group(['prefix' => 'api'], function() {
 			    Route::get('master', 'ProductController@serviceMaster')->middleware('can:menu-ecommerce');
+			    Route::get('scrapping-product', 'ProductController@scrappingProduct')->middleware('can:menu-ecommerce');
+			    Route::get('scrapping-variant', 'ProductController@scrappingVariant')->middleware('can:menu-ecommerce');
 		    });
         
         /*=====  End of Product CMS  ======*/
