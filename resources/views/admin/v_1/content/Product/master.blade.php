@@ -63,29 +63,45 @@
                     @endif
                 </div>
 
-                @if(Auth::user()->can('create-ecommerce'))
-                    <div class="row mb-4">
-                        <div class="col-md-5">
-                            <a href="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@create')}}" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
-                                <span>
-                                    <i class="la la-plus"></i>
-                                    <span>Add New Product</span>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                @else
-                    <div class="row mb-4">
-                        <div class="col-md-5">
-                            <a href="javascript:void(0)" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" data-toggle="m-popover" title="" data-content="You're not Allowed To Take This Action. Pleas Ask Admin !!!" data-original-title="Forbidden Action">
-                                <span>
-                                    <i class="la la-ban"></i>
-                                    <span>Add New Product</span>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                @endif
+                <div class="row mb-4">
+                    @if(Auth::user()->can('create-ecommerce'))
+                            <div class="col-md-5">
+                                <a href="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@create')}}" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                                    <span>
+                                        <i class="la la-plus"></i>
+                                        <span>Add New Product</span>
+                                    </span>
+                                </a>
+                            </div>
+                    @else
+                            <div class="col-md-5">
+                                <a href="javascript:void(0)" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" data-toggle="m-popover" title="" data-content="You're not Allowed To Take This Action. Pleas Ask Admin !!!" data-original-title="Forbidden Action">
+                                    <span>
+                                        <i class="la la-ban"></i>
+                                        <span>Add New Product</span>
+                                    </span>
+                                </a>
+                            </div>
+                    @endif
+                            <div class="col">
+                                <form action="{{route('cms.setting.store')}}" method="post">
+                                    <div class="m-form__group form-group row justify-content-md-end mb-0">
+                                        <label class="col-8 col-form-label text-right">Syncronize Ecommerce :</label>
+                                        <div>
+                                            <span class="m-switch m-switch--icon m-switch--success">
+                                                <label>
+                                                    <input type="checkbox" id="syncronize_ecommerce" {{!empty($settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value) && $settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value == 'true' ? 'checked' : ''}}>
+                                                    <span></span>
+                                                    <input type="hidden" name="syncronize_ecommerce" value="{{!empty($settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value) && $settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value == 'true' ? 'true' : 'false'}}">
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {{csrf_field()}}
+                                    {{method_field('PUT')}}
+                                </form>
+                            </div>
+                </div>
 
                 <!--begin: Datatable -->
                 <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@scrappingProduct')}}" data-url-scrapping-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@scrappingVariant')}}">
@@ -149,7 +165,10 @@
                 ],
                 "drawCallback": function( settings ) {
                     deleteData();
-                    tokopediaScrap();
+                    if($("[name='syncronize_ecommerce']").val() == 'true')
+                    {
+                        tokopediaScrap();
+                    }
                 },
                 "initComplete": function(settings, json) {
                     var $searchBox = $("div.dataTables_filter input");

@@ -25,6 +25,19 @@ let cheerio = require('cheerio');
 //let fs = require('file-system');
 //
 
+$("#syncronize_ecommerce").change(function(event) {
+    if ($(this).is(':checked'))
+    {
+        $("[name='syncronize_ecommerce']").attr('value', 'true');
+    }
+    else
+    {
+        $("[name='syncronize_ecommerce']").attr('value', 'false');
+    }
+
+    $(this).parents("form").eq(0).submit();
+});
+
 window.tokopediaScrap = function(){
     $(".scrapping-supplier").each(function(index, el) {
         let self = this;
