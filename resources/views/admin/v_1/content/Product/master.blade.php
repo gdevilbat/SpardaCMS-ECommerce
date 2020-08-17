@@ -100,6 +100,14 @@
                                     {{csrf_field()}}
                                     {{method_field('PUT')}}
                                 </form>
+                                <div class="col text-right">
+                                    <a href="javascript:void(0)" id="reload-datatable" class="btn btn-info m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                                        <span>
+                                            <i class="la la-refresh"></i>
+                                            <span>Reload</span>
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
                 </div>
 
@@ -151,8 +159,9 @@
     {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/scrapper.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/scrapper.js')))}}
 
     <script type="text/javascript">
+        var table;
         $(document).ready(function() {
-            $("#data-product").DataTable( {
+            table = $("#data-product").DataTable( {
                 "pagingType": "full_numbers",
                 "processing": true,
                 "serverSide": true,
@@ -180,6 +189,10 @@
                     $searchBox.on("keyup", searchDebouncedFn);
                 }
             } );
+
+            $("#reload-datatable").click(function(event) {
+                table.ajax.reload( null, false );
+            });
         });
     </script>
 @endsection
