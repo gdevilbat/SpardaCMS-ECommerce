@@ -83,24 +83,31 @@
                                 </a>
                             </div>
                     @endif
-                            <div class="col">
-                                <form action="{{route('cms.setting.store')}}" method="post">
-                                    <div class="m-form__group form-group row justify-content-md-end mb-0">
-                                        <label class="col-8 col-form-label text-right">Syncronize Ecommerce :</label>
-                                        <div>
-                                            <span class="m-switch m-switch--icon m-switch--success">
-                                                <label>
-                                                    <input type="checkbox" id="syncronize_ecommerce" {{!empty($settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value) && $settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value == 'true' ? 'checked' : ''}}>
-                                                    <span></span>
-                                                    <input type="hidden" name="syncronize_ecommerce" value="{{!empty($settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value) && $settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value == 'true' ? 'true' : 'false'}}">
-                                                </label>
-                                            </span>
+                            <div class="col row">
+                                <div class="col">
+                                    <form action="{{route('cms.setting.store')}}" method="post">
+                                        <div class="m-form__group form-group row justify-content-end mb-0">
+                                            <label class="col-8 col-form-label text-right">Syncronize Ecommerce :</label>
+                                            <div>
+                                                <span class="m-switch m-switch--icon m-switch--success">
+                                                    <label>
+                                                        <input type="checkbox" id="syncronize_ecommerce" {{!empty($settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value) && $settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value == 'true' ? 'checked' : ''}}>
+                                                        <span></span>
+                                                        <input type="hidden" name="syncronize_ecommerce" value="{{!empty($settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value) && $settings->where('name', 'syncronize_ecommerce')->flatten()->first()->value == 'true' ? 'true' : 'false'}}">
+                                                    </label>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    {{csrf_field()}}
-                                    {{method_field('PUT')}}
-                                </form>
-                                <div class="col text-right">
+                                        {{csrf_field()}}
+                                        {{method_field('PUT')}}
+                                    </form>
+                                </div>
+                                <div class="text-right">
+                                    <a href="#" class="btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" data-toggle="modal" data-target="#setting-scrapping">
+                                        <i class="la la-gear"></i>
+                                    </a>
+                                </div>
+                                <div class="col-12 text-right">
                                     <a href="javascript:void(0)" id="reload-datatable" class="btn btn-info m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
                                         <span>
                                             <i class="la la-refresh"></i>
@@ -112,7 +119,7 @@
                 </div>
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingProduct')}}" data-url-scrapping-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingVariant')}}">
+                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{url(getSettingConfig('scrapping', 'url')).'/scrapping-product'}}" data-url-scrapping-variant="{{url(getSettingConfig('scrapping', 'url')).'/scrapping-variant'}}">
                     <thead>
                         <tr>
                             <th data-priority="1">ID</th>
@@ -152,6 +159,49 @@
     </div>
 </div>
 {{-- End of Row --}}
+
+<div class="modal fade" id="setting-scrapping" tabindex="-1" role="dialog" aria-hidden="true"  aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <form action="{{route('cms.setting.store')}}" method="post" accept-charset="utf-8">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Scrapping Setting</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body"> 
+                  <div class="form-group m-form__group d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">URL</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control m-input" name="scrapping[url]" placeholder="https://[API Scrapping]" value="{{getSettingConfig('scrapping', 'url')}}">
+                        </div>
+                    </div>
+              </div>
+              <div class="modal-body"> 
+                  <div class="form-group m-form__group d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">Token</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control m-input" name="scrapping[token]" placeholder="ex: 9234kjkiwerwer8834" value="{{getSettingConfig('scrapping', 'token')}}">
+                        </div>
+                    </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button>
+              </div>
+              {{csrf_field()}}
+              {{method_field('PUT')}}
+          </form>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 
 @endsection
 
