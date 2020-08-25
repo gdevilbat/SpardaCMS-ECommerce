@@ -179,9 +179,41 @@
                             <input type="text" class="form-control m-input" name="scrapping[url]" placeholder="https://[API Scrapping]" value="{{getSettingConfig('scrapping', 'url')}}">
                         </div>
                     </div>
-              </div>
-              <div class="modal-body"> 
                   <div class="form-group m-form__group d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">Suplier Sync Mode</label>
+                        </div>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <div class="m-radio-inline">
+                                <label class="m-radio">
+                                    <input type="radio" name="scrapping[suplier_sync]" value="ajax" {{getSettingConfig('scrapping', 'suplier_sync') == 'ajax' ? 'checked' : ''}}> Ajax
+                                    <span></span>
+                                </label>
+                                <label class="m-radio">
+                                    <input type="radio" name="scrapping[suplier_sync]" value="cloud" {{getSettingConfig('scrapping', 'suplier_sync') == 'cloud' ? 'checked' : ''}}> Cloud
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">Store Sync Mode</label>
+                        </div>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <div class="m-radio-inline">
+                                <label class="m-radio">
+                                    <input type="radio" name="scrapping[store_sync]" value="ajax" {{getSettingConfig('scrapping', 'store_sync') == 'ajax' ? 'checked' : ''}}> Ajax
+                                    <span></span>
+                                </label>
+                                <label class="m-radio">
+                                    <input type="radio" name="scrapping[store_sync]" value="cloud" {{getSettingConfig('scrapping', 'store_sync') == 'cloud' ? 'checked' : ''}}> Cloud
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
                             <label for="exampleInputEmail1">Token</label>
                         </div>
