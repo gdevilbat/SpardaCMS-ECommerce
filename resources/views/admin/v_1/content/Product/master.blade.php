@@ -119,7 +119,7 @@
                 </div>
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-product' : '#'}}" data-url-scrapping-variant="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-variant' : '#'}}">
+                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-product' : '#'}}" data-url-scrapping-variant="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-variant' : '#'}}" data-url-scrapping-shopee="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-shopee' : '#'}}">
                     <thead>
                         <tr>
                             <th data-priority="1">ID</th>
