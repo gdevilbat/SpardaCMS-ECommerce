@@ -8,6 +8,12 @@ class Product extends Post
 {
     CONST POST_TYPE = 'product';
 
+    CONST STAT_INSTOCK = 'in stock';
+    CONST STAT_OUT = 'out of stock';
+    CONST STAT_AVAILABLE = 'available for order';
+    CONST STAT_PREORDER = 'preorder';
+    CONST STAT_DISCONTINUED = 'discontinued';
+
     public function productMeta()
     {
         return $this->hasOne('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getPrimaryKey());

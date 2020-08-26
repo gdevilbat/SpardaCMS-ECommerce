@@ -54,10 +54,10 @@ class BlogProductController extends AbstractBlog
         
             $query = $this->post_m->with('postMeta')
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->whereNotIn('availability', ['out of stock', 'discontinued']);
+                                                    $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
                                                 })
                                                 ->where(['post_type' =>  $this->getPostType()])
-                                                ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->latest('created_at')
                                                 ->limit(3);
 
@@ -78,9 +78,9 @@ class BlogProductController extends AbstractBlog
             $query = $this->buildPostByTaxonomy($this->data['post_categories']->first())
                                                 ->with('postMeta')
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->whereNotIn('availability', ['out of stock', 'discontinued']);
+                                                    $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
                                                 })
-                                                ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
                                                 ->limit(3);
 
@@ -96,9 +96,9 @@ class BlogProductController extends AbstractBlog
             $query = $this->post_m->with('postMeta')
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->whereNotIn('availability', ['out of stock', 'discontinued']);
+                                                    $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
                                                 })
-                                                ->where(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
                                                 ->limit(3);
 
@@ -115,6 +115,24 @@ class BlogProductController extends AbstractBlog
         return response()
             ->view($this->getPathView(), $this->data);
 
+    }
+
+    public function getPostData($taxonomy)
+    {
+        $query_1 = $this->buildPostByTaxonomy($taxonomy)
+                    ->whereHas('productMeta', function($query){
+                                    $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
+                                })
+                    ->latest();
+
+        $query_2 = $this->buildPostByTaxonomy($taxonomy)
+                    ->whereHas('productMeta', function($query){
+                                    $query->where('availability', Product::STAT_OUT)
+                                          ->orWhere('availability', Product::STAT_DISCONTINUED);
+                                })
+                    ->latest();
+
+        return $query_1->union($query_2);
     }
 
     final protected function getCategoryType()
