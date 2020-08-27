@@ -123,16 +123,16 @@ class BlogProductController extends AbstractBlog
                     ->whereHas('productMeta', function($query){
                                     $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
                                 })
-                    ->latest($this->post_m->getTableName().'.created_at');
+                    ->latest();
 
         $query_2 = $this->buildPostByTaxonomy($taxonomy)
                     ->whereHas('productMeta', function($query){
                                     $query->where('availability', Product::STAT_OUT)
                                           ->orWhere('availability', Product::STAT_DISCONTINUED);
                                 })
-                    ->latest($this->post_m->getTableName().'.created_at');
+                    ->latest();
 
-        return $query_1->union($query_2);
+        return $query_1->union($query_2)->latest();
     }
 
     final protected function getCategoryType()
