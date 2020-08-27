@@ -14,6 +14,8 @@
 			Shopee
 		</a>
 	@endif
+	<span data-index="{{$post->getKey()}}" id="shopee-weight-{{$post->getKey()}}">
+	</span>
 @else
 	<span>-</span>
 @endif
