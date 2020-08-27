@@ -38,6 +38,17 @@ $("#syncronize_ecommerce").change(function(event) {
     $(this).parents("form").eq(0).submit();
 });
 
+$("#weight_check").change(function(event) {
+    if ($(this).is(':checked'))
+    {
+        $("[name='scrapping[weight_check]']").attr('value', 'true');
+    }
+    else
+    {
+        $("[name='scrapping[weight_check]']").attr('value', 'false');
+    }
+});
+
 window.tokopediaScrap = function(){
     $(".scrapping-supplier").each(function(index, el) {
         let self = this;
@@ -199,16 +210,19 @@ window.tokopediaScrap = function(){
                           }
                         };*/
 
-                        axios.get('http://localhost/ScrappingAPI/get-shopee-detail?product_id='+shopee[1])
-                            .then((response) => {
-                                    if(response.status === 200) {
-                                        let shopee_store_weight = parseInt(response.data.data.weight)
-                                        window.console.log(shopee_store_weight);
-                                        if(shopee_store_weight != suplier_weight)
-                                            $('#shopee-weight-'+$(self).attr('data-index')).html('<hr>('+(shopee_store_weight - suplier_weight)+')<br/>');
+                        if($("[name='scrapping[weight_check]']").val() == 'true')
+                        {
+                            axios.get($("#data-product").attr('data-url-shopee-detail')+'?product_id='+shopee[1])
+                                .then((response) => {
+                                        if(response.status === 200) {
+                                            let shopee_store_weight = parseInt(response.data.data.weight)
+                                            if(shopee_store_weight != suplier_weight)
+                                                $('#shopee-weight-'+$(self).attr('data-index')).html('<hr>('+(shopee_store_weight - suplier_weight)+')<br/>');
 
-                                    }
-                            }, (error) => console.log(err) );
+                                        }
+                                }, (error) => console.log(err) );
+                        }
+
                     }
                 
                 /*=====  End of Shopee comment block  ======*/

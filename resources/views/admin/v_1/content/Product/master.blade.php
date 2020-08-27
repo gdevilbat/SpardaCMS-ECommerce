@@ -119,7 +119,7 @@
                 </div>
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-product' : '#'}}" data-url-scrapping-variant="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-variant' : '#'}}" data-url-scrapping-shopee="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-shopee' : '#'}}">
+                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-product' : '#'}}" data-url-scrapping-variant="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-variant' : '#'}}" data-url-scrapping-shopee="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-shopee' : '#'}}" data-url-shopee-detail="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/get-shopee-detail' : '#'}}">
                     <thead>
                         <tr>
                             <th data-priority="1">ID</th>
@@ -211,6 +211,20 @@
                                     <span></span>
                                 </label>
                             </div>
+                        </div>
+                    </div>
+                    <div class="m-form__group form-group row  d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">Weight Check</label>
+                        </div>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <span class="m-switch m-switch--icon m-switch--success">
+                                <label>
+                                    <input type="checkbox" id="weight_check" {{getSettingConfig('scrapping', 'weight_check') == 'true' ? 'checked' : ''}}>
+                                    <span></span>
+                                    <input type="hidden" name="scrapping[weight_check]" value="{{getSettingConfig('scrapping', 'weight_check') == 'true' ? 'true' : 'false'}}">
+                                </label>
+                            </span>
                         </div>
                     </div>
                     <div class="form-group m-form__group d-md-flex">
