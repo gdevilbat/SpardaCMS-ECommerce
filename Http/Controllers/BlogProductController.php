@@ -125,14 +125,14 @@ class BlogProductController extends AbstractBlog
                                 })
                     ->latest();
 
-        $query_2 = $this->buildPostByTaxonomy($taxonomy)
+        /*$query_2 = $this->buildPostByTaxonomy($taxonomy)
                     ->whereHas('productMeta', function($query){
                                     $query->where('availability', Product::STAT_OUT)
                                           ->orWhere('availability', Product::STAT_DISCONTINUED);
                                 })
-                    ->latest();
+                    ->latest();*/
 
-        return $query_1->union($query_2)->latest();
+        return $query_1->latest();
     }
 
     final protected function getCategoryType()
