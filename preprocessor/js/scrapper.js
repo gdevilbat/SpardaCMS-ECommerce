@@ -58,8 +58,10 @@ window.tokopediaScrap = function(){
         {
             settings = {
               "url": $("#data-product").attr('data-url-scrapping-product'),
+              "method": "POST",
                "headers": {
-    		    "content-type": "application/json",
+    		    "Accept": "application/json",
+                "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
     		  },
     		  "data": {domain: $(this).attr('data-shop-domain'), productKey: $(this).attr('data-product-key')}
             };
@@ -93,8 +95,10 @@ window.tokopediaScrap = function(){
                     {
                         settings = {
                           "url": $("#data-product").attr('data-url-scrapping-variant'),
+                          "method": "POST",
                           "headers": {
-    					    "content-type": "application/json",
+    					    "Accept": "application/json",
+                            "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
     					  },
     					  "data": {variant_id: response[0].data.getPDPInfo.basic.id}
                         };
@@ -179,16 +183,27 @@ window.tokopediaScrap = function(){
 
                         let api_url;
 
+                        let config;
+
                         if($("[name='scrapping[store_sync]']:checked").val() == 'cloud')
                         {
-                            api_url = $("#data-product").attr('data-url-scrapping-shopee');
+                            config = {
+                              method: 'post',
+                              url: $("#data-product").attr('data-url-scrapping-shopee')+'?shopid='+shopee[0]+'&itemid='+shopee[1],
+                              headers: {
+                                "Accept": "application/json",
+                                "Authorization": "Bearer "+ $("[name='scrapping[token]']").val() 
+                              }
+                            };
                         }
                         else
                         {
-                            api_url = 'https://shopee.co.id/api/v2/item/get';
+                            config = {
+                              url: 'https://shopee.co.id/api/v2/item/get'+'?shopid='+shopee[0]+'&itemid='+shopee[1],
+                            };
                         }
 
-                        axios.get(api_url+'?shopid='+shopee[0]+'&itemid='+shopee[1])
+                        axios(config)
                             .then((response) => {
                                     if(response.status === 200) {
                                         let html = response.data;
@@ -210,9 +225,18 @@ window.tokopediaScrap = function(){
                           }
                         };*/
 
+                        let config_detail = {
+                          method: 'post',
+                          url: $("#data-product").attr('data-url-shopee-detail')+'?product_id='+shopee[1],
+                          headers: {
+                            "Accept": "application/json",
+                            "Authorization": "Bearer "+ $("[name='scrapping[token]']").val() 
+                          }
+                        };
+
                         if($("[name='scrapping[weight_check]']").val() == 'true')
                         {
-                            axios.get($("#data-product").attr('data-url-shopee-detail')+'?product_id='+shopee[1])
+                            axios(config_detail)
                                 .then((response) => {
                                         if(response.status === 200) {
                                             let shopee_store_weight = parseInt(response.data.data.weight)

@@ -119,7 +119,7 @@
                 </div>
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-product' : '#'}}" data-url-scrapping-variant="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-variant' : '#'}}" data-url-scrapping-shopee="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/scrapping-shopee' : '#'}}" data-url-shopee-detail="{{getSettingConfig('scrapping', 'url') ? url(getSettingConfig('scrapping', 'url')).'/get-shopee-detail' : '#'}}">
+                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingProduct')}}" data-url-scrapping-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingVariant')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-shopee-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@shopeeDetail')}}">
                     <thead>
                         <tr>
                             <th data-priority="1">ID</th>
@@ -171,14 +171,14 @@
                   </button>
               </div>
               <div class="modal-body"> 
-                  <div class="form-group m-form__group d-md-flex">
+                  {{-- <div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
                             <label for="exampleInputEmail1">URL</label>
                         </div>
                         <div class="col-md-8">
                             <input type="text" class="form-control m-input" name="scrapping[url]" placeholder="https://[API Scrapping]" value="{{getSettingConfig('scrapping', 'url')}}">
                         </div>
-                    </div>
+                    </div> --}}
                   <div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
                             <label for="exampleInputEmail1">Suplier Sync Mode</label>
