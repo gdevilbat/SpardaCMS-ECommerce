@@ -14,12 +14,10 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'ecommerce'], function() {
-	Route::group(['middleware' => ['auth:api', 'throttle:rate_limit,1']], function() {
-	    Route::post('scrapping-product', 'ScrappingController@scrappingProduct');
-		Route::post('scrapping-variant', 'ScrappingController@scrappingVariant');
-		Route::post('scrapping-shopee', 'ScrappingController@scrappingShopee');
-		Route::post('get-shopee-detail', 'ScrappingController@shopeeDetail');
-	});
+    Route::post('scrapping-product', 'ScrappingController@scrappingProduct');
+	Route::post('scrapping-variant', 'ScrappingController@scrappingVariant');
+	Route::post('scrapping-shopee', 'ScrappingController@scrappingShopee');
+	Route::post('get-shopee-detail', 'ScrappingController@shopeeDetail');
 });
 
 /*Route::middleware('auth:api')->get('/ecommerce', function (Request $request) {
