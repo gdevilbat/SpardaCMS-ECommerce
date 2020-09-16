@@ -72,7 +72,7 @@ class ShopeeController extends Controller
         return response()->json($item);
     }
 
-    private function getAccessToken(Request $request = null)
+    protected function getAccessToken(Request $request = null)
     {
         $time = \Carbon\Carbon::now()->timestamp;
         $path = '/api/v2/auth/token/get';
@@ -94,7 +94,7 @@ class ShopeeController extends Controller
         return json_decode($body)->access_token;
     }
 
-    private function getPrimaryParameter($shop_id)
+    protected final function getPrimaryParameter($shop_id)
     {
       $time = \Carbon\Carbon::now()->timestamp;
 
@@ -105,7 +105,7 @@ class ShopeeController extends Controller
       ];
     }
 
-    private function getSignature($base_string)
+    protected final function getSignature($base_string)
     {
       return hash_hmac('SHA256', $base_string, config('cms-ecommerce.SHOPEE_PARTNER_SECRET'));
     }
