@@ -168,7 +168,7 @@ class ShopeeController extends Controller
 
             if (in_array( $post->productMeta->availability, $availability)) 
             {
-                $stock = 7;
+                $stock = rand(5,9);
             }
             else
             {
