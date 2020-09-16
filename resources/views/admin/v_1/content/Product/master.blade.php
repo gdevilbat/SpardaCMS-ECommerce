@@ -114,6 +114,12 @@
                                             <span>Reload</span>
                                         </span>
                                     </a>
+                                    <a href="javascript:void(0)" id="shopee-sycronize" data-url-update="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@itemUpdate') }}" class="btn m-btn--pill m-btn m-btn--gradient-from-danger m-btn--gradient-to-accent mt-2 mt-sm-0">
+                                        <span>
+                                            <i class="la la-compress"></i>
+                                            <span>Shopee Syncronize</span>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                 </div>

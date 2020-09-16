@@ -25,28 +25,47 @@ let cheerio = require('cheerio');
 //let fs = require('file-system');
 //
 
-$("#syncronize_ecommerce").change(function(event) {
-    if ($(this).is(':checked'))
-    {
-        $("[name='syncronize_ecommerce']").attr('value', 'true');
-    }
-    else
-    {
-        $("[name='syncronize_ecommerce']").attr('value', 'false');
-    }
+$(document).ready(function() {
+    $("#syncronize_ecommerce").change(function(event) {
+        if ($(this).is(':checked'))
+        {
+            $("[name='syncronize_ecommerce']").attr('value', 'true');
+        }
+        else
+        {
+            $("[name='syncronize_ecommerce']").attr('value', 'false');
+        }
 
-    $(this).parents("form").eq(0).submit();
-});
+        $(this).parents("form").eq(0).submit();
+    });
 
-$("#weight_check").change(function(event) {
-    if ($(this).is(':checked'))
-    {
-        $("[name='scrapping[weight_check]']").attr('value', 'true');
-    }
-    else
-    {
-        $("[name='scrapping[weight_check]']").attr('value', 'false');
-    }
+    $("#weight_check").change(function(event) {
+        if ($(this).is(':checked'))
+        {
+            $("[name='scrapping[weight_check]']").attr('value', 'true');
+        }
+        else
+        {
+            $("[name='scrapping[weight_check]']").attr('value', 'false');
+        }
+    });
+
+    $("#shopee-sycronize").click(function(event) {
+        $(".shopee-store").each(function(index, el) {
+            let url = $('#shopee-store-'+$(this).attr('data-index')).attr('data-url');
+            let shopee = url.split('/').slice(-2);
+            let post_id = $(this).attr('data-index');
+            $.ajax({
+                url: $("#shopee-sycronize").attr('data-url-update'),
+                type: 'POST',
+                data: {'shop_id': shopee[0], 'product_id': shopee[1], 'post_id': post_id},
+                headers: {
+                    "Accept": "application/json",
+                }
+            });
+        });
+    });
+    
 });
 
 window.tokopediaScrap = function(){
@@ -241,7 +260,6 @@ window.tokopediaScrap = function(){
                                 .then((response) => {
                                         if(response.status === 200) {
                                             let shopee_store_weight = parseInt(response.data.weight)
-                                            window.console.log(response);
                                             if(shopee_store_weight != suplier_weight)
                                                 $('#shopee-weight-'+$(self).attr('data-index')).html('<hr>('+(shopee_store_weight - suplier_weight)+')<br/>');
 
