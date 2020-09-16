@@ -227,11 +227,12 @@ window.tokopediaScrap = function(){
 
                         let config_detail = {
                           method: 'post',
-                          url: $("#data-product").attr('data-url-shopee-detail')+'?product_id='+shopee[1],
+                          url: $("#data-product").attr('data-url-shopee-detail'),
                           headers: {
                             "Accept": "application/json",
                             "Authorization": "Bearer "+ $("[name='scrapping[token]']").val() 
-                          }
+                          },
+                          data: {'shop_id': shopee[0], 'product_id': shopee[1]}
                         };
 
                         if($("[name='scrapping[weight_check]']").val() == 'true')
@@ -239,7 +240,8 @@ window.tokopediaScrap = function(){
                             axios(config_detail)
                                 .then((response) => {
                                         if(response.status === 200) {
-                                            let shopee_store_weight = parseInt(response.data.data.weight)
+                                            let shopee_store_weight = parseInt(response.data.weight)
+                                            window.console.log(response);
                                             if(shopee_store_weight != suplier_weight)
                                                 $('#shopee-weight-'+$(self).attr('data-index')).html('<hr>('+(shopee_store_weight - suplier_weight)+')<br/>');
 
@@ -263,4 +265,10 @@ window.tokopediaScrap = function(){
 
 function currencyFormat(num) {
   return 'Rp. ' + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}
+
+window.popupWindow = function(url, windowName, win, w, h) {
+    const y = win.top.outerHeight / 2 + win.top.screenY - ( h / 2);
+    const x = win.top.outerWidth / 2 + win.top.screenX - ( w / 2);
+    return win.open(url, windowName, `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`);
 }

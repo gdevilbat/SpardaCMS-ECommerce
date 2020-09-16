@@ -119,7 +119,7 @@
                 </div>
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingProduct')}}" data-url-scrapping-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingVariant')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-shopee-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@shopeeDetail')}}">
+                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingProduct')}}" data-url-scrapping-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingVariant')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-shopee-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getItemDetail')}}">
                     <thead>
                         <tr>
                             <th data-priority="1">ID</th>
@@ -179,7 +179,7 @@
                             <input type="text" class="form-control m-input" name="scrapping[url]" placeholder="https://[API Scrapping]" value="{{getSettingConfig('scrapping', 'url')}}">
                         </div>
                     </div> --}}
-                  <div class="form-group m-form__group d-md-flex">
+					<div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
                             <label for="exampleInputEmail1">Suplier Sync Mode</label>
                         </div>
@@ -194,6 +194,17 @@
                                     <span></span>
                                 </label>
                             </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="m-form__group form-group row  d-md-flex">
+                        <div class="ml-4 col-col-md-8">
+                            <a onclick="popupWindow('{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@authentication') }}', 'test', window, 800, 600);" href="javascript:void(0)" class="btn btn-danger m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                                <span>
+                                    <i class="la la-refresh"></i>
+                                    <span>Authentication Shopee</span>
+                                </span>
+                            </a>
                         </div>
                     </div>
                     <div class="form-group m-form__group d-md-flex">
@@ -227,6 +238,7 @@
                             </span>
                         </div>
                     </div>
+                    <hr>
                     <div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
                             <label for="exampleInputEmail1">Token</label>
