@@ -40,7 +40,7 @@ $(document).ready(function() {
                     "Accept": "application/json",
                 }
             }).done(function(response){
-                window.table.ajax.reload( null, false );
+                //window.table.ajax.reload( null, false );
             });
         });
     });
