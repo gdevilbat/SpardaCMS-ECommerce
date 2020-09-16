@@ -40,7 +40,7 @@ class ShopeeController extends Controller
 
         $path = '/api/v1/item/get';
         $parameter = $this->getPrimaryParameter($request->input('shop_id'));
-        $parameter['item_id'] = 5042048371;
+        $parameter['item_id'] = $request->input('product_id');
 
         $base_string = SELF::URL.$path.'|'.json_encode($parameter);
         $sign = $this->getSignature($base_string);
