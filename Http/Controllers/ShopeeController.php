@@ -40,7 +40,7 @@ class ShopeeController extends Controller
 
         $path = '/api/v1/item/get';
         $parameter = $this->getPrimaryParameter($request->input('shop_id'));
-        $parameter['item_id'] = $request->input('product_id');
+        $parameter['item_id'] = (int) $request->input('product_id');
 
         $base_string = SELF::URL.$path.'|'.json_encode($parameter);
         $sign = $this->getSignature($base_string);
@@ -70,6 +70,28 @@ class ShopeeController extends Controller
         $item->weight = 1000 * $item->weight;
 
         return response()->json($item);
+    }
+
+    private function getAccessToken(Request $request = null)
+    {
+        $time = \Carbon\Carbon::now()->timestamp;
+        $path = '/api/v2/auth/token/get';
+        $base_string = config('cms-ecommerce.SHOPEE_PARTNER_ID').$path.$time.$request->shop_id;
+        $sign = $this->getSignature($base_string);
+        $url = url(SELF::URL.$path.'?'.http_build_query(['partner_id' => config('cms-ecommerce.SHOPEE_PARTNER_ID'), 'shop_id' => $request->shop_id, 'timestamp' => $time, 'sign' => $sign,]));
+
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('POST', $url, [
+            'json' => [
+                        'code' => $request->code,
+                        'shop_id' => (int) $request->shop_id,
+                        'partner_id' => config('cms-ecommerce.SHOPEE_PARTNER_ID')
+            ]
+        ]);
+
+        $body = $res->getBody();
+
+        return json_decode($body)->access_token;
     }
 
     private function getPrimaryParameter($shop_id)
