@@ -134,30 +134,30 @@
                 <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingProduct')}}" data-url-scrapping-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingVariant')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-shopee-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getItemDetail')}}">
                     <thead>
                         <tr>
-                        	<th class="no-sort"></th>
-                            <th data-priority="1">
+                        	<th class="no-sort" data-priority="1"></th>
+                            <th data-priority="2">
                             	<input id="data-checklist" type="checkbox">
 							</th>
-                            <th data-priority="2">ID</th>
-                            <th data-priority="3">Title</th>
+                            <th data-priority="3">ID</th>
+                            <th data-priority="4">Title</th>
                             <th class="no-sort">Author</th>
-                            <th class="no-sort" data-priority="11">Categories</th>
+                            <th class="no-sort" data-priority="12">Categories</th>
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
-                            <th data-priority="10">Status</th>
-                            <th data-priority="4">
+                            <th data-priority="11">Status</th>
+                            <th data-priority="5">
                                 Product <br>
                                 Price
                             </th>
-                            <th data-priority="5">
+                            <th data-priority="6">
                                 Product <br>
                                 Sale
                             </th>
-                            <th class="no-sort" data-priority="7">Supplier</th>
-                            <th class="no-sort" data-priority="6">Store</th>
-                            <th class="no-sort" data-priority="9">Availability</th>
+                            <th class="no-sort" data-priority="8">Supplier</th>
+                            <th class="no-sort" data-priority="7">Store</th>
+                            <th class="no-sort" data-priority="10">Availability</th>
                             <th>Created At</th>
-                            <th class="no-sort" data-priority="8">Action</th>
+                            <th class="no-sort" data-priority="9">Action</th>
                         </tr>
                     </thead>
                     <tbody>
