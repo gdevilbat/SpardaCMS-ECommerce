@@ -35,7 +35,7 @@ class ProductController extends AbstractPost
 
     public function getColumnOrder()
     {
-        return [Product::getPrimaryKey(), 'post_title', 'author', 'categories', 'tags','comment', 'post_status', 'product_price', 'product_sale', 'tokopedia_slug', 'tokopedia_source', 'created_at'];
+        return ['', '', Product::getPrimaryKey(), 'post_title', 'author', 'categories', 'tags','comment', 'post_status', 'product_price', 'product_sale', 'tokopedia_slug', 'tokopedia_source', 'created_at'];
     }
 
     public function getQuerybuilder($column, $dir)
@@ -58,6 +58,8 @@ class ProductController extends AbstractPost
             $i = 0;
             foreach ($posts as $key_post => $post) 
             {
+                $data[$i][] = '';
+                $data[$i][] = '<input class="data-checklist" type="checkbox" data-index="'.$post->getKey().'">';
                 $data[$i][] = $post->getKey();
                 $data[$i][] = $post->post_title;
 

@@ -24,6 +24,10 @@ Route::group(['prefix' => 'ecommerce'], function() {
 		Route::get('callback', 'ShopeeController@callback');
 		Route::post('item-detail', 'ShopeeController@getItemDetail');
 	});
+
+	Route::group(['prefix' => 'tokopedia' ,'middleware' => ['auth:api', 'throttle:rate_limit,1']], function() {
+		Route::post('scanning-ecommerce', 'TokopediaController@getData');
+	});
 });
 
 /*Route::middleware('auth:api')->get('/ecommerce', function (Request $request) {

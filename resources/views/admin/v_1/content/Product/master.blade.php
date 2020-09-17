@@ -114,6 +114,12 @@
                                             <span>Reload</span>
                                         </span>
                                     </a>
+                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#web-scrapping" class="btn m-btn--pill m-btn m-btn--gradient-from-success m-btn--gradient-to-accent mt-2 mt-sm-0">
+                                        <span>
+                                            <i class="la la-download"></i>
+                                            <span>Tokopedia Scrappping</span>
+                                        </span>
+                                    </a>
                                     <a href="javascript:void(0)" id="shopee-sycronize" data-url-update="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@itemUpdate') }}" class="btn m-btn--pill m-btn m-btn--gradient-from-danger m-btn--gradient-to-accent mt-2 mt-sm-0">
                                         <span>
                                             <i class="la la-compress"></i>
@@ -128,26 +134,30 @@
                 <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingProduct')}}" data-url-scrapping-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingVariant')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-shopee-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getItemDetail')}}">
                     <thead>
                         <tr>
-                            <th data-priority="1">ID</th>
-                            <th data-priority="2">Title</th>
+                        	<th class="no-sort"></th>
+                            <th data-priority="1">
+                            	<input id="data-checklist" type="checkbox">
+							</th>
+                            <th data-priority="2">ID</th>
+                            <th data-priority="3">Title</th>
                             <th class="no-sort">Author</th>
-                            <th class="no-sort" data-priority="9">Categories</th>
+                            <th class="no-sort" data-priority="11">Categories</th>
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
                             <th data-priority="10">Status</th>
-                            <th data-priority="3">
+                            <th data-priority="4">
                                 Product <br>
                                 Price
                             </th>
-                            <th data-priority="4">
+                            <th data-priority="5">
                                 Product <br>
                                 Sale
                             </th>
-                            <th class="no-sort" data-priority="6">Supplier</th>
-                            <th class="no-sort" data-priority="5">Store</th>
-                            <th class="no-sort" data-priority="8">Availability</th>
+                            <th class="no-sort" data-priority="7">Supplier</th>
+                            <th class="no-sort" data-priority="6">Store</th>
+                            <th class="no-sort" data-priority="9">Availability</th>
                             <th>Created At</th>
-                            <th class="no-sort" data-priority="7">Action</th>
+                            <th class="no-sort" data-priority="8">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -267,6 +277,61 @@
   <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="web-scrapping" tabindex="-1" role="dialog" aria-hidden="true"  aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <form action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\TokopediaController@getData') }}" method="post" accept-charset="utf-8" id="data-web-scrapping">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Web Scrapping</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body"> 
+                    <div class="form-group m-form__group d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">Store</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control m-input" name="store_name" placeholder="Store Name" value="">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">Page</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="number" min="1" class="form-control m-input" name="page" placeholder="Pagination Number" value="">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">Limit</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="number" min="1" class="form-control m-input" name="limit" placeholder="Default: 80" value="">
+                        </div>
+                    </div>
+                    <div id="data_scrapping" class="row" v-cloak>
+                        <div class="col-12">
+                            <span v-for="item in items">
+                                <a v-bind:href="item.url" target="_blank"><span class="badge badge-info">@{{ item.product_name }}</span></a>&nbsp;
+                            </span>
+                            <span v-if="window.objSize(items) > 0">| @{{ window.objSize(items) }} Item</span>
+                        </div>
+                    </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" id="submit-data-scrapping" class="btn btn-primary">Scan</button>
+                  <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button>
+              </div>
+          </form>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 @endsection
 
 @section('page_script_js')
@@ -285,6 +350,7 @@
                     pages: 5 // number of pages to cache
                 }),
                  "columnDefs": [
+                 { orderable: false, targets: [1] }
                 ],
                 "drawCallback": function( settings ) {
                     deleteData();
@@ -311,4 +377,5 @@
     </script>
 
     {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/shopee.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/shopee.js')))}}
+    {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/tokopedia.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/tokopedia.js')))}}
 @endsection
