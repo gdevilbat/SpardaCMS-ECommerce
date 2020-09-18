@@ -107,25 +107,22 @@
                                         <i class="la la-gear"></i>
                                     </a>
                                 </div>
-                                <div class="col-12 text-right">
+                                <div class="col-12 justify-content-end d-flex">
                                     <a href="javascript:void(0)" id="reload-datatable" class="btn btn-info m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
                                         <span>
                                             <i class="la la-refresh"></i>
                                             <span>Reload</span>
                                         </span>
                                     </a>
-                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#web-scrapping" class="btn m-btn--pill m-btn m-btn--gradient-from-success m-btn--gradient-to-accent mt-2 mt-sm-0">
-                                        <span>
-                                            <i class="la la-download"></i>
-                                            <span>Tokopedia Scrappping</span>
-                                        </span>
-                                    </a>
-                                    <a href="javascript:void(0)" id="shopee-sycronize" data-url-update="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@itemUpdate') }}" class="btn m-btn--pill m-btn m-btn--gradient-from-danger m-btn--gradient-to-accent mt-2 mt-sm-0">
-                                        <span>
-                                            <i class="la la-compress"></i>
-                                            <span>Shopee Syncronize</span>
-                                        </span>
-                                    </a>
+                                    <div class="btn-group">
+                                        <button class="btn m-btn--pill m-btn m-btn--gradient-from-danger m-btn--gradient-to-accent dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Markeplace
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 5px !important; left: 0px; transform: translate3d(-27px, 40px, 0px);">
+                                            <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#web-scrapping"><i class="la la-download"></i> Tokopedia Scrappping</a>
+                                            <a class="dropdown-item" href="javascript:void(0)" id="shopee-sycronize" data-url-update="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@itemUpdate') }}"><i class="la la-compress"></i> Shopee Syncronize</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                 </div>
