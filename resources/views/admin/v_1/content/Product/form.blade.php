@@ -176,7 +176,7 @@
                                         </div>
                                         <div class="form-group m-form__group d-flex px-0 flex-wrap">
                                             <div class="col-4 d-flex justify-content-end py-3">
-                                                <label for="exampleInputEmail1">Category</label>
+                                                <label for="exampleInputEmail1">Category<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                             </div>
                                             <div class="col">
                                                 <select class="form-control m-input select2" name="taxonomy[category][]">
