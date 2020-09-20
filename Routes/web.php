@@ -32,6 +32,11 @@ Route::group(['middleware' => 'core.auth'], function() {
 			    Route::group(['prefix' => 'api'], function() {
 				    Route::get('master', 'ProductController@serviceMaster')->middleware('can:menu-ecommerce');
 			    });
+
+			    Route::group(['prefix' => 'shopee'], function() {
+				    Route::get('authentication', 'ShopeeController@authentication');
+					Route::get('callback', 'ShopeeController@callback');
+			    });
 	        
 	        /*=====  End of Product CMS  ======*/
 
@@ -83,10 +88,6 @@ Route::group(['middleware' => 'core.auth'], function() {
 
 		});
 
-	});
-
-	Route::group(['prefix' => 'api/product/shopee'], function() {
-	    Route::post('update-item', 'ShopeeController@itemUpdate');
 	});
 
 });

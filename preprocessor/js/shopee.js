@@ -13,6 +13,7 @@ $(document).ready(function() {
                     data: {'shop_id': shopee[0], 'product_id': shopee[1], 'post_id': post_id},
                     headers: {
                         "Accept": "application/json",
+                        "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
                     }
                 }).done(function(response){
                     //window.table.ajax.reload( null, false );

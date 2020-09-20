@@ -20,9 +20,13 @@ Route::group(['prefix' => 'ecommerce'], function() {
 	Route::post('get-shopee-detail', 'ScrappingController@shopeeDetail');
 
 	Route::group(['prefix' => 'shopee'], function() {
-		Route::get('authentication', 'ShopeeController@authentication');
-		Route::get('callback', 'ShopeeController@callback');
-		Route::post('item-detail', 'ShopeeController@getItemDetail');
+		Route::group(['namespace' => '\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro'], function() {
+			Route::post('item-detail', 'ShopeeController@itemGetDetail');
+
+			Route::group(['middleware' => ['auth:api','throttle:rate_limit,1']], function() {
+				Route::post('update-item', 'ShopeeController@itemUpdate');
+			});
+		});
 	});
 
 	Route::group(['prefix' => 'tokopedia' ,'middleware' => ['auth:api', 'throttle:rate_limit,1']], function() {
