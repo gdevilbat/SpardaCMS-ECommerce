@@ -256,9 +256,6 @@
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
                             <label for="exampleInputEmail1">Token</label>
                         </div>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control m-input" name="scrapping[token]" placeholder="ex: 9234kjkiwerwer8834" value="{{getSettingConfig('scrapping', 'token')}}">
-                        </div>
                     </div>
               </div>
               <div class="modal-footer">
@@ -268,6 +265,7 @@
               {{csrf_field()}}
               {{method_field('PUT')}}
           </form>
+          <input type="hidden" class="form-control m-input" name="scrapping[token]" placeholder="ex: 9234kjkiwerwer8834" value="{{Auth::user()->api_token}}">
       </div>
       <!-- /.modal-content -->
   </div>
