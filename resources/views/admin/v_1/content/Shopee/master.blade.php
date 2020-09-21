@@ -172,6 +172,7 @@
                 },
             },
             mounted: function(){
+
                 this.$nextTick(function(){
                     let self = this;
                     $(document).ready(function() {
@@ -189,8 +190,8 @@
                                 $(".item-promotion").click(function(event) {
                                     let url = $(this).attr('data-shopee-url');
                                     let shopee = url.split('/').slice(-2);
-                                    self.items.push({name: $(this).attr('data-name'), post_id: $(this).attr('data-id')});
-                                    self.items = self.getUnique(self.items, 'id');
+                                    self.items.push({name: $(this).attr('data-name'), post_id: parseInt($(this).attr('data-id'))});
+                                    self.items = self.getUnique(self.items, 'post_id');
                                 });
                             }
                         } );
