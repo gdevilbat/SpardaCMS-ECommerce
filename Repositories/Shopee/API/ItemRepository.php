@@ -268,7 +268,7 @@ class ItemRepository extends AbstractRepository
 
         $path = '/api/v1/items/boost';
         $parameter = $this->getPrimaryParameter($request['shop_id']);
-        $parameter['item_id'] = $request['item_id'];
+        $parameter['item_id'] = (int) $request['item_id'];
 
         $base_string = SELF::URL.$path.'|'.json_encode($parameter);
         $sign = $this->getSignature($base_string);
