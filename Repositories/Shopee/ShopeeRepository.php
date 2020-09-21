@@ -10,9 +10,11 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee;
 class ShopeeRepository
 {
 	public $item;
+	public $shop;
 
 	public function __construct()
 	{
 		$this->item = new API\ItemRepository;
+		$this->shop = new API\ShopRepository;
 	}
 }

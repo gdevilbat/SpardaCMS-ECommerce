@@ -54,9 +54,9 @@ abstract class AbstractRepository
       return hash_hmac('SHA256', $base_string, config('cms-ecommerce.SHOPEE_PARTNER_SECRET'));
     }
 
-    protected final function validateRequest(Request $request, $parameter)
+    protected final function validateRequest(array $request, array $parameter)
     {
-        $validator = Validator::make($request->all(), $parameter);
+        $validator = Validator::make($request, $parameter);
 
         if ($validator->fails()) {
             throw new HttpResponseException(response()->json([

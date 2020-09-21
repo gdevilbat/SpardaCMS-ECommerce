@@ -18,50 +18,28 @@ class ShopeeController
         $this->shopeeRepository = new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
+    public function shopGetDetail(Request $request)
+    {
+        return $this->shopeeRepository->shop->getShopDetail($request->all());
+    }
+
+    public function itemGetList(Request $request)
+    {
+        return $this->shopeeRepository->item->getItemsList($request->all());
+    }
+
     public function itemGetDetail(Request $request)
     {
-        return $this->shopeeRepository->item->getItemDetail($request);
+        return $this->shopeeRepository->item->getItemDetail($request->all());
     }
 
     public function itemUpdate(Request $request)
     {
-        return $this->shopeeRepository->item->itemUpdate($request);
+        return $this->shopeeRepository->item->itemUpdate($request->all());
     }
 
-    public function getBoostedItem(Request $request)
+    public function itemGetBoosted(Request $request)
     {
-        $this->validate($request, [
-          'shop_id' => 'required',
-          'product_id' => 'required',
-          'post_id' => 'required'
-        ]);
-
-        $path = '/api/v1/item/get';
-        $parameter = $this->getPrimaryParameter($request->input('shop_id'));
-        $parameter['item_id'] = (int) $request->input('product_id');
-
-        $base_string = SELF::URL.$path.'|'.json_encode($parameter);
-        $sign = $this->getSignature($base_string);
-
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('POST', SELF::URL.$path, [
-            'json' => $parameter,
-            'headers' => [
-                'Authorization' => $sign,
-            ]
-        ]);
-
-        $body = $res->getBody();
-
-        if(empty($body))
-            return response()->json(['message' => 'Check Connection'], 500);
-
-        $data = json_decode($body);
-
-        return response()->json($data);
+        return $this->shopeeRepository->item->getBoostedItem($request->all());
     }
 }

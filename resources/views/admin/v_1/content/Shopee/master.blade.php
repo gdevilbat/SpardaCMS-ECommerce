@@ -45,41 +45,93 @@
             </div>
 
             <div class="m-portlet__body">
+                <div class="d-flex">
+                    @if (!empty(session('global_message')))
+                        <div class="alert {{session('global_message')['status'] == 200 ? 'alert-info' : 'alert-warning' }}">
+                            {{session('global_message')['message']}}
+                        </div>
+                    @endif
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+                <input type="hidden" class="form-control m-input" name="scrapping[token]" placeholder="ex: 9234kjkiwerwer8834" value="{{Auth::user()->api_token}}">
+                <input type="hidden" class="form-control m-input" name="shop_id" value="{{getSettingConfig('shopee_id')}}">
+                <div class="">
+                    <a onclick="popupWindow('{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@authentication').'?'.http_build_query(['callback' => 'refreshAndClose']) }}', 'test', window, 800, 600);" href="javascript:void(0)" class="btn btn-danger m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                        <span>
+                            <i class="la la-refresh"></i>
+                            <span>Authentication Shopee</span>
+                        </span>
+                    </a>
+                </div>
+                <div id="shopee-info" data-url="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@shopGetDetail') }}" v-cloak>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label text-right">Shop Name :</label>
+                        <div class="col">
+                           <label for="example-text-input" class="col-form-label">@{{ store.shop_name }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label text-right">Shop Description :</label>
+                        <div class="col">
+                           <label for="example-text-input" class="col-form-label">@{{ store.shop_description }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label text-right">Product Limit :</label>
+                        <div class="col">
+                           <label for="example-text-input" class="col-form-label">@{{ store.item_limit }}</label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-product="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingProduct')}}" data-url-scrapping-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingVariant')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-shopee-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getItemDetail')}}">
+                <table class="table table-striped display responsive nowrap" id="data-product" width="100%">
                     <thead>
                         <tr>
-                        	<th class="no-sort" data-priority="1"></th>
-                            <th data-priority="2">
-                            	<input id="data-checklist" type="checkbox">
-							</th>
-                            <th data-priority="3">ID</th>
-                            <th data-priority="4">Title</th>
-                            <th class="no-sort">Author</th>
-                            <th class="no-sort" data-priority="12">Categories</th>
-                            <th class="no-sort">Tags</th>
-                            <th class="no-sort">Comment</th>
-                            <th data-priority="11">Status</th>
-                            <th data-priority="5">
-                                Product <br>
-                                Price
-                            </th>
-                            <th data-priority="6">
-                                Product <br>
-                                Sale
-                            </th>
-                            <th class="no-sort" data-priority="8">Supplier</th>
-                            <th class="no-sort" data-priority="7">Store</th>
-                            <th class="no-sort" data-priority="10">Availability</th>
-                            <th>Created At</th>
-                            <th class="no-sort" data-priority="9">Action</th>
+                            <th data-priority="2">ID</th>
+                            <th data-priority="3">Title</th>
+                            <th class="no-sort" data-priority="4">Price</th>
+                            <th class="no-sort" data-priority="5">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
-
                 <!--end: Datatable -->
+                <hr>
+                <div id="item-promotion" class="m-section mb-2">
+                    <h3 class="m-section__heading">Item Scheduled</h3>
+                    <form action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@saveItemScheduled') }}" method="post">
+                        <div v-for="(item, index) in items">
+                            @{{ item.name }} <i class="la la-close" v-on:click="removeComponent(index)" style="cursor: pointer;"></i>
+                            <input type="hidden" v-bind:name="'items[]'" v-model="items[index]['post_id']">
+                        </div>
+                        {{ csrf_field() }}
+                        <div class="d-flex mt-1 justify-content-end">
+                            <button type="submit" class="btn m-btn--square  m-btn m-btn--gradient-from-brand m-btn--gradient-to-info">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+                <div class="row" id="boosted-item" data-url="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetBoosted') }}" data-url-item="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetDetail') }}" v-cloak>
+                    <div class="col-md-3 position-relative" v-for="item in items">
+                        <img class="img-fluid" v-bind:src="item.images[0]" alt="">
+                        <div class="position-absolute text-light bg-info px-1" style="bottom: 0px;left: 0px;margin: 0px 15px">
+                            @verbatim
+                                <span>{{ item.name }}</span>
+                            @endverbatim
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
 
@@ -95,4 +147,56 @@
 
 @section('page_script_js')
     {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/shopee.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/shopee.js')))}}
+
+    <script type="text/javascript">
+        var ItemPromotion = new Vue({
+            el: "#item-promotion",
+            data: {
+                items: {!! !empty($items) ? json_encode($items) : json_encode(array()) !!}
+            },
+            methods:{
+                getUnique: function(arr, comp){
+                     // store the comparison  values in array
+                       const unique =  arr.map(e => e[comp])
+
+                                      // store the indexes of the unique objects
+                                      .map((e, i, final) => final.indexOf(e) === i && i)
+
+                                      // eliminate the false indexes & return unique objects
+                                     .filter((e) => arr[e]).map(e => arr[e]);
+
+                       return unique;
+                },
+                removeComponent: function(index){
+                    this.items.splice(index, 1);
+                },
+            },
+            mounted: function(){
+                this.$nextTick(function(){
+                    let self = this;
+                    $(document).ready(function() {
+                        $('#data-product').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "order": [],
+                            "ajax": $.fn.dataTable.pipeline( {
+                                url: '{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@serviceMaster')}}',
+                                pages: 5 // number of pages to cache
+                            }),
+                             "columnDefs": [
+                            ],
+                            "drawCallback": function( settings ) {
+                                $(".item-promotion").click(function(event) {
+                                    let url = $(this).attr('data-shopee-url');
+                                    let shopee = url.split('/').slice(-2);
+                                    self.items.push({name: $(this).attr('data-name'), post_id: $(this).attr('data-id')});
+                                    self.items = self.getUnique(self.items, 'id');
+                                });
+                            }
+                        } );
+                    } );
+                });
+            }
+        });        
+    </script>
 @endsection

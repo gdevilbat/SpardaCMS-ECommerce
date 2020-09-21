@@ -24,7 +24,10 @@ Route::group(['prefix' => 'ecommerce'], function() {
 			Route::post('item-detail', 'ShopeeController@itemGetDetail');
 
 			Route::group(['middleware' => ['auth:api','throttle:rate_limit,1']], function() {
-				Route::post('update-item', 'ShopeeController@itemUpdate');
+				Route::post('shop-detail', 'ShopeeController@shopGetDetail');
+				Route::post('item-list', 'ShopeeController@itemGetList');
+				Route::post('item-update', 'ShopeeController@itemUpdate');
+				Route::post('item-boosted', 'ShopeeController@itemGetBoosted');
 			});
 		});
 	});
