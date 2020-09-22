@@ -6,7 +6,8 @@
     "active": 1,
     "order": 9999999,
     "providers": [
-        "Gdevilbat\\SpardaCMS\\Modules\\Ecommerce\\Providers\\EcommerceServiceProvider"
+        "Gdevilbat\\SpardaCMS\\Modules\\Ecommerce\\Providers\\EcommerceServiceProvider",
+        "Gdevilbat\\SpardaCMS\\Modules\\Ecommerce\\Providers\\ScheduleServiceProvider"
     ],
     "aliases": {},
     "files": [],

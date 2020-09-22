@@ -67,6 +67,9 @@ class ShopeeController extends CoreController
                             $query->where('meta_key', 'shopee_slug')
                                   ->where('meta_value', 'LIKE', '%'.addslashes('product\/'.getSettingConfig('shopee_id')).'%'); 
                         })
+                        ->whereHas('productMeta', function($query){
+                            $query->where('availability', Product::STAT_INSTOCK);
+                        })
                         ->orderBy($column, $dir)
                         ->limit($length);
 
@@ -78,7 +81,7 @@ class ShopeeController extends CoreController
             $filtered->where(function($query) use ($searchValue){
                 $query->where(DB::raw("CONCAT(post_title)"), 'like', '%'.$searchValue.'%')
                       ->orWhereHas('productMeta',function($query) use ($searchValue){
-                        $query->where(DB::raw("CONCAT(availability)"), 'like', '%'.$searchValue.'%');
+                        //$query->where(DB::raw("CONCAT(availability)"), 'like', '%'.$searchValue.'%');
                       });
             });
         }
