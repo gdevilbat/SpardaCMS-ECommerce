@@ -167,14 +167,17 @@ class ShopeeController extends CoreController
             $posts = Product::with('postMeta')
                             ->whereIn(Product::getPrimaryKey(), getSettingConfig('shopee_item_scheduled'))->get();
 
-            foreach ($posts as $key => $post) {
-                $url = $post->postMeta->where('meta_key', 'shopee_slug')->first()->meta_value;
-                $part = explode( '/', $url);
-                $id = (int) $part[2];
-                array_push($item_id, $id);
-            }
+            if($posts->count() > 0)
+            {
+                foreach ($posts as $key => $post) {
+                    $url = $post->postMeta->where('meta_key', 'shopee_slug')->first()->meta_value;
+                    $part = explode( '/', $url);
+                    $id = (int) $part[2];
+                    array_push($item_id, $id);
+                }
 
-            (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->SetBoostedItem(['shop_id' => (int) $shopee_id, 'item_id' => $item_id]);
+                (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->SetBoostedItem(['shop_id' => (int) $shopee_id, 'item_id' => $item_id]);
+            }
         }
 
         return redirect()->back()->with('global_message',['status' => 200, 'message' => 'Success To Update Setting']);
