@@ -25,20 +25,7 @@ class ScheduleServiceProvider extends ServiceProvider
     {
          $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
-            $schedule->call(function () {
-                $curl = curl_init();
-
-                curl_setopt_array($curl, array(
-                  CURLOPT_URL => url(action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@publishItemPromotion')),
-                  CURLOPT_ENCODING => "",
-                  CURLOPT_CUSTOMREQUEST => "GET",
-                  CURLOPT_RETURNTRANSFER => true,
-                ));
-
-                $response = curl_exec($curl);
-
-                curl_close($curl);
-            })->everyTenMinutes();
+            $schedule->call('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@publishItemPromotion')->everyTenMinutes();
         });
     }
 
