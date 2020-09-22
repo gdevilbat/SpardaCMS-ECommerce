@@ -38,11 +38,7 @@ class ScheduleServiceProvider extends ServiceProvider
                 $response = curl_exec($curl);
 
                 curl_close($curl);
-            })
-            ->onFailure(function () {
-                Log::info('Gagal Update Data Shopee');
-            })
-            ->everyTenMinutes();;
+            })->everyTenMinutes();;
         });
     }
 
