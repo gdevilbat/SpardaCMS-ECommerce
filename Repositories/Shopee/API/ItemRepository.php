@@ -28,16 +28,10 @@ class ItemRepository extends AbstractRepository
         $parameter['pagination_offset'] = (int) $request['pagination_offset'];
         $parameter['pagination_entries_per_page'] = (int) $request['pagination_entries_per_page'];
 
-        $base_string = SELF::URL.$path.'|'.json_encode($parameter);
+        $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('POST', SELF::URL.$path, [
-            'json' => $parameter,
-            'headers' => [
-                'Authorization' => $sign,
-            ]
-        ]);
+        $res = $this->makeRequest($path, $parameter, $sign);
 
         $body = $res->getBody();
 
@@ -60,16 +54,10 @@ class ItemRepository extends AbstractRepository
         $parameter = $this->getPrimaryParameter($request['shop_id']);
         $parameter['item_id'] = (int) $request['product_id'];
 
-        $base_string = SELF::URL.$path.'|'.json_encode($parameter);
+        $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('POST', SELF::URL.$path, [
-            'json' => $parameter,
-            'headers' => [
-                'Authorization' => $sign,
-            ]
-        ]);
+        $res = $this->makeRequest($path, $parameter, $sign);
 
         $body = $res->getBody();
 
@@ -112,16 +100,10 @@ class ItemRepository extends AbstractRepository
             $parameter['item_id'] = (int) $request['product_id'];
             $parameter['name'] = $post->post_title;
 
-            $base_string = SELF::URL.$path.'|'.json_encode($parameter);
+            $base_string = $this->getBaseString($path, $parameter);
             $sign = $this->getSignature($base_string);
 
-            $client = new \GuzzleHttp\Client();
-            $res = $client->request('POST', SELF::URL.$path, [
-                'json' => $parameter,
-                'headers' => [
-                    'Authorization' => $sign,
-                ]
-            ]);
+            $res = $this->makeRequest($path, $parameter, $sign);
 
             $body = $res->getBody();
 
@@ -153,16 +135,10 @@ class ItemRepository extends AbstractRepository
             $parameter['item_id'] = (int) $request['product_id'];
             $parameter['price'] = (int )$price;
 
-            $base_string = SELF::URL.$path.'|'.json_encode($parameter);
+            $base_string = $this->getBaseString($path, $parameter);
             $sign = $this->getSignature($base_string);
 
-            $client = new \GuzzleHttp\Client();
-            $res = $client->request('POST', SELF::URL.$path, [
-                'json' => $parameter,
-                'headers' => [
-                    'Authorization' => $sign,
-                ]
-            ]);
+            $res = $this->makeRequest($path, $parameter, $sign);
 
             $body = $res->getBody();
 
@@ -196,16 +172,10 @@ class ItemRepository extends AbstractRepository
             $parameter['item_id'] = (int) $request['product_id'];
             $parameter['stock'] = $stock;
 
-            $base_string = SELF::URL.$path.'|'.json_encode($parameter);
+            $base_string = $this->getBaseString($path, $parameter);
             $sign = $this->getSignature($base_string);
 
-            $client = new \GuzzleHttp\Client();
-            $res = $client->request('POST', SELF::URL.$path, [
-                'json' => $parameter,
-                'headers' => [
-                    'Authorization' => $sign,
-                ]
-            ]);
+            $res = $this->makeRequest($path, $parameter, $sign);
 
             $body = $res->getBody();
 
@@ -231,16 +201,10 @@ class ItemRepository extends AbstractRepository
         $path = '/api/v1/items/get_boosted';
         $parameter = $this->getPrimaryParameter($request['shop_id']);
 
-        $base_string = SELF::URL.$path.'|'.json_encode($parameter);
+        $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('POST', SELF::URL.$path, [
-            'json' => $parameter,
-            'headers' => [
-                'Authorization' => $sign,
-            ]
-        ]);
+        $res = $this->makeRequest($path, $parameter, $sign);
 
         $body = $res->getBody();
 
@@ -270,16 +234,10 @@ class ItemRepository extends AbstractRepository
         $parameter = $this->getPrimaryParameter($request['shop_id']);
         $parameter['item_id'] = $request['item_id'];
 
-        $base_string = SELF::URL.$path.'|'.json_encode($parameter);
+        $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('POST', SELF::URL.$path, [
-            'json' => $parameter,
-            'headers' => [
-                'Authorization' => $sign,
-            ]
-        ]);
+        $res = $this->makeRequest($path, $parameter, $sign);
 
         $body = $res->getBody();
 

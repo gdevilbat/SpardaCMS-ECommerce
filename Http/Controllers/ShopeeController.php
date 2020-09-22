@@ -15,15 +15,13 @@ use DB;
 
 class ShopeeController extends CoreController
 {
-    CONST URL = 'https://partner.shopeemobile.com';
-
     public function authentication(Request $request)
     {
         $time = \Carbon\Carbon::now()->timestamp;
         $path = '/api/v2/shop/auth_partner';
         $base_string =  config('cms-ecommerce.SHOPEE_PARTNER_ID').$path.$time;
         $sign = $this->getSignature($base_string);
-        $url = url(SELF::URL.$path.'?'.http_build_query(['partner_id' => config('cms-ecommerce.SHOPEE_PARTNER_ID'), 'redirect' => url(action('\\'.Self::class.'@callback').'?'.http_build_query(['callback' => $request->input('callback')])), 'timestamp' => $time, 'sign' => $sign]));
+        $url = url(config('cms-ecommerce.SHOPEE_API_URL').$path.'?'.http_build_query(['partner_id' => config('cms-ecommerce.SHOPEE_PARTNER_ID'), 'redirect' => url(action('\\'.Self::class.'@callback').'?'.http_build_query(['callback' => $request->input('callback')])), 'timestamp' => $time, 'sign' => $sign]));
         return redirect($url);
     }
 

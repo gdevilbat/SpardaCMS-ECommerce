@@ -28,16 +28,10 @@ class ShopRepository extends AbstractRepository
         $path = '/api/v1/shop/get';
         $parameter = $this->getPrimaryParameter($request['shop_id']);
 
-        $base_string = SELF::URL.$path.'|'.json_encode($parameter);
+        $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('POST', SELF::URL.$path, [
-            'json' => $parameter,
-            'headers' => [
-                'Authorization' => $sign,
-            ]
-        ]);
+        $res = $this->makeRequest($path, $parameter, $sign);
 
         $body = $res->getBody();
 

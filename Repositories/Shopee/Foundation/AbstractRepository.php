@@ -14,15 +14,13 @@ use Validator;
  */
 abstract class AbstractRepository
 {
-    CONST URL = 'https://partner.shopeemobile.com';
-
 	protected function getAccessToken(Request $request = null)
     {
         $time = \Carbon\Carbon::now()->timestamp;
         $path = '/api/v2/auth/token/get';
         $base_string = config('cms-ecommerce.SHOPEE_PARTNER_ID').$path.$time.$request->shop_id;
         $sign = $this->getSignature($base_string);
-        $url = url(SELF::URL.$path.'?'.http_build_query(['partner_id' => config('cms-ecommerce.SHOPEE_PARTNER_ID'), 'shop_id' => $request->shop_id, 'timestamp' => $time, 'sign' => $sign,]));
+        $url = url(config('cms-ecommerce.SHOPEE_API_URL').$path.'?'.http_build_query(['partner_id' => config('cms-ecommerce.SHOPEE_PARTNER_ID'), 'shop_id' => $request->shop_id, 'timestamp' => $time, 'sign' => $sign,]));
 
         $client = new \GuzzleHttp\Client();
         $res = $client->request('POST', $url, [
@@ -52,6 +50,22 @@ abstract class AbstractRepository
     protected final function getSignature($base_string)
     {
       return hash_hmac('SHA256', $base_string, config('cms-ecommerce.SHOPEE_PARTNER_SECRET'));
+    }
+
+    protected final function getBaseString($path, array $parameter)
+    {
+        return config('cms-ecommerce.SHOPEE_API_URL').$path.'|'.json_encode($parameter);
+    }
+
+    protected final function makeRequest($path, array $parameter, $sign)
+    {
+        $client = new \GuzzleHttp\Client();
+        return $res = $client->request('POST', config('cms-ecommerce.SHOPEE_API_URL').$path, [
+                    'json' => $parameter,
+                    'headers' => [
+                        'Authorization' => $sign,
+                    ]
+                ]);
     }
 
     protected final function validateRequest(array $request, array $parameter)
