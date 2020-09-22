@@ -38,7 +38,7 @@ class ScheduleServiceProvider extends ServiceProvider
                 $response = curl_exec($curl);
 
                 curl_close($curl);
-            })->everyTenMinutes();;
+            })->everyTenMinutes();
         });
     }
 

@@ -288,13 +288,6 @@ class ItemRepository extends AbstractRepository
 
         $data = json_decode($body);
 
-        try {
-            $items = $data->items;
-        } catch (\ErrorException $e) {
-            log::info(json_encode($data));
-            return response()->json(['message' => $data], 500);
-        }
-
-        return response()->json($items);
+        return response()->json($data);
     }
 }
