@@ -251,12 +251,6 @@
                             </span>
                         </div>
                     </div>
-                    <hr>
-                    <div class="form-group m-form__group d-md-flex">
-                        <div class="col-md-4 d-md-flex justify-content-end py-3">
-                            <label for="exampleInputEmail1">Token</label>
-                        </div>
-                    </div>
               </div>
               <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">Save</button>
