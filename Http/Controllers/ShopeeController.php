@@ -77,7 +77,7 @@ class ShopeeController extends CoreController
         if($searchValue)
         {
             $filtered->where(function($query) use ($searchValue){
-                $query->where(DB::raw("CONCAT(post_title)"), 'like', '%'.$searchValue.'%'));
+                $query->where(DB::raw("CONCAT(post_title)"), 'like', '%'.$searchValue.'%');
             });
         }
 
