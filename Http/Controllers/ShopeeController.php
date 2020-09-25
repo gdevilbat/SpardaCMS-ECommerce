@@ -97,7 +97,7 @@ class ShopeeController extends CoreController
             foreach ($this->data['posts'] as $key => $post) 
             {
                 $data[$i][] = $post->getKey();
-                $data[$i][] = '<a class="item-promotion" href="javascript:void(0)" data-name="'.$post->post_title.'" data-shopee-url="'.$post->postMeta->where('meta_key', 'shopee_slug')->first()->meta_value.'" data-id="'.$post->getKey().'">'.$post->post_title.'</a>';
+                $data[$i][] = '<a class="item-promotion" href="javascript:void(0)" data-status="'.$post->productMeta->availability.'" data-name="'.$post->post_title.'" data-shopee-url="'.$post->postMeta->where('meta_key', 'shopee_slug')->first()->meta_value.'" data-id="'.$post->getKey().'">'.$post->post_title.'</a>';
 
                 if(!empty($post->productMeta->product_sale) && $post->productMeta->product_sale < $post->productMeta->product_price)
                 {
@@ -123,10 +123,11 @@ class ShopeeController extends CoreController
 
         if(!empty(getSettingConfig('shopee_item_scheduled')))
         {
-            $posts = Product::whereIn(Product::getPrimaryKey(), getSettingConfig('shopee_item_scheduled'))->get();
+            $posts = Product::with('productMeta')->whereIn(Product::getPrimaryKey(), getSettingConfig('shopee_item_scheduled'))->get();
             foreach ($posts as $key => $post) {
                 $items[$key]['name'] = $post->post_title;
                 $items[$key]['post_id'] = $post->getKey();
+                $items[$key]['status'] = $post->productMeta->availability;
             }
         }
 

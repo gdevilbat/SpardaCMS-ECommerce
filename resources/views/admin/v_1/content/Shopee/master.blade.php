@@ -111,7 +111,7 @@
                     <h3 class="m-section__heading">Item Scheduled</h3>
                     <form action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@saveItemScheduled') }}" method="post">
                         <div v-for="(item, index) in items">
-                            @{{ item.name }} <i class="la la-close" v-on:click="removeComponent(index)" style="cursor: pointer;"></i>
+                            @{{ item.name }} - @{{ item.status }} <i class="la la-close" v-on:click="removeComponent(index)" style="cursor: pointer;"></i>
                             <input type="hidden" v-bind:name="'items[]'" v-model="items[index]['post_id']">
                         </div>
                         {{ csrf_field() }}
@@ -190,7 +190,7 @@
                                 $(".item-promotion").click(function(event) {
                                     let url = $(this).attr('data-shopee-url');
                                     let shopee = url.split('/').slice(-2);
-                                    self.items.push({name: $(this).attr('data-name'), post_id: parseInt($(this).attr('data-id'))});
+                                    self.items.push({name: $(this).attr('data-name'), post_id: parseInt($(this).attr('data-id')), status: $(this).attr('data-status')});
                                     self.items = self.getUnique(self.items, 'post_id');
                                 });
                             }
