@@ -37,7 +37,7 @@ Route::group(['middleware' => 'core.auth'], function() {
 				    Route::get('authentication', 'ShopeeController@authentication');
 					Route::get('callback', 'ShopeeController@callback');
 					Route::post('item-scheduled', 'ShopeeController@saveItemScheduled');
-					Route::get('shopee-promotion', 'ShopeeController@shopeePromotion')->middleware('core.menu');
+					Route::get('shopee-promotion', 'ShopeeController@shopeePromotion')->middleware('core.menu')->name('marketplace-shopee');
 					Route::group(['prefix' => 'api'], function() {
 					    Route::get('master', 'ShopeeController@serviceMaster')->middleware('can:menu-ecommerce');
 				    });

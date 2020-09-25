@@ -142,19 +142,19 @@
                             <th class="no-sort">Tags</th>
                             <th class="no-sort">Comment</th>
                             <th data-priority="11">Status</th>
-                            <th data-priority="5">
+                            <th data-priority="6">
                                 Product <br>
                                 Price
                             </th>
-                            <th data-priority="6">
+                            <th data-priority="7">
                                 Product <br>
                                 Sale
                             </th>
-                            <th class="no-sort" data-priority="8">Supplier</th>
-                            <th class="no-sort" data-priority="7">Store</th>
+                            <th class="no-sort" data-priority="9">Supplier</th>
+                            <th class="no-sort" data-priority="8">Store</th>
                             <th class="no-sort" data-priority="10">Availability</th>
                             <th>Created At</th>
-                            <th class="no-sort" data-priority="9">Action</th>
+                            <th class="no-sort" data-priority="5">Action</th>
                         </tr>
                     </thead>
                     <tbody>

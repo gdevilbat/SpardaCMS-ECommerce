@@ -90,7 +90,7 @@ window.tokopediaScrap = function(){
                 let suplier_weight = response[0].data.getPDPInfo.basic.weight;
                 $('#web-price-'+$(self).attr('data-index')).append('<br/><span class="text-danger">('+($('#web-price-'+$(self).attr('data-index')).attr('data-price') - supplier_price)+')</span>');
 
-                if(response[0].data.getPDPInfo.variant.isVariant)
+                if(response[0].data.getPDPInfo.variant.isVariant && false) // Set False To Disable Variant Check
                 {
                     let settings;
 
@@ -139,7 +139,8 @@ window.tokopediaScrap = function(){
                 }
                 else
                 {
-                    if(response[0].data.getPDPInfo.basic.status == "ACTIVE")
+                    window.console.log(response[0].data);
+                    if(response[0].data.getPDPInfo.basic.status == "ACTIVE" && response[0].data.getPDPInfo.stock.useStock)
                     {
                         supplier_status = 'available';
                     }
