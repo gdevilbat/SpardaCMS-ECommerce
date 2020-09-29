@@ -3,6 +3,7 @@ $(document).ready(function() {
     $("#shopee-sycronize").click(function(event) {
         if(window.confirm("Apakah Anda Yakin Ingin Update Data Shopee Sesuai Ecommerce ?"))
         {
+            let counter_shopee_sycronize = 0;
             $(".data-checklist:checked").each(function(index, el) {
                 let url = $('#shopee-store-'+$(this).attr('data-index')).attr('data-url');
                 let shopee = url.split('/').slice(-2);
@@ -16,7 +17,9 @@ $(document).ready(function() {
                         "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
                     }
                 }).done(function(response){
-                    //window.table.ajax.reload( null, false );
+                    counter_shopee_sycronize++;
+                    if(counter_shopee_sycronize >= $(".data-checklist:checked").length)
+                        table.ajax.reload( null, false );
                 });
             });
         }
