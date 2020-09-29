@@ -139,7 +139,6 @@ window.tokopediaScrap = function(){
                 }
                 else
                 {
-                    window.console.log(response[0].data);
                     if(response[0].data.getPDPInfo.basic.status == "ACTIVE" && response[0].data.getPDPInfo.stock.useStock)
                     {
                         supplier_status = 'available';
