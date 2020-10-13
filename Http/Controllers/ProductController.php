@@ -211,6 +211,7 @@ class ProductController extends AbstractPost
 
         $validator->addRules([
                 'meta.gallery.*.photo' => 'required',
+                'taxonomy.category' => 'required',
                 'product_meta.product_price' => 'required|max:11',
                 'product_meta.availability' => [
                         'required',

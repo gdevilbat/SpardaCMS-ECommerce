@@ -23,6 +23,11 @@ class ShopeeController
         return $this->shopeeRepository->shop->getShopDetail($request->all());
     }
 
+    public function itemUpload(Request $request)
+    {
+        return $this->shopeeRepository->item->Upload($request->all());
+    }
+
     public function itemGetList(Request $request)
     {
         return $this->shopeeRepository->item->getItemsList($request->all());

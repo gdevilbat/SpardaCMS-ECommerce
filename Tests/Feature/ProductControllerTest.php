@@ -105,6 +105,7 @@ class ProductControllerTest extends TestCase
                         ->post(action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@store'), [
                             'post' => ['post_title' => $post->post_title, 'post_slug' => $post->post_slug, 'post_content' => $post->post_content, 'post_parent' => $post->getKey()],
                             'product_meta' => ['product_price' => 2000000, 'product_sale' => 2000000, 'availability' => 'in stock', 'condition' => 'new'],
+                            'taxonomy' => ['category' => [$post->taxonomies->first()->getKey()]],
                             $post->getKeyName() => encrypt($post->getKey()),
                             '_method' => 'PUT'
                         ])
