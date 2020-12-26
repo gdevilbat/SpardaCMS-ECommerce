@@ -41,7 +41,7 @@ class ProductTest extends DuskTestCase
             $browser->script('document.getElementsByName("product_meta[product_price]")[0].value = "'.$faker->randomNumber(6).'"');
             $browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
             $browser->script('document.getElementsByName("product_meta[condition]")[0].checked = true');
-            $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 0');
+            $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 1');
             $browser->script('document.getElementsByName("taxonomy[tag][]")[0].selectedIndex = 0');
             $browser->script('document.getElementsByName("meta[meta_keyword]")[0].value = "'.$faker->name.'"');
             $browser->script('document.querySelectorAll("[type=submit]")[0].click()');
@@ -83,7 +83,7 @@ class ProductTest extends DuskTestCase
             $browser->script('document.getElementsByName("product_meta[product_price]")[0].value = "'.$faker->randomNumber(6).'"');
             $browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
             $browser->script('document.getElementsByName("product_meta[condition]")[0].checked = true');
-            $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 0');
+            $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 1');
             $browser->script('document.getElementsByName("taxonomy[tag][]")[0].selectedIndex = 0');
             $browser->script('document.getElementsByName("meta[meta_keyword]")[0].value = "'.$faker->name.'"');
             $browser->script('document.querySelectorAll("[type=submit]")[0].click()');
