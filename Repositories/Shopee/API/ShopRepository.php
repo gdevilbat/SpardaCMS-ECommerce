@@ -22,7 +22,6 @@ class ShopRepository extends AbstractRepository
     public function getShopDetail(array $request)
     {
     	$this->validateRequest($request, [
-            'shop_id' => 'required',
         ]);
 
         $path = '/api/v1/shop/get';

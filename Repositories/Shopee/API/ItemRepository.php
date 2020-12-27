@@ -18,7 +18,6 @@ class ItemRepository extends AbstractRepository
 	public function getItemsList(array $request)
     {
     	$this->validateRequest($request, [
-            'shop_id' => 'required',
 	        'pagination_offset' => 'required',
 	        'pagination_entries_per_page' => 'required',
         ]);
@@ -46,7 +45,6 @@ class ItemRepository extends AbstractRepository
     public function getItemDetail(array $request)
     {
     	$this->validateRequest($request, [
-            'shop_id' => 'required',
 	        'product_id' => 'required',
         ]);
 
@@ -81,7 +79,6 @@ class ItemRepository extends AbstractRepository
     public function itemUpdate(array $request)
     {
         $this->validateRequest($request, [
-          'shop_id' => 'required',
           'product_id' => 'required',
           'post_id' => 'required'
         ]);
@@ -195,7 +192,6 @@ class ItemRepository extends AbstractRepository
     public function getBoostedItem(array $request)
     {
     	$this->validateRequest($request, [
-            'shop_id' => 'required',
         ]);
 
         $path = '/api/v1/items/get_boosted';
@@ -226,7 +222,6 @@ class ItemRepository extends AbstractRepository
     public function setBoostedItem(array $request)
     {
     	$this->validateRequest($request, [
-            'shop_id' => 'required',
             'item_id' => 'required|array'
         ]);
 

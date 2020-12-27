@@ -70,7 +70,13 @@ abstract class AbstractRepository
 
     protected final function validateRequest(array $request, array $parameter)
     {
-        $validator = Validator::make($request, $parameter);
+        $mandatory = [
+            'shop_id' => 'required'
+        ];
+
+        $data = array_merge($mandatory, $parameter);
+
+        $validator = Validator::make($request, $data);
 
         if ($validator->fails()) {
             throw new HttpResponseException(response()->json([
