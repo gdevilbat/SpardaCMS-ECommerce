@@ -137,6 +137,84 @@ class ShopeeController extends CoreController
         return view('ecommerce::admin.'.$this->data['theme_cms']->value.'.content.Shopee.master', $this->data);        
     }
 
+    public function shopeeUploadItem(Request $request)
+    {
+        $image = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->image->uploadImage($request->input());
+
+        $request->merge([
+            'language' => 'id'
+        ]);
+
+        //$data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->getCategories($request->input());
+
+        $content = json_decode($data->getContent());
+
+        $tmp = collect($content->categories);
+
+        $cat_data = $tmp->filter(function($value, $key){
+            return $value->parent_id == 0;
+        });
+
+        $col_cat = collect(array_values($cat_data->toArray()));
+
+        $self = $this;
+
+        $categories = $col_cat->map(function($item, $key) use ($tmp, $self){
+            return $self->getCatChildren($item, $tmp);
+        });
+    }
+
+    public function getCatChildren($item, $shop_cat)
+    {
+        $tmp = $shop_cat->filter(function($child, $key) use ($item){
+            return $child->parent_id == $item->category_id; 
+        });
+
+        if($tmp->count() > 0)
+        {
+            $col_cat = collect(array_values($tmp->toArray()));
+            $self = $this;
+
+            $item->children = array_values($col_cat->map(function($item, $key) use ($shop_cat, $self){
+                return $self->getCatChildren($item, $shop_cat);
+            })->toArray());
+
+        }
+        else
+        {
+            $item->children = [];
+        }
+
+        return $item;
+    }
+
+    public function getCategories(Request $request)
+    {
+        $request->merge([
+            'language' => 'id'
+        ]);
+
+        $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->getCategories($request->input());
+
+        $content = json_decode($data->getContent());
+
+        $tmp = collect($content->categories);
+
+        $cat_data = $tmp->filter(function($value, $key){
+            return $value->parent_id == 0;
+        });
+
+        $col_cat = collect(array_values($cat_data->toArray()));
+
+        $self = $this;
+
+        $categories = $col_cat->map(function($item, $key) use ($tmp, $self){
+            return $self->getCatChildren($item, $tmp);
+        });
+
+        return $categories;
+    }
+
     public function saveItemScheduled(Request $request)
     {
         $config = Setting::where('name', 'shopee_item_scheduled')->first();

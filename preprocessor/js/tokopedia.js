@@ -3,6 +3,12 @@ var data_scrapping = new Vue({
     data: {
         items: [],
     },
+    methods:{
+      setShopeeUploadItem: function(item){
+          shopee_upload.item = item;
+          $('#modal-shopee-upload').modal('show');
+      }
+    } 
 });
 
 $(document).ready(function() {

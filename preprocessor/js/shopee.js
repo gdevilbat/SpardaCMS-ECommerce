@@ -91,6 +91,51 @@ $(document).ready(function() {
     }
 });
 
+var ShopeeUpload = new Vue({
+    el: "#shopee_upload",
+    data: {
+        item: null,
+        category_id: null,
+        categories: [],
+        selected_category: [],
+        children_categories: [],
+    },
+    methods: {
+        addSelected: function(e, index_selected){
+            self = this;
+            var tmp = this.categories;
+            this.children_categories = [];
+            this.category_id = null;
+            this.$set(this.selected_category, index_selected, e.target.value);
+
+            this.$nextTick(function () {
+                $.each(this.selected_category, function(index, val) {
+
+                     if(index_selected <= index)
+                     {
+                        self.selected_category.splice(index+1, 1);
+                        document.getElementsByName('children_'+(index+1))[0].value = "";
+                     }
+                });
+            });
+
+
+            $.each(self.selected_category, function(index, el) {
+                if(tmp[el].has_children)
+                {
+                    self.$set(self.children_categories, index, tmp[el].children);
+                    tmp = tmp[el].children;
+                }
+                else{
+                    self.selected_category.splice(index, 1);
+                    self.category_id = tmp[el].category_id;
+                }
+            });
+        }
+    }
+});
+window.ShopeeUpload = ShopeeUpload;
+
 window.popupWindow = function(url, windowName, win, w, h) {
     const y = win.top.outerHeight / 2 + win.top.screenY - ( h / 2);
     const x = win.top.outerWidth / 2 + win.top.screenX - ( w / 2);

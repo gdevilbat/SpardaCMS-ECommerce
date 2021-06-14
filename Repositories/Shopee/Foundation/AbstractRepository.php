@@ -78,11 +78,6 @@ abstract class AbstractRepository
 
         $validator = Validator::make($request, $data);
 
-        if ($validator->fails()) {
-            throw new HttpResponseException(response()->json([
-                'errors'  => $validator->errors(),
-                'message' => 'The given data was invalid.',
-            ], 422));
-        }
+        $validator->validate();
     }
 }

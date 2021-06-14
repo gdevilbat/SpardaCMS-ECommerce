@@ -243,4 +243,29 @@ class ItemRepository extends AbstractRepository
 
         return response()->json($data);
     }
+
+    public function getCategories(array $request)
+    {
+        $this->validateRequest($request, [
+            'language' => 'required|in:en,vi,th,zh-Hant,zh-Hans,ms-my,pt-br,id'
+        ]);
+
+        $path = '/api/v1/item/categories/get';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['language'] = $request['language'];
+
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
 }

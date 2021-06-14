@@ -30,7 +30,9 @@ Route::group(['prefix' => 'ecommerce'], function() {
 				Route::post('item-boosted', 'ShopeeController@itemGetBoosted');
 			});
 		});
+
 		Route::get('item-publish-promotion', '\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@publishItemPromotion');
+		Route::get('shopee-categories', 'ShopeeController@getCategories');
 	});
 
 	Route::group(['prefix' => 'tokopedia' ,'middleware' => ['auth:api', 'throttle:rate_limit,1']], function() {

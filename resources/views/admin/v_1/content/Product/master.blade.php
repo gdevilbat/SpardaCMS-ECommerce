@@ -120,6 +120,7 @@
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 5px !important; left: 0px; transform: translate3d(-27px, 40px, 0px);">
                                             <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#web-scrapping"><i class="la la-download"></i> Tokopedia Scrappping</a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modal-shopee-upload"><i class="la la-upload"></i> Shopee Upload</a> --}}
                                             <a class="dropdown-item" href="javascript:void(0)" id="shopee-sycronize" data-url-update="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemUpdate') }}"><i class="la la-compress"></i> Shopee Syncronize</a>
                                         </div>
                                     </div>
@@ -304,7 +305,10 @@
                     <div id="data_scrapping" class="row" v-cloak>
                         <div class="col-12">
                             <span v-for="item in items">
-                                <a v-bind:href="item.url" target="_blank"><span class="badge badge-info">@{{ item.product_name }}</span></a>&nbsp;
+                                <a v-bind:href="item.url" target="_blank"><span class="badge badge-info">@{{ item.product_name }}</span></a>
+                                <a href="javascript:void(0)" class="btn btn-outline-success m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x my-1" v-on:click="setShopeeUploadItem(item)">
+                                    <i class="la la-upload"></i>
+                                </a>&nbsp;|&nbsp;
                             </span>
                             <span v-if="window.objSize(items) > 0">| @{{ window.objSize(items) }} Item</span>
                         </div>
@@ -321,10 +325,87 @@
   <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="modal-shopee-upload" tabindex="-1" role="dialog" aria-hidden="true"  aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <form action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@shopeeUploadItem') }}" method="post" accept-charset="utf-8">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Shopee Upload</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body"> 
+                    <div id="shopee_upload" class="row" v-cloak data-url-shopee-category="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getCategories') }}">
+                        <div class="col-12">
+                            <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-2 col-form-label">Product Name</label>
+                                <div class="col">
+                                    <input class="form-control m-input" type="text" name="product_name" v-bind:value="item != null ? item.product_name : ''">
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-2 col-form-label">Product Image</label>
+                                <div class="col">
+                                    <input class="form-control m-input my-1" type="text" name="product_image[]" v-bind:value="item != null ? item.product_image : ''">
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-2 col-form-label">Product Category</label>
+                                <div class="col pl-0">
+                                    <div class="col-12">
+                                        <select class="form-control" v-on:change="addSelected($event, 0)">
+                                            <option value="" selected disabled>Select Category</option>
+                                            <option v-for="(category, index) in categories" v-bind:value="index">@{{ category.category_name }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 mt-2" v-for="(selected, index) in selected_category">
+                                        <select v-bind:name="'children_'+(index+1)" class="form-control" v-on:change="addSelected($event, (index+1))">
+                                            <option value="" selected disabled>Select Category</option>
+                                            <option v-bind:value="index_children" v-for="(category, index_children) in children_categories[index]"> @{{ category.category_name }} </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="category_id" v-model="category_id">
+                    </div>
+              </div>
+              {{ csrf_field() }}
+              <input type="hidden" class="form-control m-input" name="shop_id" value="{{getSettingConfig('shopee_id')}}">
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                  <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button>
+              </div>
+          </form>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
 @endsection
 
 @section('page_script_js')
     {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/scrapper.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/scrapper.js')))}}
+
+    <script type="text/javascript">
+       (function($){
+           $("#modal-shopee-upload").on('shown.bs.modal', function(){
+                $.ajax({
+                    url: $("#shopee_upload").attr('data-url-shopee-category'),
+                    data: {shop_id: {{getSettingConfig('shopee_id')}} },
+                  })
+                  .done(function(response) {
+                    ShopeeUpload.categories = response;
+                  })
+                  .fail(function() {
+                    console.log("error");
+                  });
+           });
+       })(jQuery);
+    </script>
 
     <script type="text/javascript">
         var table;
