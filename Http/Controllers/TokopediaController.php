@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 
 use Gdevilbat\SpardaCMS\Modules\Post\Entities\PostMeta;
+use Gdevilbat\SpardaCMS\Modules\Post\Entities\Post;
 
 class TokopediaController extends Controller
 {
@@ -68,7 +69,7 @@ class TokopediaController extends Controller
 
         $store = json_encode($request->input('store_name'));
 
-        $builder = PostMeta::whereExists(function($query) use ($store){
+        /*$builder = PostMeta::whereExists(function($query) use ($store){
                         $query->select(\DB::raw(1))
                                 ->from(PostMeta::getTableName())
                                ->where('meta_key', 'tokopedia_supplier')
@@ -76,7 +77,23 @@ class TokopediaController extends Controller
                     })
                     ->where('meta_key', 'tokopedia_source');
 
-        $slug = $builder->pluck('meta_value');
+        $slug = $builder->pluck('meta_value');*/
+
+        $builder = PostMeta::from(PostMeta::getTableName().' as table_1')
+                            ->join(PostMeta::getTableName(), function($join) use ($store){
+                                $join->on('table_1.post_id', '=', PostMeta::getTableName().'.post_id')
+                                    ->where('table_1.meta_key', 'tokopedia_supplier')
+                                   ->where('table_1.meta_value', $store);
+                              })
+                            ->where(PostMeta::getTableName().'.meta_key', 'tokopedia_source');
+
+        $tmp = $builder->pluck(PostMeta::getTableName().'.meta_value');
+
+        $tmp = collect($tmp);
+
+        $slug = $tmp->map(function($item, $key){
+          return trim($item, '"');
+        });
 
         $filter = $data->whereNotIn('slug', $slug)->toArray();
 
