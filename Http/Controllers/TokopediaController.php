@@ -68,8 +68,8 @@ class TokopediaController extends Controller
 
         $store = json_encode($request->input('store_name'));
 
-        $builder = PostMeta::whereIn('post_id', function($query) use ($store){
-                        $query->select('post_id')
+        $builder = PostMeta::whereExists(function($query) use ($store){
+                        $query->select(\DB::raw(1))
                                 ->from(PostMeta::getTableName())
                                ->where('meta_key', 'tokopedia_supplier')
                                ->where('meta_value', $store);
