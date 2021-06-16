@@ -347,7 +347,7 @@
                             <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-2 col-form-label">Product Image</label>
                                 <div class="col">
-                                    <input class="form-control m-input my-1" type="text" name="product_image[]" v-bind:value="item != null ? item.product_image : ''">
+                                    <input class="form-control m-input my-1" type="text" name="product_image[]" v-bind:value="item != null ? item.product_image_700 : ''">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
