@@ -270,7 +270,7 @@ class ProductController extends AbstractPost
         }
 
         $post->image_url = $photo;
-        $post->post_content = strip_tags($post->post_content);
+        $post->post_content = html_entity_decode(strip_tags($post->post_content));
 
         return $post;
 
