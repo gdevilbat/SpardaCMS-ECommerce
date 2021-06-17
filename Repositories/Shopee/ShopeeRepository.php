@@ -17,5 +17,6 @@ class ShopeeRepository
 		$this->item = new API\ItemRepository;
 		$this->shop = new API\ShopRepository;
 		$this->image = new API\ImageRepository;
+		$this->logistics = new API\LogisticsRepository;
 	}
 }

@@ -240,6 +240,42 @@ class ProductController extends AbstractPost
         return $validator;
     }
 
+    public function apiProductDetail(Request $request)
+    {
+        $request->validate([
+            'id_posts' => 'required',
+        ]);
+
+        $post = $this->post_repository->with(['productMeta', 'postMeta'])->findOrFail(decrypt($request->input('id_posts')));
+
+        if($post->productMeta->product_sale > $post->productMeta->product_price)
+        {
+            $post->price = $post->productMeta->product_sale;
+        }
+        else
+        {
+            $post->price = $post->productMeta->product_price;
+        }
+
+        $photo = [];
+
+        if(!empty($post->postMeta->where('meta_key', 'cover_image')->first()) && $post->postMeta->where('meta_key', 'cover_image')->first()->meta_value['file'] != null)
+            $photo[] = generate_storage_url($post->postMeta->where('meta_key', 'cover_image')->first()->meta_value['file']);
+
+        if(!empty($post->postMeta->where('meta_key', 'gallery')->first()))
+        {
+            foreach ($post->postMeta->where('meta_key', 'gallery')->first()->meta_value as $key => $value) {
+               $photo[] = generate_storage_url($value['photo']);
+            }
+        }
+
+        $post->image_url = $photo;
+        $post->post_content = (preg_replace('#<p(.*?)>(.*?)</p>#is', '$2', $post->post_content));
+
+        return $post;
+
+    }
+
     public function pricetTagToInteger($value)
     {
         return preg_replace('/[,_]/', '',$value);

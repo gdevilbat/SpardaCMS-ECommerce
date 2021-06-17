@@ -76,6 +76,47 @@ class ItemRepository extends AbstractRepository
         return response()->json($item);
     }
 
+    public function addItem(array $request)
+    {
+        $this->validateRequest($request, [
+            'name' => 'required',
+            'category_id' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+            'logistics' => 'required',
+            'weight' => 'required',
+            'images' => 'required',
+            'attributes' => 'required',
+        ]);
+
+        $path = '/api/v1/item/adds';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['name'] = $request['name'];
+        $parameter['category_id'] = $request['category_id'];
+        $parameter['description'] = $request['description'];
+        $parameter['price'] = $request['price'];
+        $parameter['stock'] = $request['stock'];
+        $parameter['logistics'] = $request['logistics'];
+        $parameter['weight'] = $request['weight'];
+        $parameter['images'] = $request['images'];
+        $parameter['attributes'] = $request['attributes'];
+
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
+
     public function itemUpdate(array $request)
     {
         $this->validateRequest($request, [
@@ -253,6 +294,33 @@ class ItemRepository extends AbstractRepository
         $path = '/api/v1/item/categories/get';
         $parameter = $this->getPrimaryParameter($request['shop_id']);
         $parameter['language'] = $request['language'];
+
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
+
+    public function getAttributes(array $request)
+    {
+        $this->validateRequest($request, [
+            'language' => 'required|in:en,vi,th,zh-Hant,zh-Hans,ms-my,pt-br,id',
+            'category_id' => 'required'
+        ]);
+
+        $path = '/api/v1/item/attributes/get';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['language'] = $request['language'];
+        $parameter['category_id'] = (integer) $request['category_id'];
 
         $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);

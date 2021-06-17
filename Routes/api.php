@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'ecommerce'], function() {
+	Route::post('product-detail', 'ProductController@apiProductDetail');
+	
     Route::post('scrapping-product', 'ScrappingController@scrappingProduct');
 	Route::post('scrapping-variant', 'ScrappingController@scrappingVariant');
 	Route::post('scrapping-shopee', 'ScrappingController@scrappingShopee');
@@ -31,8 +33,10 @@ Route::group(['prefix' => 'ecommerce'], function() {
 			});
 		});
 
-		Route::get('item-publish-promotion', '\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@publishItemPromotion');
+		Route::get('item-publish-promotion', 'ShopeeController@publishItemPromotion');
 		Route::get('shopee-categories', 'ShopeeController@getCategories');
+		Route::get('shopee-attributes', 'ShopeeController@getAttributes');
+		Route::get('shopee-logistics', 'ShopeeController@getLogistics');
 	});
 
 	Route::group(['prefix' => 'tokopedia' ,'middleware' => ['auth:api', 'throttle:rate_limit,1']], function() {

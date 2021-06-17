@@ -10,6 +10,10 @@ class ProductMeta extends Model
     protected $table = 'product_meta';
     protected $primaryKey = 'product_id';
 
+    CONST SHOPEE_ATTR_COMBO = "COMBO_BOX";
+    CONST SHOPEE_ATTR_DROPDOWN = "DROP_DOWN";
+    CONST SHOPEE_ATTR_TEXT = "TEXT_FILED";
+
     /**
      * Set the Post Status.
      *
