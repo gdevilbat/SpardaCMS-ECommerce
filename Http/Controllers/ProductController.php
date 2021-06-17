@@ -248,7 +248,7 @@ class ProductController extends AbstractPost
 
         $post = $this->post_repository->with(['productMeta', 'postMeta'])->findOrFail(decrypt($request->input('id_posts')));
 
-        if($post->productMeta->product_sale > $post->productMeta->product_price)
+        if($post->productMeta->product_sale < $post->productMeta->product_price)
         {
             $post->price = $post->productMeta->product_sale;
         }
@@ -270,7 +270,7 @@ class ProductController extends AbstractPost
         }
 
         $post->image_url = $photo;
-        $post->post_content = (preg_replace('#<p(.*?)>(.*?)</p>#is', '$2', $post->post_content));
+        $post->post_content = strip_tags($post->post_content);
 
         return $post;
 

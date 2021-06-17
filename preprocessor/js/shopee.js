@@ -191,6 +191,7 @@ $(document).ready(function() {
             selected_category: [],
             children_categories: [],
             selected_logistic: [],
+            is_pre_order: false
           }
         }
 

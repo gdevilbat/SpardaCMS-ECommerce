@@ -141,7 +141,8 @@ class ShopeeController extends CoreController
     public function shopeeUploadItem(Request $request)
     {
         $request->validate([
-            'id_posts' => 'required'
+            'id_posts' => 'required',
+            'days_to_ship' => 'numeric|between:7,30'
         ]);
 
         $data['shop_id'] = $request->input('shop_id');
@@ -151,6 +152,12 @@ class ShopeeController extends CoreController
         $data['price'] = (float) $request->input('product_price');
         $data['weight'] = (float) $request->input('product_weight');
         $data['category_id'] = (integer) $request->input('category_id');
+
+        if($request->has('is_pre_order'))
+        {
+            $data['days_to_ship'] = (integer) $request->input('days_to_ship');
+            $data['is_pre_order'] = (boolean) $request->input('is_pre_order');
+        }
 
         /*=========================================
         =            Parsing Attribute            =
@@ -232,8 +239,10 @@ class ShopeeController extends CoreController
             $self = $this;
 
             $item->children = array_values($col_cat->map(function($item, $key) use ($shop_cat, $self){
-                return $self->getCatChildren($item, $shop_cat);
-            })->toArray());
+                                return $self->getCatChildren($item, $shop_cat);
+                            })
+                            ->sortBy('category_name')
+                            ->toArray());
 
         }
         else
@@ -289,8 +298,9 @@ class ShopeeController extends CoreController
         $self = $this;
 
         $categories = $col_cat->map(function($item, $key) use ($tmp, $self){
-            return $self->getCatChildren($item, $tmp);
-        });
+                            return $self->getCatChildren($item, $tmp);
+                        })
+                        ->sortBy('category_name');
 
         return $categories;
     }

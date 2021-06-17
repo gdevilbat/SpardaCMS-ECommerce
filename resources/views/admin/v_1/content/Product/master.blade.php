@@ -451,6 +451,24 @@
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-3 col-form-label">Preorder <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                <div class="col">
+                                    <div class="col-12">
+                                        <span class="m-switch m-switch--icon m-switch--success ml-1 d-flex align-items-center">
+                                            <label>
+                                                <label>
+                                                    <input type="checkbox" v-model="is_pre_order" v-bind:name="'is_pre_order'" value="true">
+                                                    <span></span>
+                                                </label>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="col-12" v-if="is_pre_order">
+                                        <input class="form-control m-input" type="text" name="days_to_ship" placeholder="Days To Ship">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-3 col-form-label">Product Description <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 <div class="col">
                                     <textarea name="product_description" class="form-control autosize">@{{ item != null ? item.post_content : '' }}</textarea>

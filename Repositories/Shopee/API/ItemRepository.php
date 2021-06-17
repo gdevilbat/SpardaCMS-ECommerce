@@ -102,6 +102,12 @@ class ItemRepository extends AbstractRepository
         $parameter['images'] = $request['images'];
         $parameter['attributes'] = $request['attributes'];
 
+        if(array_key_exists('is_pre_order', $request))
+        {
+            $parameter['days_to_ship'] = $request['days_to_ship'];
+            $parameter['is_pre_order'] = $request['is_pre_order'];
+        }
+
         $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 
