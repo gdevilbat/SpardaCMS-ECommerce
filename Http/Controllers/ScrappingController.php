@@ -86,7 +86,7 @@ class ScrappingController extends Controller
             CURLOPT_HTTPHEADER => array(
               'if-none-match-: 55b03-31e022ef540232a0b96aa571cff8f335',
               'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
-              'if-none-match: c53b2662fc864184c7e15e3aaa69c196'
+              /*'if-none-match: c53b2662fc864184c7e15e3aaa69c196'*/
             ),
           ));
 
