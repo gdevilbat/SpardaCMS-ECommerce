@@ -74,7 +74,7 @@ class ScrappingController extends Controller
           'itemid' => 'required',
         ]);
 
-        $url = 'https://shopee.co.id/api/v2/item/get?'.http_build_query(['shopid' => $request->shopid, 'itemid' => $request->itemid]);
+        $url = 'https://shopee.co.id/api/v2/item/get?'.http_build_query(['itemid' => $request->itemid, 'shopid' => $request->shopid]);
 
         $curl = curl_init();
 
@@ -84,7 +84,9 @@ class ScrappingController extends Controller
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
-              "content-type: application/json",
+              'if-none-match-: 55b03-31e022ef540232a0b96aa571cff8f335',
+              'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
+              'if-none-match: c53b2662fc864184c7e15e3aaa69c196'
             ),
           ));
 
