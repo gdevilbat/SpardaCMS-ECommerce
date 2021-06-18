@@ -202,13 +202,7 @@ window.tokopediaScrap = function(){
                         else
                         {
                             config = {
-                              method: 'GET',
                               url: 'https://shopee.co.id/api/v2/item/get'+'?itemid='+shopee[1]+'&shopid='+shopee[0],
-                              headers: {
-                                "Accept": "application/json",
-                                "if-none-match-": "55b03-31e022ef540232a0b96aa571cff8f335",
-                                "if-none-match": "c53b2662fc864184c7e15e3aaa69c196" 
-                              }
                             };
                         }
 
@@ -218,7 +212,7 @@ window.tokopediaScrap = function(){
                                         let html = response.data;
                                         let devtoList = [];
                                         devtoList[0] = {
-                                            price: (html.item.price)/100000,
+                                            price: (html.item.price),
                                             status: html.item.stock > 0 ? 'available' : 'empty'
                                         }
                                         let shopee_store_price = devtoList[0].price;

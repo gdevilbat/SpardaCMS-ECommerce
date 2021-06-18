@@ -199,10 +199,10 @@
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
                             <div class="m-radio-inline">
-                                <label class="m-radio">
+                                {{-- <label class="m-radio">
                                     <input type="radio" name="scrapping[suplier_sync]" value="ajax" {{getSettingConfig('scrapping', 'suplier_sync') == 'ajax' ? 'checked' : ''}}> Ajax
                                     <span></span>
-                                </label>
+                                </label> --}}
                                 <label class="m-radio">
                                     <input type="radio" name="scrapping[suplier_sync]" value="cloud" {{getSettingConfig('scrapping', 'suplier_sync') == 'cloud' ? 'checked' : ''}}> Cloud
                                     <span></span>
@@ -227,10 +227,10 @@
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
                             <div class="m-radio-inline">
-                                <label class="m-radio">
+                                {{-- <label class="m-radio">
                                     <input type="radio" name="scrapping[store_sync]" value="ajax" {{getSettingConfig('scrapping', 'store_sync') == 'ajax' ? 'checked' : ''}}> Ajax
                                     <span></span>
-                                </label>
+                                </label> --}}
                                 <label class="m-radio">
                                     <input type="radio" name="scrapping[store_sync]" value="cloud" {{getSettingConfig('scrapping', 'store_sync') == 'cloud' ? 'checked' : ''}}> Cloud
                                     <span></span>

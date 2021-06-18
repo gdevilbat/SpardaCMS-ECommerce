@@ -69,35 +69,25 @@ class ScrappingController extends Controller
 
     public function scrappingShopee(Request $request)
     {
-      $this->validate($request, [
+       $this->validate($request, [
           'shopid' => 'required',
           'itemid' => 'required',
         ]);
 
-        $url = 'https://shopee.co.id/api/v2/item/get?'.http_build_query(['itemid' => $request->itemid, 'shopid' => $request->shopid]);
+       $request->merge([
+          'shop_id' => $request->shopid,
+          'product_id' => $request->itemid,
+       ]);
 
-        $curl = curl_init();
+        $data = resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository::class)->item->getItemDetail($request->except(['itemid', 'shopid']));
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_ENCODING => "",
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => array(
-              'if-none-match-: 55b03-31e022ef540232a0b96aa571cff8f335',
-              'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
-              'if-none-match: c53b2662fc864184c7e15e3aaa69c196'
-            ),
-          ));
+        $data = json_decode($data->getContent());
 
-        $response = curl_exec($curl);
+        $content['item'] = $data;
 
-        curl_close($curl);
+        $content = collect($content);
 
-        if(empty($response))
-            return response()->json(['message' => 'Check Connection'], 500);
-
-        return $response;    
+        return $content;
     }
 
     public function shopeeDetail(Request $request)
