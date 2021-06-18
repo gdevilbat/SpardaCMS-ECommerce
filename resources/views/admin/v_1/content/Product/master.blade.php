@@ -394,7 +394,7 @@
                             <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-3 col-form-label">Product Price <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 <div class="col">
-                                    <input class="form-control m-input" type="text" name="product_price" v-bind:value="item != null ? item.price : ''">
+                                    <input class="form-control m-input" type="number" name="product_price" v-model="item.price">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
@@ -471,7 +471,7 @@
                             <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-3 col-form-label">Product Description <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 <div class="col">
-                                    <textarea name="product_description" class="form-control autosize">@{{ item != null ? item.post_content : '' }}</textarea>
+                                    <textarea name="product_description" class="form-control autosize" v-model="item.post_content"></textarea>
                                 </div>
                             </div>
                         </div>

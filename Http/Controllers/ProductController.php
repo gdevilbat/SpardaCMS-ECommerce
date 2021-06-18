@@ -248,7 +248,7 @@ class ProductController extends AbstractPost
 
         $post = $this->post_repository->with(['productMeta', 'postMeta'])->findOrFail(decrypt($request->input('id_posts')));
 
-        if($post->productMeta->product_sale < $post->productMeta->product_price)
+        if($post->productMeta->product_sale > 0 && ($post->productMeta->product_sale < $post->productMeta->product_price))
         {
             $post->price = $post->productMeta->product_sale;
         }
