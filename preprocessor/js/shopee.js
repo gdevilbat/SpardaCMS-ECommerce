@@ -133,7 +133,6 @@ $(document).ready(function() {
                         })
                         .done(function(response) {
                             self.attributes = response.attributes;
-                            console.log("success");
                         })
                         .fail(function() {
                             console.log("error");
@@ -176,6 +175,27 @@ $(document).ready(function() {
             },
             resetWindow: function(){
                  Object.assign(this.$data, initialState());
+            },
+            submit: function(){
+                self = this;
+                $.ajax({
+                    url: $("#shopee_upload").attr('data-action'),
+                    type: 'POST',
+                    data: $("#shopee_upload").serialize(),
+                    headers: {
+                        "Accept": "application/json",
+                        "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
+                    }
+                })
+                .done(function() {
+                    self.errors = [];
+                    $("#reload-datatable").click();
+                    $("#modal-shopee-upload").modal('hide');
+                })
+                .fail(function(response) {
+                    self.errors = response.responseJSON.errors;
+                });
+                
             }
         }
     });
@@ -191,6 +211,7 @@ $(document).ready(function() {
             selected_category: [],
             children_categories: [],
             selected_logistic: [],
+            errors: [],
             is_pre_order: false
           }
         }
@@ -201,6 +222,19 @@ $(document).ready(function() {
         $("#modal-shopee-upload").on("hidden.bs.modal", function(e){
             ShopeeUpload.resetWindow();
         });
+
+        $("#modal-shopee-upload").on('shown.bs.modal', function(){
+            $.ajax({
+                url: $("#shopee_upload").attr('data-url-shopee-category'),
+                data: {shop_id: $("[name='shop_id']").val()},
+              })
+              .done(function(response) {
+                ShopeeUpload.categories = response;
+              })
+              .fail(function() {
+                console.log("error");
+              });
+       });
     });
 
 }(jQuery));
