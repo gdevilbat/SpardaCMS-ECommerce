@@ -212,7 +212,7 @@ window.tokopediaScrap = function(){
                                         let html = response.data;
                                         let devtoList = [];
                                         devtoList[0] = {
-                                            price: (html.item.price),
+                                            price: (html.item.price)/100000,
                                             status: html.item.stock > 0 ? 'available' : 'empty'
                                         }
                                         let shopee_store_price = devtoList[0].price;
