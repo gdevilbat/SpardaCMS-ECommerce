@@ -127,11 +127,11 @@ class ItemRepository extends AbstractRepository
     {
         $this->validateRequest($request, [
           'product_id' => 'required',
-          'post_id' => 'required'
+          Product::FOREIGN_KEY => 'required'
         ]);
 
         $post = Product::with('productMeta')
-                        ->findOrfail($request['post_id']);
+                        ->findOrfail($request[Product::FOREIGN_KEY]);
 
         $response = [];
 

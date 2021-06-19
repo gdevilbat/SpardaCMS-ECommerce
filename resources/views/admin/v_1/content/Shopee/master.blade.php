@@ -112,7 +112,7 @@
                     <form action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@saveItemScheduled') }}" method="post">
                         <div v-for="(item, index) in items">
                             @{{ item.name }} - @{{ item.status }} <i class="la la-close" v-on:click="removeComponent(index)" style="cursor: pointer;"></i>
-                            <input type="hidden" v-bind:name="'items[]'" v-model="items[index]['post_id']">
+                            <input type="hidden" v-bind:name="'items[]'" v-model="items[index]['<?=\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::FOREIGN_KEY?>']">
                         </div>
                         {{ csrf_field() }}
                         <div class="d-flex mt-1 justify-content-end">
@@ -190,8 +190,8 @@
                                 $(".item-promotion").click(function(event) {
                                     let url = $(this).attr('data-shopee-url');
                                     let shopee = url.split('/').slice(-2);
-                                    self.items.push({name: $(this).attr('data-name'), post_id: parseInt($(this).attr('data-id')), status: $(this).attr('data-status')});
-                                    self.items = self.getUnique(self.items, 'post_id');
+                                    self.items.push({name: $(this).attr('data-name'), <?=\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::FOREIGN_KEY?>: parseInt($(this).attr('data-id')), status: $(this).attr('data-status')});
+                                    self.items = self.getUnique(self.items, '<?=\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::FOREIGN_KEY?>');
                                 });
                             }
                         } );

@@ -86,7 +86,7 @@ class TokopediaController extends Controller
 
         $builder = PostMeta::from(PostMeta::getTableName().' as table_1')
                             ->join(PostMeta::getTableName(), function($join) use ($store){
-                                $join->on('table_1.post_id', '=', PostMeta::getTableName().'.post_id')
+                                $join->on('table_1.'.Post::FOREIGN_KEY, '=', PostMeta::getTableName().'.'.Post::FOREIGN_KEY)
                                     ->where('table_1.meta_key', 'tokopedia_supplier')
                                    ->where('table_1.meta_value', $store);
                               })

@@ -126,7 +126,7 @@ class ShopeeController extends CoreController
             $posts = Product::with('productMeta')->whereIn(Product::getPrimaryKey(), getSettingConfig('shopee_item_scheduled'))->get();
             foreach ($posts as $key => $post) {
                 $items[$key]['name'] = $post->post_title;
-                $items[$key]['post_id'] = $post->getKey();
+                $items[$key][Product::FOREIGN_KEY] = $post->getKey();
                 $items[$key]['status'] = $post->productMeta->availability;
             }
         }

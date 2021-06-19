@@ -145,7 +145,7 @@ class ShopeeController
         PostMeta::unguard();
 
         PostMeta::updateOrCreate(
-            ['meta_key' => 'shopee_slug', 'post_id' => decrypt($request->id_posts)],
+            ['meta_key' => 'shopee_slug', Product::FOREIGN_KEY => decrypt($request->id_posts)],
             ['meta_value' => $slug]
         );
 
