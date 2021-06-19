@@ -34,8 +34,9 @@
                                 <div class="form-group m-form__group row">
                                     <label for="example-text-input" class="col-3 col-form-label">Product Image <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                     <div class="col">
-                                        <div>
-                                            <input class="form-control m-input my-1" v-for="(image, index) in item.images" type="text" name="product_image[]" v-model="item.images[index].urlOriginal">
+                                        <div v-for="(image, index) in item.images">
+                                            <input class="form-control m-input my-1" type="text" name="product_image[]" v-model="item.images[index].urlOriginal">
+                                            <img v-bind:src="item.images[index].urlOriginal" width="200" alt="">
                                         </div>
                                     </div>
                                 </div>
