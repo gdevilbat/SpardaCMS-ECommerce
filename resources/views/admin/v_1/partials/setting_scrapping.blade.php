@@ -84,7 +84,6 @@
               {{csrf_field()}}
               {{method_field('PUT')}}
           </form>
-          <input type="hidden" class="form-control m-input" name="scrapping[token]" placeholder="ex: 9234kjkiwerwer8834" value="{{Auth::user()->api_token}}">
       </div>
       <!-- /.modal-content -->
   </div>

@@ -37,7 +37,7 @@
                         <div class="col-12">
                             <span v-for="item in items">
                                 <a v-bind:href="item.url" target="_blank"><span class="badge badge-info">@{{ item.product_name }}</span></a>
-                                <a href="javascript:void(0)" class="btn btn-outline-success m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x my-1" v-on:click="setShopeeUploadItem(item)">
+                                <a href="javascript:void(0)" class="btn btn-outline-success m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x my-1" v-on:click="setTokopediaDownloadItem(item)">
                                     <i class="la la-download"></i>
                                 </a>&nbsp;|&nbsp;
                             </span>

@@ -60,11 +60,11 @@ window.tokopediaScrap = function(){
         if($("[name='scrapping[suplier_sync]']:checked").val() == 'cloud')
         {
             settings = {
-              "url": $("#data-product").attr('data-url-scrapping-product'),
+              "url": $("#data-product").attr('data-url-scrapping-tokopedia-product-detail'),
               "method": "POST",
                "headers": {
     		    "Accept": "application/json",
-                "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
+                "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
     		  },
     		  "data": {domain: $(this).attr('data-shop-domain'), productKey: $(this).attr('data-product-key')}
             };
@@ -97,11 +97,11 @@ window.tokopediaScrap = function(){
                     if($("[name='scrapping[suplier_sync]']:checked").val() == 'cloud')
                     {
                         settings = {
-                          "url": $("#data-product").attr('data-url-scrapping-variant'),
+                          "url": $("#data-product").attr('data-url-scrapping-tokopedia-product-variant'),
                           "method": "POST",
                           "headers": {
     					    "Accept": "application/json",
-                            "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
+                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
     					  },
     					  "data": {variant_id: response[0].data.getPDPInfo.basic.id}
                         };
@@ -195,7 +195,7 @@ window.tokopediaScrap = function(){
                               url: $("#data-product").attr('data-url-scrapping-shopee')+'?shopid='+shopee[0]+'&itemid='+shopee[1],
                               headers: {
                                 "Accept": "application/json",
-                                "Authorization": "Bearer "+ $("[name='scrapping[token]']").val() 
+                                "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content') 
                               }
                             };
                         }
@@ -233,7 +233,7 @@ window.tokopediaScrap = function(){
                           url: $("#data-product").attr('data-url-shopee-detail'),
                           headers: {
                             "Accept": "application/json",
-                            "Authorization": "Bearer "+ $("[name='scrapping[token]']").val() 
+                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content') 
                           },
                           data: {'shop_id': shopee[0], 'product_id': shopee[1]}
                         };

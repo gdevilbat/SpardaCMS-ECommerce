@@ -14,7 +14,7 @@ $(document).ready(function() {
                     data: {'shop_id': shopee[0], 'product_id': shopee[1], 'post_id': post_id},
                     headers: {
                         "Accept": "application/json",
-                        "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
+                        "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
                     }
                 }).done(function(response){
                     counter_shopee_sycronize++;
@@ -40,7 +40,7 @@ $(document).ready(function() {
                         data: {shop_id: $("[name='shop_id']").val()},
                         headers: {
                             "Accept": "application/json",
-                            "Authorization": "Bearer "+ $("[name='scrapping[token]']").val(),
+                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content'),
                         }
                     })
                     .done(function(response) {
@@ -52,7 +52,7 @@ $(document).ready(function() {
                                 data: {shop_id: $("[name='shop_id']").val(), product_id: el.item_id,},
                                 headers: {
                                     "Accept": "application/json",
-                                    "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
+                                    "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
                                 }
                             }).done(function(response){
                                 self.items.push(response);
@@ -79,7 +79,7 @@ $(document).ready(function() {
                         data: {shop_id: $("[name='shop_id']").val()},
                         headers: {
                             "Accept": "application/json",
-                            "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
+                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
                         }
                     })
                     .done(function(response) {
@@ -184,7 +184,7 @@ $(document).ready(function() {
                     data: $("#shopee_upload").serialize(),
                     headers: {
                         "Accept": "application/json",
-                        "Authorization": "Bearer "+ $("[name='scrapping[token]']").val()
+                        "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
                     }
                 })
                 .done(function() {
@@ -200,23 +200,24 @@ $(document).ready(function() {
         }
     });
 
-        function initialState (){
-          return {
-            id_posts: null,
-            item: [],
-            category_id: null,
-            categories: [],
-            logistics: [],
-            attributes: [],
-            selected_category: [],
-            children_categories: [],
-            selected_logistic: [],
-            errors: [],
-            is_pre_order: false
-          }
-        }
-
     window.ShopeeUpload = ShopeeUpload;
+    
+    function initialState (){
+      return {
+        id_posts: null,
+        item: [],
+        category_id: null,
+        categories: [],
+        logistics: [],
+        attributes: [],
+        selected_category: [],
+        children_categories: [],
+        selected_logistic: [],
+        errors: [],
+        is_pre_order: false
+      }
+    }
+
 
     $(document).ready(function() {
         $("#modal-shopee-upload").on("hidden.bs.modal", function(e){

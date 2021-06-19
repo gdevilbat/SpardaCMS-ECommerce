@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Gdevilbat\SpardaCMS\Modules\Post\Entities\PostMeta;
 use Gdevilbat\SpardaCMS\Modules\Post\Entities\Post;
 
+use StorageService;
+
 class TokopediaController extends Controller
 {
     public function getData(Request $request)
@@ -67,6 +69,7 @@ class TokopediaController extends Controller
         $tmp = collect($result->data->list);
 
         $data = $tmp->map(function($item, $key) use ($request) {
+            $item->store = $this->slugify($item->shop_name);
             $item->slug = $this->slugify($item->product_name);
             $item->url = 'https://www.tokopedia.com/'.$request->input('store_name').'/'.$item->slug;
             return $item;
@@ -104,6 +107,43 @@ class TokopediaController extends Controller
 
         return response()
             ->json(['paging' => $result->data->paging, 'list' => $filter]);
+    }
+
+    public function store(Request $request)
+    {
+      $response = resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository::class)->save($request);
+      $post = $response->data;
+
+      foreach ($request->product_image as $key => $value) {
+
+        if($key == 0)
+        {
+          $path = StorageService::putImageUrl('scrapping/'.$post->post_slug, $value, true);
+          $cover_image['caption'] = null;
+          $cover_image['file'] = $path->file;
+          $cover_image['small'] = $path->small;
+          $cover_image['thumb'] = $path->thumb;
+          $cover_image['medium'] = $path->medium;
+
+          resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository::class)->saveImage($post, $cover_image);
+        }
+        else
+        {
+          $path = StorageService::putImageUrl('scrapping/'.$post->post_slug, $value);
+          $data[] = ['photo' => '/'.$path->file];
+
+          PostMeta::unguard();
+          PostMeta::updateOrCreate(
+              ['meta_key' => 'gallery', Post::FOREIGN_KEY => $post->getKey()],
+              ['meta_value' => $data]
+          );
+          PostMeta::reguard();
+        }
+      }
+
+      return response()->json([
+        'status' => $response->status
+      ]); 
     }
 
     protected static function slugify($text)
