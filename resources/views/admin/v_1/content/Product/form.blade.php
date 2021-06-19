@@ -35,7 +35,7 @@
 <div class="row">
     <div class="col-sm-12">
 
-        <form class="m-form m-form--fit m-form--label-align-right" action="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@store', ['callback' => 'productMetaStore'])}}" method="post" enctype="multipart/form-data">
+        <form class="m-form m-form--fit m-form--label-align-right" action="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@store')}}" method="post" enctype="multipart/form-data">
             <!--begin::Portlet-->
             <div class="row">
                 <div class="col-md-8">

@@ -5,7 +5,6 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Validation\Rule;
 
 
 use Gdevilbat\SpardaCMS\Modules\Post\Foundation\AbstractPost;
@@ -25,12 +24,9 @@ class ProductController extends AbstractPost
     public function __construct(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository $post_repository)
     {
         parent::__construct($post_repository);
+        $this->post_m = new Product;
         $this->product_meta_m = new ProductMeta;
         $this->product_meta_repository = new Repository(new ProductMeta, resolve(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class));
-
-        $this->setModule('ecommerce');
-        $this->setPostType('product');
-        $this->post_repository->setModule($this->module);
     }
 
     public function getColumnOrder()
@@ -65,7 +61,7 @@ class ProductController extends AbstractPost
 
                 $data[$i][] = $post->author->name;
 
-                $categories = $post->taxonomies->where('taxonomy', $this->getCategory());
+                $categories = $post->taxonomies->where('taxonomy', $this->post_repository->getCategory());
                 if($categories->count() > 0)
                 {
                     $data[$i][] = '';
@@ -151,7 +147,7 @@ class ProductController extends AbstractPost
 
     public function getStoreLink($post)
     {
-        $view = View::make($this->getModule().'::admin.'.$this->data['theme_cms']->value.'.partials'.'.store_link', [
+        $view = View::make($this->post_repository->getModule().'::admin.'.$this->data['theme_cms']->value.'.partials'.'.store_link', [
             'post' => $post
         ]);
 
@@ -167,78 +163,9 @@ class ProductController extends AbstractPost
      */
     public function show($id)
     {
-        return view($this->getModule().'::show');
+        return view($this->post_repository->getModule().'::show');
     }
 
-    public function getCategory()
-    {
-        return 'product-category';
-    }
-
-    public function productMetaStore(Request $request, \Gdevilbat\SpardaCMS\Modules\Post\Entities\Post $post)
-    {
-        if($request->isMethod('POST'))
-        {
-            $product_meta = new $this->product_meta_m;
-            $product_meta[\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getPrimaryKey()] = $post->getKey();
-        }
-        else
-        {
-            $product_meta = $this->product_meta_m->find(decrypt($request->input(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey())));
-            if(empty($product_meta))
-            {
-                $product_meta = new $this->product_meta_m;
-                $product_meta[\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getPrimaryKey()] = $post->getKey();
-            }
-        }
-
-        foreach ($request->input('product_meta') as $key => $value) 
-        {
-            $product_meta->$key = $value;
-        }
-
-        $product_meta->save();
-    }
-
-    public function getTag()
-    {
-        return 'tag';
-    }
-
-    public function validatePost(Request $request)
-    {
-        $validator = parent::validatePost($request);
-
-        $validator->addRules([
-                'meta.gallery.*.photo' => 'required',
-                'taxonomy.category' => 'required',
-                'product_meta.product_price' => 'required|max:11',
-                'product_meta.availability' => [
-                        'required',
-                        Rule::in(['in stock', 'out of stock', 'preorder', 'available for order', 'discontinued'])
-                    ],
-                'product_meta.condition' => [
-                        'required',
-                        Rule::in(['new', 'refurbished', 'used'])
-                    ]
-        ]);
-
-        if(!empty($request->input('product_meta.product_sale')))
-        {
-            $validator->addRules([
-                    'product_meta.product_sale' => [
-                        'max:11',
-                        function ($attribute, $value, $fail) use ($request) {
-                            if ($this->pricetTagToInteger($value) > $this->pricetTagToInteger($request->input('product_meta.product_price'))) {
-                                $fail($attribute.' Must Be Smaller Than Product Price.');
-                            }
-                        },
-                ],      
-            ]);
-        }
-
-        return $validator;
-    }
 
     public function apiProductDetail(Request $request)
     {
@@ -274,10 +201,5 @@ class ProductController extends AbstractPost
 
         return $post;
 
-    }
-
-    public function pricetTagToInteger($value)
-    {
-        return preg_replace('/[,_]/', '',$value);
     }
 }

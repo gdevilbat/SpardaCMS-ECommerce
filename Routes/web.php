@@ -24,8 +24,8 @@ Route::group(['middleware' => 'core.auth'], function() {
 	        	Route::group(['middleware' => 'core.menu'], function() {
 				    Route::get('master', 'ProductController@index')->middleware('can:menu-ecommerce')->name('product');
 				    Route::get('form', 'ProductController@create')->name('product');
-				    Route::post('form/{callback?}', 'ProductController@store')->middleware('can:create-ecommerce')->name('product');
-				    Route::put('form/{callback?}', 'ProductController@store')->name('product');
+				    Route::post('form', 'ProductController@store')->middleware('can:create-ecommerce')->name('product');
+				    Route::put('form', 'ProductController@store')->name('product');
 				    Route::delete('form', 'ProductController@destroy')->name('product');
 				});
 
