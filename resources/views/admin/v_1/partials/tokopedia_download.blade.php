@@ -45,7 +45,7 @@
                             <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-3 col-form-label">Product Price <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 <div class="col">
-                                    <input class="form-control m-input" type="number" name="product_meta[product_price]" v-model="item.price_int">
+                                    <input class="form-control m-input" type="number" name="product_meta[product_price]" v-model="item.price">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">

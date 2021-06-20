@@ -1,5 +1,5 @@
 (function($){
-  var data_scrapping = new Vue({
+  var DataScrapping = new Vue({
       el: "#data_scrapping",
       data: {
           items: [],
@@ -19,6 +19,7 @@
             .done(function(response) {
               TokopediaDownload.$set(TokopediaDownload.item, 'images', response[0].data.getPDPInfo.pictures);
               TokopediaDownload.$set(TokopediaDownload.item, 'description', response[0].data.getPDPInfo.basic.description);
+              TokopediaDownload.$set(TokopediaDownload.item, 'price', response[0].data.getPDPInfo.basic.price);
             })
             .fail(function() {
               console.log("error");
@@ -42,7 +43,7 @@
           };
 
           $.ajax(settings).done(function (response) {
-            data_scrapping.items = response.list;
+            DataScrapping.items = response.list;
           }).fail(function(response){
               alert(JSON.stringify(response.responseJSON.errors));
           });

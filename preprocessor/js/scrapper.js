@@ -90,65 +90,65 @@ window.tokopediaScrap = function(){
                 let suplier_weight = response[0].data.getPDPInfo.basic.weight;
                 $('#web-price-'+$(self).attr('data-index')).append('<br/><span class="text-danger">('+($('#web-price-'+$(self).attr('data-index')).attr('data-price') - supplier_price)+')</span>');
 
-                if(response[0].data.getPDPInfo.variant.isVariant && false) // Set False To Disable Variant Check
+                if(response[0].data.getPDPInfo.basic.status == "ACTIVE" && response[0].data.getPDPInfo.stock.useStock)
                 {
-                    let settings;
-
-                    if($("[name='scrapping[suplier_sync]']:checked").val() == 'cloud')
-                    {
-                        settings = {
-                          "url": $("#data-product").attr('data-url-scrapping-tokopedia-product-variant'),
-                          "method": "POST",
-                          "headers": {
-    					    "Accept": "application/json",
-                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
-    					  },
-    					  "data": {variant_id: response[0].data.getPDPInfo.basic.id}
-                        };
-                    }
-                    else
-                    {
-                        settings = {
-                          "url": "https://gql.tokopedia.com/",
-                          "method": "POST",
-                          "headers": {
-                            "content-type": "application/json",
-                          },
-                          "data": "[\r\n    {\r\n        \"operationName\": \"ProductVariantQuery\",\r\n        \"variables\": {\r\n            \"productID\": \""+response[0].data.getPDPInfo.basic.id+"\",\r\n            \"includeCampaign\": true\r\n        },\r\n        \"query\": \"query ProductVariantQuery($productID: String!, $includeCampaign: Boolean!) {\\n  getProductVariant(productID: $productID, option: {userID: \\\"0\\\", includeCampaign: $includeCampaign}) {\\n    parentID\\n    defaultChild\\n    variant {\\n      productVariantID\\n      variantID\\n      variantUnitID\\n      name\\n      identifier\\n      unitName\\n      position\\n      option {\\n        productVariantOptionID\\n        variantUnitValueID\\n        value\\n        hex\\n        picture {\\n          urlOriginal: url\\n          urlThumbnail: url200\\n          __typename\\n        }\\n        __typename\\n      }\\n      __typename\\n    }\\n    children {\\n      productID\\n      price\\n      priceFmt\\n      sku\\n      optionID\\n      productName\\n      productURL\\n      picture {\\n        urlOriginal: url\\n        urlThumbnail: url200\\n        __typename\\n      }\\n      stock {\\n        stock\\n        isBuyable\\n        alwaysAvailable\\n        isLimitedStock\\n        stockWording\\n        stockWordingHTML\\n        otherVariantStock\\n        minimumOrder\\n        maximumOrder\\n        __typename\\n      }\\n      isCOD\\n      isWishlist\\n      campaignInfo {\\n        stock\\n        originalStock\\n        endDateUnix\\n        isActive\\n        appLinks\\n        startDate\\n        campaignID\\n        isAppsOnly\\n        campaignType\\n        originalPrice\\n        discountPrice\\n        originalPriceFmt\\n        discountPriceFmt\\n        campaignTypeName\\n        discountPercentage\\n        hideGimmick\\n        __typename\\n      }\\n      __typename\\n    }\\n    sizeChart\\n    enabled\\n    alwaysAvailable\\n    stock\\n    __typename\\n  }\\n}\\n\"\r\n    }\r\n]",
-                        };
-                    }
-
-                    $.ajax(settings).done(function (response) {
-                        let status_boolean = false;
-                        $.each(response[0].data.getProductVariant.children, function(index, val) {
-                            if(val.stock.otherVariantStock == 'available')
-                                status_boolean = true; 
-                        });
-
-                        if(status_boolean)
-                        {
-                            supplier_status = 'available';
-                        }
-                        else
-                        {
-                            supplier_status = 'empty';
-                        }
-
-                        $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
-                    });
+                    supplier_status = 'available';
+                    $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
                 }
                 else
                 {
-                    if(response[0].data.getPDPInfo.basic.status == "ACTIVE" && response[0].data.getPDPInfo.stock.useStock)
+                    if(response[0].data.getPDPInfo.variant.isVarian)
                     {
-                        supplier_status = 'available';
+                        let settings;
+
+                        if($("[name='scrapping[suplier_sync]']:checked").val() == 'cloud')
+                        {
+                            settings = {
+                              "url": $("#data-product").attr('data-url-scrapping-tokopedia-product-variant'),
+                              "method": "POST",
+                              "headers": {
+                                "Accept": "application/json",
+                                "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                              },
+                              "data": {variant_id: response[0].data.getPDPInfo.basic.id}
+                            };
+                        }
+                        else
+                        {
+                            settings = {
+                              "url": "https://gql.tokopedia.com/",
+                              "method": "POST",
+                              "headers": {
+                                "content-type": "application/json",
+                              },
+                              "data": "[\r\n    {\r\n        \"operationName\": \"ProductVariantQuery\",\r\n        \"variables\": {\r\n            \"productID\": \""+response[0].data.getPDPInfo.basic.id+"\",\r\n            \"includeCampaign\": true\r\n        },\r\n        \"query\": \"query ProductVariantQuery($productID: String!, $includeCampaign: Boolean!) {\\n  getProductVariant(productID: $productID, option: {userID: \\\"0\\\", includeCampaign: $includeCampaign}) {\\n    parentID\\n    defaultChild\\n    variant {\\n      productVariantID\\n      variantID\\n      variantUnitID\\n      name\\n      identifier\\n      unitName\\n      position\\n      option {\\n        productVariantOptionID\\n        variantUnitValueID\\n        value\\n        hex\\n        picture {\\n          urlOriginal: url\\n          urlThumbnail: url200\\n          __typename\\n        }\\n        __typename\\n      }\\n      __typename\\n    }\\n    children {\\n      productID\\n      price\\n      priceFmt\\n      sku\\n      optionID\\n      productName\\n      productURL\\n      picture {\\n        urlOriginal: url\\n        urlThumbnail: url200\\n        __typename\\n      }\\n      stock {\\n        stock\\n        isBuyable\\n        alwaysAvailable\\n        isLimitedStock\\n        stockWording\\n        stockWordingHTML\\n        otherVariantStock\\n        minimumOrder\\n        maximumOrder\\n        __typename\\n      }\\n      isCOD\\n      isWishlist\\n      campaignInfo {\\n        stock\\n        originalStock\\n        endDateUnix\\n        isActive\\n        appLinks\\n        startDate\\n        campaignID\\n        isAppsOnly\\n        campaignType\\n        originalPrice\\n        discountPrice\\n        originalPriceFmt\\n        discountPriceFmt\\n        campaignTypeName\\n        discountPercentage\\n        hideGimmick\\n        __typename\\n      }\\n      __typename\\n    }\\n    sizeChart\\n    enabled\\n    alwaysAvailable\\n    stock\\n    __typename\\n  }\\n}\\n\"\r\n    }\r\n]",
+                            };
+                        }
+
+                        $.ajax(settings).done(function (response) {
+                            let status_boolean = false;
+                            $.each(response[0].data.getProductVariant.children, function(index, val) {
+                                if(val.stock.otherVariantStock == 'available')
+                                    status_boolean = true; 
+                            });
+
+                            if(status_boolean)
+                            {
+                                supplier_status = 'available';
+                            }
+                            else
+                            {
+                                supplier_status = 'empty';
+                            }
+
+                            $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
+                        });
                     }
                     else
                     {
                         supplier_status = 'empty';
+                        $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
                     }
-
-                    $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
                 }
 
                 /*=================================
