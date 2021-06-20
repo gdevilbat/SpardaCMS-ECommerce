@@ -141,6 +141,14 @@ $(document).ready(function() {
                     }
                 });
             },
+            setAttributeIndex: function(index){
+                this.attribute_option_index = index;
+            },
+            addAttributeOption: function(index){
+                last = this.attributes[index].options.length;
+                this.$set(this.attributes[index].options, last, $('#attribute_option_'+index).val());
+                this.attribute_option_index = null;
+            },
             setDataForm: function(id){
                 this.id_posts = id;
                 self = this;
@@ -214,6 +222,7 @@ $(document).ready(function() {
         children_categories: [],
         selected_logistic: [],
         errors: [],
+        attribute_option_index: null,
         is_pre_order: false
       }
     }

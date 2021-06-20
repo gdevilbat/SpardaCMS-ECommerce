@@ -63,10 +63,20 @@
                                             <div class="col pl-0">
                                                 <input type="hidden" v-bind:name="'product_attributes['+index+'][attributes_id]'" v-bind:value="attribute.attribute_id">
                                                 <input v-if="attribute.input_type == '<?= \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_ATTR_TEXT ?>'" class="form-control" type="text" v-bind:name="'product_attributes['+index+'][value]'" v-bind:placeholder="attribute.attribute_name" v-bind:required="attribute.is_mandatory ? true : false">
-                                                <select class="form-control"  v-if="attribute.input_type == '<?= \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_ATTR_COMBO ?>' || attribute.input_type == '<?= \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_ATTR_DROPDOWN ?>'" v-bind:name="'product_attributes['+index+'][value]'" v-bind:placeholder="attribute.attribute_name" v-bind:required="attribute.is_mandatory ? true : false">
-                                                    <option value="">--Select @{{ attribute.attribute_name }}--</option>
-                                                    <option v-for="option in attribute.options">@{{ option }}</option>
-                                                </select>
+                                                <div class="row" v-if="attribute.input_type == '<?= \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_ATTR_COMBO ?>' || attribute.input_type == '<?= \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_ATTR_DROPDOWN ?>'">
+                                                    <div class="col">
+                                                        <select class="form-control" v-bind:name="'product_attributes['+index+'][value]'" v-bind:placeholder="attribute.attribute_name" v-bind:required="attribute.is_mandatory ? true : false">
+                                                            <option value="">--Select @{{ attribute.attribute_name }}--</option>
+                                                            <option v-for="option in attribute.options">@{{ option }}</option>
+                                                        </select>
+                                                        <div v-if="attribute_option_index == index">
+                                                            <input v-bind:id="'attribute_option_'+index" type="text"> <button type="button" v-on:click="addAttributeOption(index)">Tambah</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <button type="button" class="btn m-btn--pill btn-danger" v-on:click="setAttributeIndex(index)"><span><i class="fa fa-plus"></i></span></button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
