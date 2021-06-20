@@ -74,7 +74,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-2">
-                                                        <button type="button" class="btn m-btn--pill btn-danger" v-on:click="setAttributeIndex(index)"><span><i class="fa fa-plus"></i></span></button>
+                                                        <button type="button" class="btn m-btn--pill btn-danger" v-if="attribute.attribute_type == 'STRING_TYPE'" v-on:click="setAttributeIndex(index)"><span><i class="fa fa-plus"></i></span></button>
                                                     </div>
                                                 </div>
                                             </div>
