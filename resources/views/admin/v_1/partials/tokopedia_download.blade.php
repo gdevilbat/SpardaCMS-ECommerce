@@ -37,6 +37,7 @@
                                         <div v-for="(image, index) in item.images">
                                             <input class="form-control m-input my-1" type="text" name="product_image[]" v-model="item.images[index].urlOriginal">
                                             <img v-bind:src="item.images[index].urlOriginal" width="200" alt="">
+                                            <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeImage(index)"><span><i class="fa fa-minus"></i></span></button>
                                         </div>
                                     </div>
                                 </div>

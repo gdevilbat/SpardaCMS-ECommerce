@@ -58,6 +58,9 @@
           resetWindow: function(){
                Object.assign(this.$data, initialState());
           },
+          removeImage: function(index){
+            this.item.images.splice(index, 1);
+          },
           submit: function(){
               self = this;
               $.ajax({
