@@ -109,8 +109,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group m-form__group d-flex px-0 flex-wrap">
-                                <div class="col-4 d-flex justify-content-end py-3">
+                            <div class="form-group m-form__group row">
+                                <div class="col-3 col-form-label">
                                     <label for="exampleInputEmail1">Category<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 </div>
                                 <div class="col">
@@ -122,6 +122,32 @@
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
+                                <div class="col-3 col-form-label">
+                                    <label for="exampleInputEmail1">Publish {{trans_choice('post::messages.post', 1)}}<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                </div>
+                                <div class="col">
+                                    <span class="m-switch m-switch--icon m-switch--danger">
+                                        <label>
+                                            <input type="checkbox"  name="post[post_status]">
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-3 col-form-label">
+                                    <label for="exampleInputEmail1">Open Comment<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                </div>
+                                <div class="col">
+                                    <span class="m-switch m-switch--icon m-switch--danger">
+                                        <label>
+                                            <input type="checkbox"  name="post[comment_status]">
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-3 col-form-label">Product Description <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 <div class="col">
                                     <textarea name="post[post_content]" class="form-control autosize" v-model="item.description"></textarea>
@@ -129,6 +155,7 @@
                             </div>
                             <input type="hidden" class="form-control m-input" placeholder="Tokopedia Store" name="meta[tokopedia_supplier]" v-bind:value="item.store">
                             <input type="hidden" class="form-control m-input" placeholder="Tokopedia Slug" name="meta[tokopedia_source]" v-bind:value="item.slug">
+                            <input type="hidden" class="form-control m-input" placeholder="Meta Title" name="meta[meta_title]" data-target-count-text="#meta-title" v-model="item.product_name">
                         </div>
                     </div>
               </div>
