@@ -111,6 +111,15 @@ class TokopediaController extends Controller
 
     public function store(Request $request)
     {
+      $text = nl2br($request->input('post.post_content'));
+
+      $post = $request->input('post');
+      $post['post_content'] = $text;
+
+      $request->merge([
+        'post' => $post
+      ]);
+
       $response = resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository::class)->save($request);
       $post = $response->data;
 
