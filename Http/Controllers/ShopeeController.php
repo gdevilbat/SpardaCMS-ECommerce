@@ -211,7 +211,7 @@ class ShopeeController extends CoreController
                             return $self->getCatChildren($item, $tmp);
                         });
 
-        return $categories;
+        return array_values($categories->toArray());
     }
 
     public function getAttributes(Request $request)
