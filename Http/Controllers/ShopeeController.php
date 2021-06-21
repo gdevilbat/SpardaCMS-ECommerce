@@ -203,14 +203,13 @@ class ShopeeController extends CoreController
             return $value->parent_id == 0;
         });
 
-        $col_cat = collect(array_values($cat_data->toArray()));
+        $col_cat = collect(array_values($cat_data->toArray()))->sortBy('category_name');
 
         $self = $this;
 
         $categories = $col_cat->map(function($item, $key) use ($tmp, $self){
                             return $self->getCatChildren($item, $tmp);
-                        })
-                        ->sortBy('category_name');
+                        });
 
         return $categories;
     }
