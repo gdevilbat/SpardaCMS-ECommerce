@@ -47,7 +47,7 @@ class MigrationEcommerceAccount extends Command
         =            Migrate Tokopedia Supplier            =
         ==================================================*/
         
-            $query = PostMeta::where('meta_key', 'tokopedia_supplier');
+            $query = PostMeta::where('meta_key', 'tokopedia_supplier')->whereNotNull('meta_value');
 
             $count_progress  = $query->count();
 
@@ -90,7 +90,7 @@ class MigrationEcommerceAccount extends Command
         =            Migrate Tokopedia Store            =
         ==================================================*/
         
-            $query = PostMeta::where('meta_key', 'tokopedia_store');
+            $query = PostMeta::where('meta_key', 'tokopedia_store')->whereNotNull('meta_value');
 
             $count_progress  = $query->count();
 
@@ -134,7 +134,7 @@ class MigrationEcommerceAccount extends Command
         =            Migrate Shopee Store            =
         ==================================================*/
         
-            $query = PostMeta::where('meta_key', 'shopee_slug');
+            $query = PostMeta::where('meta_key', 'shopee_slug')->whereNotNull('meta_value');
 
             $count_progress  = $query->count();
 
@@ -147,17 +147,17 @@ class MigrationEcommerceAccount extends Command
 
             foreach ($stores as $key => $store) {
 
-                $store = explode('/', $store->meta_value);
+                $exp = explode('/', $store->meta_value);
 
                 $data = [
-                    'shop_id' => $store[1],
-                    'product_id' => $store[2],
+                    'shop_id' => $exp[1],
+                    'product_id' => $exp[2],
                     'is_variant' => false
                 ];
 
                 PostMeta::unguard();
                 PostMeta::updateOrCreate(
-                    ['meta_key' => ProductMeta::SHOPEE_STORE, Post::FOREIGN_KEY => $supplier[POST::FOREIGN_KEY]],
+                    ['meta_key' => ProductMeta::SHOPEE_STORE, Post::FOREIGN_KEY => $store[POST::FOREIGN_KEY]],
                     ['meta_value' => $data]
                 );
                 PostMeta::reguard();
@@ -167,7 +167,7 @@ class MigrationEcommerceAccount extends Command
 
             $this->info("\r\nShopee Store Has Been Migrated");
         
-        /*=====  End of Migrate Tokopedia Store  ======*/
+        /*=====  End of Migrate Shopee Store  ======*/
         
 
 
