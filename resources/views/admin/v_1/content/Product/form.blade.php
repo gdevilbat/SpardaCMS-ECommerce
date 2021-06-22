@@ -80,7 +80,7 @@
                                         <a class="nav-link active" data-toggle="tab" href="#" data-target="#content">Content</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#" data-target="#shipping">Shipping</a>
+                                        <a class="nav-link" data-toggle="tab" href="#" data-target="#ecommerce">Ecommerce</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-toggle="tab" href="#" data-target="#gallery">Gallery</a>
@@ -218,46 +218,81 @@
                                         </div>
                                         <input type="hidden" name="post[post_excerpt]" value="{{old('post.post_excerpt') ? old('post.post_excerpt') : (!empty($post) ? $post->post_excerpt : '')}}">
                                     </div>
-                                    <div class="tab-pane" id="shipping" role="tabpanel">
+                                    <div class="tab-pane" id="ecommerce" role="tabpanel" v-cloak>
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
-                                                <label for="exampleInputEmail1">Tokopedia Supplier</label>
+                                                <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Supplier" name="meta[tokopedia_supplier]" value="{{old('meta.tokopedia_supplier') ? old('meta.tokopedia_supplier') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_supplier')->first() ? $post->postMeta->where('meta_key', 'tokopedia_supplier')->first()->meta_value : '')}}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group m-form__group d-flex px-0">
-                                            <div class="col-4 d-flex justify-content-end py-3">
-                                                <label for="exampleInputEmail1">Tokopedia Source</label>
-                                            </div>
-                                            <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Source" name="meta[tokopedia_source]" value="{{old('meta.tokopedia_source') ? old('meta.tokopedia_source') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_source')->first() ? $post->postMeta->where('meta_key', 'tokopedia_source')->first()->meta_value : '')}}">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][merchant]" value="{{old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER.'.merchant') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER.'.merchant') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)['merchant'] : '')}}">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" value="{{old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER.'.slug') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER.'.slug') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)['slug'] : '')}}">
+                                                <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][is_variant]" v-bind:value="tokopedia_supplier_is_variant">
+                                                <div class="form-group m-form__group row">
+                                                    <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
+                                                    <div class="col">
+                                                        <div class="col-12">
+                                                            <span class="m-switch m-switch--icon m-switch--success ml-1 d-flex align-items-center">
+                                                                <label>
+                                                                    <label>
+                                                                        <input type="checkbox" v-model="tokopedia_supplier_is_variant" value="true">
+                                                                        <span></span>
+                                                                    </label>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <hr>
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
-                                                <label for="exampleInputEmail1">Tokopedia Store</label>
+                                                <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Store" name="meta[tokopedia_store]" value="{{old('meta.tokopedia_store') ? old('meta.tokopedia_store') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_store')->first() ? $post->postMeta->where('meta_key', 'tokopedia_store')->first()->meta_value : '')}}">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][merchant]" value="{{old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE.'.merchant') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE.'.merchant') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)['merchant'] : '')}}">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][slug]" value="{{old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE.'.slug') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE.'.slug') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)['slug'] : '')}}">
+                                                <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][is_variant]" v-bind:value="tokopedia_store_is_variant">
+                                                <div class="form-group m-form__group row">
+                                                    <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
+                                                    <div class="col">
+                                                        <div class="col-12">
+                                                            <span class="m-switch m-switch--icon m-switch--success ml-1 d-flex align-items-center">
+                                                                <label>
+                                                                    <label>
+                                                                        <input type="checkbox" v-model="tokopedia_store_is_variant" value="true">
+                                                                        <span></span>
+                                                                    </label>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
-                                                <label for="exampleInputEmail1">Tokopedia Slug</label>
+                                                <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[tokopedia_slug]" value="{{old('meta.tokopedia_slug') ? old('meta.tokopedia_slug') : (!empty($post) && $post->postMeta->where('meta_key', 'tokopedia_slug')->first() ? $post->postMeta->where('meta_key', 'tokopedia_slug')->first()->meta_value : '')}}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group m-form__group d-flex px-0">
-                                            <div class="col-4 d-flex justify-content-end py-3">
-                                                <label for="exampleInputEmail1">Shopee Slug</label>
-                                            </div>
-                                            <div class="col">
-                                                <input type="text" class="form-control m-input" placeholder="Shopee Slug" name="meta[shopee_slug]" value="{{old('meta.shopee_slug') ? old('meta.shopee_slug') : (!empty($post) && $post->postMeta->where('meta_key', 'shopee_slug')->first() ? $post->postMeta->where('meta_key', 'shopee_slug')->first()->meta_value : '')}}">
+                                                <input type="text" class="form-control m-input" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][shop_id]" value="{{old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE.'.shop_id') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE.'.shop_id') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)['shop_id'] : '')}}">
+                                                <input type="text" class="form-control m-input" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][product_id]" value="{{old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE.'.product_id') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE.'.product_id') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)['product_id'] : '')}}">
+                                                <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][is_variant]" v-bind:value="shopee_store_is_variant">
+                                                <div class="form-group m-form__group row">
+                                                    <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
+                                                    <div class="col">
+                                                        <div class="col-12">
+                                                            <span class="m-switch m-switch--icon m-switch--success ml-1 d-flex align-items-center">
+                                                                <label>
+                                                                    <label>
+                                                                        <input type="checkbox" v-model="shopee_store_is_variant" value="true">
+                                                                        <span></span>
+                                                                    </label>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -339,6 +374,15 @@
             data: {
                 components: {!! old('meta.gallery') ? json_encode(old('meta.gallery')) : (!empty($post) && !empty($post->postMeta->where('meta_key', 'gallery')->first()) ? json_encode($post->postMeta->where('meta_key', 'gallery')->first()->meta_value) : json_encode(array())) !!},
             },
+        });
+
+        var Ecommerce = new Vue({
+            el: "#ecommerce",
+            data:{
+                'tokopedia_supplier_is_variant': {{ old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER.'.is_variant') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER.'.is_variant') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)['is_variant'] : 'false') }},
+                'tokopedia_store_is_variant':  {{ old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE.'.is_variant') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE.'.is_variant') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)['is_variant'] : 'false') }},
+                'shopee_store_is_variant':  {{ old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE.'.is_variant') ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE.'.is_variant') : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)['is_variant'] : 'false') }},
+            }
         });
     </script>
     <script type="text/javascript">

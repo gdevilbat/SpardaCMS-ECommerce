@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
 use Gdevilbat\SpardaCMS\Modules\Post\Entities\PostMeta;
 
 use Log;
@@ -140,13 +141,13 @@ class ShopeeController
             ] ,422);
         }
 
-        $slug = 'product/'.$response->item->shopid.'/'.$response->item->item_id;
+        $value = ['shop_id' => $response->item->shopid, 'product_id' => $response->item->item_id, 'is_variant' => !empty($response->item->variations) ? true : false];
 
         PostMeta::unguard();
 
         PostMeta::updateOrCreate(
-            ['meta_key' => 'shopee_slug', Product::FOREIGN_KEY => decrypt($request->id_posts)],
-            ['meta_value' => $slug]
+            ['meta_key' => ProductMeta::SHOPEE_STORE, Product::FOREIGN_KEY => decrypt($request->id_posts)],
+            ['meta_value' => $value]
         );
 
         PostMeta::reguard();

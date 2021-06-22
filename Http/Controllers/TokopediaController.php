@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use Gdevilbat\SpardaCMS\Modules\Post\Entities\PostMeta;
 use Gdevilbat\SpardaCMS\Modules\Post\Entities\Post;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
 
 use StorageService;
 
@@ -75,32 +76,15 @@ class TokopediaController extends Controller
             return $item;
         });
 
-        $store = json_encode($request->input('store_name'));
+        $builder = PostMeta::where('meta_key', ProductMeta::TOKPED_SUPPLIER)
+                            ->where('meta_value', 'LIKE', '%\"merchant\":\"'.$request->store_name.'\"%');
 
-        /*$builder = PostMeta::whereExists(function($query) use ($store){
-                        $query->select(\DB::raw(1))
-                                ->from(PostMeta::getTableName())
-                               ->where('meta_key', 'tokopedia_supplier')
-                               ->where('meta_value', $store);
-                    })
-                    ->where('meta_key', 'tokopedia_source');
-
-        $slug = $builder->pluck('meta_value');*/
-
-        $builder = PostMeta::from(PostMeta::getTableName().' as table_1')
-                            ->join(PostMeta::getTableName(), function($join) use ($store){
-                                $join->on('table_1.'.Post::FOREIGN_KEY, '=', PostMeta::getTableName().'.'.Post::FOREIGN_KEY)
-                                    ->where('table_1.meta_key', 'tokopedia_supplier')
-                                   ->where('table_1.meta_value', $store);
-                              })
-                            ->where(PostMeta::getTableName().'.meta_key', 'tokopedia_source');
-
-        $tmp = $builder->pluck(PostMeta::getTableName().'.meta_value');
+        $tmp = $builder->pluck('meta_value');
 
         $tmp = collect($tmp);
 
         $slug = $tmp->map(function($item, $key){
-          return trim($item, '"');
+          return $item['slug'];
         });
 
         $filter = $data->whereNotIn('slug', $slug)->toArray();

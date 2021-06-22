@@ -28,7 +28,7 @@
                                  <div class="form-group m-form__group row">
                                     <label for="example-text-input" class="col-3 col-form-label">Product Slug <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                     <div class="col">
-                                        <input class="form-control m-input" type="text" name="post[post_slug]" v-model="item.slug">
+                                        <input class="form-control m-input" type="text" name="post[post_slug]" v-model="item.slug" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
@@ -154,9 +154,10 @@
                                     <textarea name="post[post_content]" class="form-control autosize" v-model="item.description"></textarea>
                                 </div>
                             </div>
-                            <input type="hidden" class="form-control m-input" placeholder="Tokopedia Store" name="meta[tokopedia_supplier]" v-bind:value="item.store">
-                            <input type="hidden" class="form-control m-input" placeholder="Tokopedia Slug" name="meta[tokopedia_source]" v-bind:value="item.slug">
-                            <input type="hidden" class="form-control m-input" placeholder="Meta Title" name="meta[meta_title]" data-target-count-text="#meta-title" v-model="item.product_name">
+                            <input type="hidden" class="form-control m-input" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][merchant]" v-bind:value="item.store">
+                            <input type="hidden" class="form-control m-input" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" v-bind:value="item.slug">
+                            <input type="hidden" class="form-control m-input" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][is_variant]" v-bind:value="item.is_variant">
+                            <input type="hidden" class="form-control m-input" name="meta[meta_title]" data-target-count-text="#meta-title" v-model="item.product_name">
                         </div>
                     </div>
               </div>

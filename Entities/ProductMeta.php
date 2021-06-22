@@ -14,6 +14,11 @@ class ProductMeta extends Model
     CONST SHOPEE_ATTR_DROPDOWN = "DROP_DOWN";
     CONST SHOPEE_ATTR_TEXT = "TEXT_FILED";
 
+    CONST TOKPED_SUPPLIER = 'tokopedia_supplier_account';
+
+    CONST TOKPED_STORE = 'tokopedia_store_account';
+    CONST SHOPEE_STORE = 'shopee_store_account';
+
     /**
      * Set the Post Status.
      *

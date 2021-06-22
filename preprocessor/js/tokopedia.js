@@ -14,12 +14,13 @@
                 "Accept": "application/json",
                     "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
               },
-              data: {domain: item.store, productKey: item.slug}
+              data: {merchant: item.store, slug: item.slug}
             })
             .done(function(response) {
               TokopediaDownload.$set(TokopediaDownload.item, 'images', response[0].data.getPDPInfo.pictures);
               TokopediaDownload.$set(TokopediaDownload.item, 'description', response[0].data.getPDPInfo.basic.description);
               TokopediaDownload.$set(TokopediaDownload.item, 'price', response[0].data.getPDPInfo.basic.price);
+              TokopediaDownload.$set(TokopediaDownload.item, 'is_variant', response[0].data.getPDPInfo.variant.isVariant);
             })
             .fail(function() {
               console.log("error");

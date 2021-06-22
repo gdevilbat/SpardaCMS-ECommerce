@@ -111,16 +111,25 @@ class ProductController extends AbstractPost
                     $data[$i][] = '-';
                 }
 
-                if(!empty($post->tokopedia_source) && !empty($post->tokopedia_supplier))
+                $tokopedia_supplier = $post->meta->getMetaData(ProductMeta::TOKPED_SUPPLIER);
+
+                if(!empty($tokopedia_supplier))
                 {
-                    $data[$i][] = '<a href="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$post->tokopedia_supplier.'/'.$post->tokopedia_source.'" data-shop-domain="'.$post->tokopedia_supplier.'" data-product-key="'.$post->tokopedia_source.'"></span> Tokopedia'.'</a>';
+                    $data[$i][] = '<a href="https://tokopedia.com/'.$tokopedia_supplier['merchant'].'/'.$tokopedia_supplier['slug'].'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$tokopedia_supplier['merchant'].'/'.$tokopedia_supplier['slug'].'" data-merchant="'.$tokopedia_supplier['merchant'].'" data-slug="'.$tokopedia_supplier['slug'].'"></span> Tokopedia'.'</a>';
                 }
                 else
                 {
                     $data[$i][] = '-';
                 }
 
-                $data[$i][] = $this->getStoreLink($post);
+                $tokopedia_store = $post->meta->getMetaData(ProductMeta::TOKPED_STORE);
+                $shopee_store = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
+
+                $data[$i][] = $this->getStoreLink([
+                                    'post' => $post,
+                                    'tokopedia_store' => $tokopedia_store,
+                                    'shopee_store' => $shopee_store,
+                                ]);
 
                 if($post->productMeta->availability == 'in stock')
                 {
@@ -145,11 +154,9 @@ class ProductController extends AbstractPost
         /*=====  End of Parsing Datatable  ======*/
     }
 
-    public function getStoreLink($post)
+    public function getStoreLink(array $data)
     {
-        $view = View::make($this->post_repository->getModule().'::admin.'.$this->data['theme_cms']->value.'.partials'.'.store_link', [
-            'post' => $post
-        ]);
+        $view = View::make($this->post_repository->getModule().'::admin.'.$this->data['theme_cms']->value.'.partials'.'.store_link', $data);
 
         $html = $view->render();
        
