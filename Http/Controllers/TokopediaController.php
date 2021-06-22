@@ -69,7 +69,7 @@ class TokopediaController extends Controller
         $tmp = collect($result->data->list);
 
         $data = $tmp->map(function($item, $key) use ($request) {
-            $item->store = $this->slugify($item->shop_name);
+            $item->store = $request->store_name;
             $item->slug = $this->slugify($item->product_name);
             $item->url = 'https://www.tokopedia.com/'.$request->input('store_name').'/'.$item->slug;
             return $item;
