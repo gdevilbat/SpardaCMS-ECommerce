@@ -115,7 +115,7 @@ class ProductController extends AbstractPost
 
                 if(!empty($tokopedia_supplier))
                 {
-                    $data[$i][] = '<a href="https://tokopedia.com/'.$tokopedia_supplier['merchant'].'/'.$tokopedia_supplier['slug'].'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$tokopedia_supplier['merchant'].'/'.$tokopedia_supplier['slug'].'" data-merchant="'.$tokopedia_supplier['merchant'].'" data-slug="'.$tokopedia_supplier['slug'].'"></span> Tokopedia'.'</a>';
+                    $data[$i][] = '<a href="https://tokopedia.com/'.$tokopedia_supplier->merchant.'/'.$tokopedia_supplier->slug.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$tokopedia_supplier->merchant.'/'.$tokopedia_supplier->slug.'" data-merchant="'.$tokopedia_supplier->merchant.'" data-slug="'.$tokopedia_supplier->slug.'"></span> Tokopedia'.'</a>';
                 }
                 else
                 {

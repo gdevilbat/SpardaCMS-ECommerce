@@ -68,7 +68,8 @@ class MigrationEcommerceAccount extends Command
                     $data = [
                         'merchant' => $supplier->meta_value,
                         'slug' => $source->meta_value,
-                        'is_variant' => false
+                        'is_variant' => false,
+                        'children' => []
                     ];
 
                     PostMeta::unguard();
@@ -111,7 +112,8 @@ class MigrationEcommerceAccount extends Command
                     $data = [
                         'merchant' => $store->meta_value,
                         'slug' => $source->meta_value,
-                        'is_variant' => false
+                        'is_variant' => false,
+                        'children' => []
                     ];
 
                     PostMeta::unguard();
@@ -152,7 +154,8 @@ class MigrationEcommerceAccount extends Command
                 $data = [
                     'shop_id' => $exp[1],
                     'product_id' => $exp[2],
-                    'is_variant' => false
+                    'is_variant' => false,
+                    'children' => []
                 ];
 
                 PostMeta::unguard();

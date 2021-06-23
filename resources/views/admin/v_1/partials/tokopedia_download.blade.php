@@ -158,6 +158,7 @@
                             <input type="hidden" class="form-control m-input" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" v-bind:value="item.slug">
                             <input type="hidden" class="form-control m-input" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][is_variant]" v-bind:value="item.is_variant">
                             <input type="hidden" class="form-control m-input" name="meta[meta_title]" data-target-count-text="#meta-title" v-model="item.product_name">
+                            <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][children][]" value="">
                         </div>
                     </div>
               </div>
