@@ -19,7 +19,7 @@ $(document).ready(function() {
                 }).done(function(response){
                     counter_shopee_sycronize++;
                     if(counter_shopee_sycronize >= $(".data-checklist:checked").length)
-                        table.ajax.reload( null, false );
+                        $("#reload-datatable").click();
                 });
             });
         }
