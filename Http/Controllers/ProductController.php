@@ -113,7 +113,7 @@ class ProductController extends AbstractPost
 
                 $tokopedia_supplier = $post->meta->getMetaData(ProductMeta::TOKPED_SUPPLIER);
 
-                if(!empty($tokopedia_supplier))
+                if(!empty($tokopedia_supplier) && $tokopedia_supplier->slug != '')
                 {
                     $data[$i][] = '<a href="https://tokopedia.com/'.$tokopedia_supplier->merchant.'/'.$tokopedia_supplier->slug.'" target="_blank">'.'<span data-index='.$post->getKey().' class="scrapping-supplier" id="scrapping-supplier-'.$post->getKey().'" data-url="https://tokopedia.com/'.$tokopedia_supplier->merchant.'/'.$tokopedia_supplier->slug.'" data-merchant="'.$tokopedia_supplier->merchant.'" data-slug="'.$tokopedia_supplier->slug.'"></span> Tokopedia'.'</a>';
                 }
