@@ -88,6 +88,7 @@ class ItemRepository extends AbstractRepository
             'weight' => 'required',
             'images' => 'required',
             'attributes' => 'required',
+            'condition' => 'required',
         ]);
 
         $path = '/api/v1/item/adds';
@@ -101,6 +102,7 @@ class ItemRepository extends AbstractRepository
         $parameter['weight'] = $request['weight'];
         $parameter['images'] = $request['images'];
         $parameter['attributes'] = $request['attributes'];
+        $parameter['condition'] = $request['condition'];
 
         if(array_key_exists('is_pre_order', $request))
         {
@@ -143,6 +145,7 @@ class ItemRepository extends AbstractRepository
             $parameter = $this->getPrimaryParameter($request['shop_id']);
             $parameter['item_id'] = (int) $request['product_id'];
             $parameter['name'] = $post->post_title;
+            $parameter['description'] = html_entity_decode(strip_tags($post->post_content));
 
             $base_string = $this->getBaseString($path, $parameter);
             $sign = $this->getSignature($base_string);

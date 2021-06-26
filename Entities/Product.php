@@ -14,6 +14,10 @@ class Product extends Post
     CONST STAT_PREORDER = 'preorder';
     CONST STAT_DISCONTINUED = 'discontinued';
 
+    CONST STAT_NEW = 'new';
+    CONST STAT_USED = 'used';
+    CONST STAT_REFURBISHED = 'refurbished';
+
     public function productMeta()
     {
         return $this->hasOne('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getPrimaryKey());

@@ -21,6 +21,7 @@
               TokopediaDownload.$set(TokopediaDownload.item, 'description', response[0].data.getPDPInfo.basic.description);
               TokopediaDownload.$set(TokopediaDownload.item, 'price', response[0].data.getPDPInfo.basic.price);
               TokopediaDownload.$set(TokopediaDownload.item, 'is_variant', response[0].data.getPDPInfo.variant.isVariant);
+              TokopediaDownload.$set(TokopediaDownload.item, 'condition', response[0].data.getPDPInfo.basic.condition.toLowerCase());
             })
             .fail(function() {
               console.log("error");
@@ -95,8 +96,7 @@
         item: [],
         errors: [],
         product_sale: null,
-        product_avalability: null,
-        product_condition: null,
+        product_avalability: null
       }
     }
 

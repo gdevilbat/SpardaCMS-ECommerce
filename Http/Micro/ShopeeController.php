@@ -64,6 +64,7 @@ class ShopeeController
         $data['price'] = (float) $request->input('product_price');
         $data['weight'] = (float) $request->input('product_weight');
         $data['category_id'] = (integer) $request->input('category_id');
+        $data['condition'] = strtoupper($request->input('condition'));
 
         if($request->has('is_pre_order'))
         {

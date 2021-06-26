@@ -95,15 +95,15 @@
                                     <div class="m-form__group form-group">
                                         <div class="m-radio-inline">
                                             <label class="m-radio">
-                                                <input type="radio" name="product_meta[condition]" value="new" v-model="product_condition"> New
+                                                <input type="radio" name="product_meta[condition]" value="new" v-model="item.condition"> New
                                                 <span></span>
                                             </label>
                                             <label class="m-radio">
-                                                <input type="radio" name="product_meta[condition]" value="refurbished" v-model="product_condition"> Refurbished
+                                                <input type="radio" name="product_meta[condition]" value="refurbished" v-model="item.condition"> Refurbished
                                                 <span></span>
                                             </label>
                                             <label class="m-radio">
-                                                <input type="radio" name="product_meta[condition]" value="used" v-model="product_condition"> Used
+                                                <input type="radio" name="product_meta[condition]" value="used" v-model="item.condition"> Used
                                                 <span></span>
                                             </label>
                                         </div>

@@ -160,6 +160,29 @@
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
+                                <div class="col-3 col-form-label">
+                                    <label for="exampleInputEmail1">Product Condition<span class="ml-1 m--font-warning" aria-required="true">*</span></label>
+                                </div>
+                                <div class="col d-flex align-items-center">
+                                    <div class="m-form__group form-group">
+                                        <div class="m-radio-inline">
+                                            <label class="m-radio">
+                                                <input type="radio" name="condition" value="new" v-model="item.condition"> New
+                                                <span></span>
+                                            </label>
+                                            <label class="m-radio">
+                                                <input type="radio" name="condition" value="refurbished" v-model="item.condition"> Refurbished
+                                                <span></span>
+                                            </label>
+                                            <label class="m-radio">
+                                                <input type="radio" name="condition" value="used" v-model="item.condition"> Used
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-3 col-form-label">Product Description <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 <div class="col">
                                     <textarea name="product_description" class="form-control autosize" v-model="item.post_content"></textarea>
