@@ -21,7 +21,10 @@
                 <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
             @endcan
             @can('update-ecommerce', $post)
-                @if(empty($post->postMeta->where('meta_key', 'shopee_slug')->first()))
+                @php
+                    $shopee_store = $post->meta->getMetaData(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE);
+                @endphp
+                @if(!empty($shopee_store) && $shopee_store->shop_id == '')
                     <button class="dropdown-item" type="button">
                         <a class="m-link m-link--state m-link--info" href="javascript:void(0)" onclick="ShopeeUpload.setDataForm('{{encrypt($post->getKey())}}')"><i class="fa fa-upload"> Shopee Upload</i></a>
                     </button>
