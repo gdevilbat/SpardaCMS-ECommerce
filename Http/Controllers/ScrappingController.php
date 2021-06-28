@@ -53,8 +53,7 @@ class ScrappingController extends Controller
             CURLOPT_HTTPHEADER => array(
               'if-none-match-: 55b03-5a87c55d1c152d9fd7a1cf2613bb0b91',
               'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
-              'cookie: SC_DFP=KNjXZaLWPXH0CJYngEKpFxrq8skAO79y; _gcl_au=1.1.1484126669.1620752905; SPC_F=b9b4K3w7fxMeDmHxlehsld8usRDNaHWw; REC_T_ID=7efbfbb4-b27b-11eb-8442-ccbbfe23617b; _fbp=fb.2.1620752906430.967219403; _med=refer; G_ENABLED_IDPS=google; SPC_PC_HYBRID_ID=85; csrftoken=f446fw0Dcptm5DHM9LaE51vgl6xhZHWz; SPC_SI=bfftocid3.Y0QT7fJ2IS6LhiyHFcfnBAqSx5EcB6Zu; welcomePkgShown=true; _gid=GA1.3.1531342226.1623929990; G_AUTHUSER_H=0; SPC_U=89948237; SPC_CLIENTID=YjliNEszdzdmeE1lnpleqgvbnexchuld; SPC_EC=uSzJ+esKi6zWn3F7r/bWY/zE4tadCwin0B4phdigbYqtdPie2W4x/k5m/WF00+Ikx/HkN4KsgGNrjXiX4AyaxCB2v9y/g7GvIeMDOV4IBLnYeslEgSXXSMmxmNwjfEBOjvVjzRh6CzgCvBtBwMsfqg==; SPC_IA=1; SPC_SC_TK=2dfd553390adb3f8fc721a707490fcef; SPC_STK="bN7Gy3Pr4XO/1J6igIDQ8oahgwb/Y12GswepSxlOphNgw4LlyQ3P/Vfxh6derJQXGSFqtw3hp6ZmzMTVIPYUSqHj2Bf8An7BkiUP4hi3keLLYKl/NbxGbnTN1zOzBnpz+UftUHEbUuZptGOX4r0u677Ym46Su7eTkrY4IxsikaU="; SPC_SC_UD=89948237; _ga=GA1.1.1460827755.1620752906; SPC_R_T_ID="yzz7rTlJfzIxAIKbQe3YY05nHEmq0e+hEuAOA6KFQ834nycLvMoTP8ksQxAp5WO/uAzURPRdHa+Ys6qpII7srNkK07NPj27JeeQULhATFXY="; SPC_T_IV="bOZmuniHX13r8LIzzwRB8Q=="; SPC_R_T_IV="bOZmuniHX13r8LIzzwRB8Q=="; SPC_T_ID="yzz7rTlJfzIxAIKbQe3YY05nHEmq0e+hEuAOA6KFQ834nycLvMoTP8ksQxAp5WO/uAzURPRdHa+Ys6qpII7srNkK07NPj27JeeQULhATFXY="; _ga_SW6D8G0HXK=GS1.1.1624010165.10.0.1624010165.60',
-              'if-none-match: 8d46d468b7a3ed265ad862278b8a4f79'
+              'cookie: '.getSettingConfig('scrapping', 'shopee_session')
             ),
           ));
 

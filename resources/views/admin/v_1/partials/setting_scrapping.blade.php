@@ -62,6 +62,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group m-form__group d-md-flex">
+                        <div class="col-md-4 d-md-flex justify-content-end py-3">
+                            <label for="exampleInputEmail1">Shopee Session</label>
+                        </div>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control" name="scrapping[shopee_session]" value="{{ getSettingConfig('scrapping', 'shopee_session') }}">
+                        </div>
+                    </div>
                     <div class="m-form__group form-group row  d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
                             <label for="exampleInputEmail1">Weight Check</label>
