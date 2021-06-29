@@ -86,7 +86,17 @@ window.tokopediaScrap = function(){
             if(response[0].data != null)
             {
                 let supplier_status;
-                let supplier_price = response[0].data.getPDPInfo.basic.price;
+                let supplier_price;
+
+                if(response[0].data.getPDPInfo.campaign.discountedPrice > 0)
+                {
+                    supplier_price = response[0].data.getPDPInfo.campaign.discountedPrice;
+                }
+                else
+                {
+                    supplier_price = response[0].data.getPDPInfo.basic.price;
+                }
+
                 let suplier_weight = response[0].data.getPDPInfo.basic.weight;
                 $('#web-price-'+$(self).attr('data-index')).append('<br/><span class="text-danger">('+($('#web-price-'+$(self).attr('data-index')).attr('data-price') - supplier_price)+')</span>');
 

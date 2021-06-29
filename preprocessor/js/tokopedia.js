@@ -19,7 +19,16 @@
             .done(function(response) {
               TokopediaDownload.$set(TokopediaDownload.item, 'images', response[0].data.getPDPInfo.pictures);
               TokopediaDownload.$set(TokopediaDownload.item, 'description', response[0].data.getPDPInfo.basic.description);
-              TokopediaDownload.$set(TokopediaDownload.item, 'price', response[0].data.getPDPInfo.basic.price);
+
+              if(response[0].data.getPDPInfo.campaign.discountedPrice > 0)
+              {
+                TokopediaDownload.$set(TokopediaDownload.item, 'price', response[0].data.getPDPInfo.campaign.discountedPrice);
+              }
+              else
+              {
+                TokopediaDownload.$set(TokopediaDownload.item, 'price', response[0].data.getPDPInfo.basic.price);
+              }
+
               TokopediaDownload.$set(TokopediaDownload.item, 'is_variant', response[0].data.getPDPInfo.variant.isVariant);
               TokopediaDownload.$set(TokopediaDownload.item, 'condition', response[0].data.getPDPInfo.basic.condition.toLowerCase());
             })
