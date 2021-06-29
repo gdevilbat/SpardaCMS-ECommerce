@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 
 use Gdevilbat\SpardaCMS\Modules\Blog\Foundation\AbstractBlog;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
 
 use Auth;
 
@@ -120,19 +121,10 @@ class BlogProductController extends AbstractBlog
     public function getPostData($taxonomy)
     {
         $query_1 = $this->buildPostByTaxonomy($taxonomy)
-                    ->whereHas('productMeta', function($query){
-                                    $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
-                                })
-                    ->latest();
+                        ->join(ProductMeta::getTableName(), Product::getTableName().'.'.Product::getPrimaryKey(), '=', ProductMeta::getTableName().'.product_id')
+                        ->orderByRaw(ProductMeta::getTableWithPrefix().'.availability ASC, '.Product::getTableWithPrefix().'.created_at DESC');
 
-        /*$query_2 = $this->buildPostByTaxonomy($taxonomy)
-                    ->whereHas('productMeta', function($query){
-                                    $query->where('availability', Product::STAT_OUT)
-                                          ->orWhere('availability', Product::STAT_DISCONTINUED);
-                                })
-                    ->latest();*/
-
-        return $query_1->latest();
+        return $query_1;
     }
 
     final protected function getCategoryType()

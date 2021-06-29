@@ -103,4 +103,9 @@ class ProductMeta extends Model
     {
         return with(new Static)->getConnection()->getSchemaBuilder()->getColumnListing(with(new Static)->getTable());
     }
+
+    final static function getTableWithPrefix()
+    {
+        return with(new Static)->getConnection()->getTablePrefix().with(new Static)->getTable();
+    }
 }
