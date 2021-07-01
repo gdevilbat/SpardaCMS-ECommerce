@@ -122,6 +122,14 @@
                                         </div>
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Product Weight<span class="ml-1 m--font-warning" aria-required="true">(Optional)</span></label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="number" class="form-control m-input" placeholder="Product Weight" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_WEIGHT}}]" value="{{old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_WEIGHT) ? old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_WEIGHT) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_WEIGHT)) ? $post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_WEIGHT) : '')}}" step="0.01">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
                                                 <label for="exampleInputEmail1">Product Availablity<span class="ml-1 m--font-warning" aria-required="true">*</span></label>
                                             </div>
                                             <div class="col d-flex align-items-center">

@@ -97,7 +97,7 @@
                             <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-3 col-form-label">Product Weight <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 <div class="col">
-                                    <input class="form-control m-input" type="number" name="product_weight" step="0.01" min="0.01">
+                                    <input class="form-control m-input" type="number" name="product_weight" step="0.01" min="0.01" v-model="item.product_weight">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">

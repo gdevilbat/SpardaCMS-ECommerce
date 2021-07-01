@@ -19,6 +19,7 @@
             .done(function(response) {
               TokopediaDownload.$set(TokopediaDownload.item, 'images', response[0].data.getPDPInfo.pictures);
               TokopediaDownload.$set(TokopediaDownload.item, 'description', response[0].data.getPDPInfo.basic.description);
+              TokopediaDownload.$set(TokopediaDownload.item, 'product_weight', response[0].data.getPDPInfo.basic.weight/1000);
 
               if(response[0].data.getPDPInfo.campaign.discountedPrice > 0)
               {
@@ -73,6 +74,9 @@
           removeImage: function(index){
             this.item.images.splice(index, 1);
           },
+          addImage: function(){
+            this.item.images.push({urlOriginal: ''});
+          },
           submit: function(){
               self = this;
               $.ajax({
@@ -105,6 +109,7 @@
         item: [],
         errors: [],
         product_sale: null,
+        product_weight: null,
         product_avalability: null
       }
     }

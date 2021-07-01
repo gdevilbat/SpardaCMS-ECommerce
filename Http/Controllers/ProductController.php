@@ -206,6 +206,7 @@ class ProductController extends AbstractPost
         $post->image_url = $photo;
         $post->post_content = html_entity_decode(strip_tags($post->post_content));
         $post->condition = $post->productMeta->condition;
+        $post->product_weight = $post->meta->getMetaData(ProductMeta::PRODUCT_WEIGHT);
 
         return $post;
 

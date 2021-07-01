@@ -39,6 +39,9 @@
                                             <img v-bind:src="item.images[index].urlOriginal" width="200" alt="">
                                             <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeImage(index)"><span><i class="fa fa-minus"></i></span></button>
                                         </div>
+                                        <div class="col-md-6 mt-2">
+                                            <button type="button" class="btn btn-success" v-on:click="addImage">Add Photo</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -54,6 +57,14 @@
                                 </div>
                                 <div class="col">
                                     <input type="number" class="form-control m-input money-masking" placeholder="Product Sale" name="product_meta[product_sale]" v-model="product_sale">
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-3 col-form-label">
+                                    <label for="exampleInputEmail1">Product Weight<span class="ml-1 m--font-warning" aria-required="true">(Optional)</span></label>
+                                </div>
+                                <div class="col">
+                                    <input type="number" class="form-control m-input" placeholder="Product Weight" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_WEIGHT}}]" v-model="item.product_weight" step="0.01">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
