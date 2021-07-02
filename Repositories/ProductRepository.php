@@ -37,6 +37,14 @@ class ProductRepository extends AbstractRepository
 
         $validator->addRules([
                 'meta.gallery.*.photo' => 'required',
+                'meta.'.ProductMeta::TOKPED_SUPPLIER.'.merchant' => 'required_with:meta.'.ProductMeta::TOKPED_SUPPLIER.'.slug',
+                'meta.'.ProductMeta::TOKPED_SUPPLIER.'.slug' => 'required_with:meta.'.ProductMeta::TOKPED_SUPPLIER.'.merchant',
+                'meta.'.ProductMeta::SHOPEE_SUPPLIER.'.shop_id' => 'required_with:meta.'.ProductMeta::SHOPEE_SUPPLIER.'.product_id',
+                'meta.'.ProductMeta::SHOPEE_SUPPLIER.'.product_id' => 'required_with:meta.'.ProductMeta::SHOPEE_SUPPLIER.'.shop_id',
+                'meta.'.ProductMeta::TOKPED_STORE.'.merchant' => 'required_with:meta.'.ProductMeta::TOKPED_STORE.'.slug',
+                'meta.'.ProductMeta::TOKPED_STORE.'.slug' => 'required_with:meta.'.ProductMeta::TOKPED_STORE.'.merchant',
+                'meta.'.ProductMeta::SHOPEE_STORE.'.shop_id' => 'required_with:meta.'.ProductMeta::SHOPEE_STORE.'.product_id',
+                'meta.'.ProductMeta::SHOPEE_STORE.'.product_id' => 'required_with:meta.'.ProductMeta::SHOPEE_STORE.'.shop_id',
                 'taxonomy.category' => 'required',
                 'product_meta.product_price' => 'required|max:11',
                 'product_meta.availability' => [
