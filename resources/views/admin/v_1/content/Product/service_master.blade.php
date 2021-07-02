@@ -24,7 +24,7 @@
                 @php
                     $shopee_store = $post->meta->getMetaData(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE);
                 @endphp
-                @if(!empty($shopee_store) && $shopee_store->shop_id == '')
+                @if((!empty($shopee_store) && $shopee_store->shop_id == '') || empty($shopee_store))
                     <button class="dropdown-item" type="button">
                         <a class="m-link m-link--state m-link--info" href="javascript:void(0)" onclick="ShopeeUpload.setDataForm('{{encrypt($post->getKey())}}')"><i class="fa fa-upload"> Shopee Upload</i></a>
                     </button>
