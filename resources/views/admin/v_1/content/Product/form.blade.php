@@ -330,7 +330,7 @@
                                                 <div v-if="tokopedia_store.is_variant">
                                                     <div class="col-12 d-flex" v-for="(children, index) in tokopedia_store.children">
                                                         <div class="col">
-                                                            <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
+                                                            <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
                                                         </div>
                                                         <div class="col-2">
                                                             <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeChildren('tokopedia_store',index)"><span><i class="fa fa-minus"></i></span></button>
@@ -368,7 +368,7 @@
                                                 <div v-if="shopee_store.is_variant">
                                                     <div class="col-12 d-flex" v-for="(children, index) in shopee_store.children">
                                                         <div class="col">
-                                                            <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
+                                                            <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
                                                         </div>
                                                         <div class="col-2">
                                                             <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeChildren('shopee_store',index)"><span><i class="fa fa-minus"></i></span></button>
