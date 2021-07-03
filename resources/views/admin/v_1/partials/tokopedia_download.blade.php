@@ -147,9 +147,18 @@
                                         </span>
                                     </div>
                                     <div v-if="item.is_variant">
-                                        <div class="col-12" v-for="children in item.children">
-                                            <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][children][][product_id]" v-bind:value="children.productID" placeholder="Product ID">
+                                        <div class="col-12 mb-3" v-for="(children, index) in item.children">
+                                            <label>@{{ children.productName }}</label>
+                                            <div class="col-12 d-flex">
+                                                <div class="col">
+                                                    <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][children][][product_id]" v-bind:value="children.productID" placeholder="Product ID">
+                                                </div>
+                                                <div class="col-2">
+                                                    <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeChildren(index)"><span><i class="fa fa-minus"></i></span></button>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <button type="button" class="btn btn-success" v-on:click="addChildren">Add Children</button>
                                     </div>
                                 </div>
                             </div>

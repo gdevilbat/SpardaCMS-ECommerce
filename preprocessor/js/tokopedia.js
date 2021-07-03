@@ -88,11 +88,17 @@
           resetWindow: function(){
                Object.assign(this.$data, initialState());
           },
+          removeChildren: function(index){
+            this.item.children.splice(index, 1);
+          },
           removeImage: function(index){
             this.item.images.splice(index, 1);
           },
           addImage: function(){
             this.item.images.push({urlOriginal: ''});
+          },
+          addChildren: function(){
+            this.item.children.push({product_id: ''});
           },
           submit: function(){
               self = this;
