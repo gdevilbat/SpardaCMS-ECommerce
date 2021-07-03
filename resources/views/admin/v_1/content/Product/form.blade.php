@@ -474,6 +474,9 @@
                     this[$attr].children.splice(index, 1);
                 },
                 addChildren: function($attr){
+                    if(this[$attr].children == undefined)
+                        this.$set( this[$attr], 'children', []);
+
                     this[$attr].children.push({product_id: ''});
                 }
             },
