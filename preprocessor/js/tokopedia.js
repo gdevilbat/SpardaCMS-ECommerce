@@ -32,6 +32,23 @@
 
               TokopediaDownload.$set(TokopediaDownload.item, 'is_variant', response[0].data.getPDPInfo.variant.isVariant);
               TokopediaDownload.$set(TokopediaDownload.item, 'condition', response[0].data.getPDPInfo.basic.condition.toLowerCase());
+
+              if(response[0].data.getPDPInfo.variant.isVariant)
+              {
+                $.ajax({
+                  url: $('#data-product').attr('data-url-scrapping-tokopedia-product-variant'),
+                  method: "POST",
+                  headers: {
+                    "Accept": "application/json",
+                        "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                  },
+                  data: {variant_id: response[0].data.getPDPInfo.basic.id}
+                }).done(function(response){
+                  TokopediaDownload.$set(TokopediaDownload.item, 'children', response[0].data.getProductVariant.children);
+                }).fail(function() {
+                  console.log("error");
+                });
+              }
             })
             .fail(function() {
               console.log("error");

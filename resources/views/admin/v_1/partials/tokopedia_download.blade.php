@@ -134,6 +134,26 @@
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
+                                <div class="col">
+                                    <div class="col-12">
+                                        <span class="m-switch m-switch--icon m-switch--success ml-1 d-flex align-items-center">
+                                            <label>
+                                                <label>
+                                                    <input type="checkbox" v-model="item.is_variant" value="true">
+                                                    <span></span>
+                                                </label>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div v-if="item.is_variant">
+                                        <div class="col-12" v-for="children in item.children">
+                                            <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][children][][product_id]" v-bind:value="children.productID" placeholder="Product ID">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
                                 <div class="col-3 col-form-label">
                                     <label for="exampleInputEmail1">Publish {{trans_choice('post::messages.post', 1)}}<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 </div>
@@ -169,7 +189,6 @@
                             <input type="hidden" class="form-control m-input" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" v-bind:value="item.slug">
                             <input type="hidden" class="form-control m-input" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][is_variant]" v-bind:value="item.is_variant">
                             <input type="hidden" class="form-control m-input" name="meta[meta_title]" data-target-count-text="#meta-title" v-model="item.product_name">
-                            <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][children][]" value="">
                         </div>
                     </div>
               </div>

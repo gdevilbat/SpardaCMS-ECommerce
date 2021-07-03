@@ -45,6 +45,7 @@ class ProductRepository extends AbstractRepository
                 'meta.'.ProductMeta::TOKPED_STORE.'.slug' => 'required_with:meta.'.ProductMeta::TOKPED_STORE.'.merchant',
                 'meta.'.ProductMeta::SHOPEE_STORE.'.shop_id' => 'required_with:meta.'.ProductMeta::SHOPEE_STORE.'.product_id',
                 'meta.'.ProductMeta::SHOPEE_STORE.'.product_id' => 'required_with:meta.'.ProductMeta::SHOPEE_STORE.'.shop_id',
+                'meta.'.ProductMeta::TOKPED_SUPPLIER.'.children.*.product_id' => 'required',
                 'taxonomy.category' => 'required',
                 'product_meta.product_price' => 'required|max:11',
                 'product_meta.availability' => [
