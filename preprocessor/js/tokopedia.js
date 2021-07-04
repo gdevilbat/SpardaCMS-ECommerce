@@ -17,6 +17,7 @@
               data: {merchant: item.store, slug: item.slug}
             })
             .done(function(response) {
+              TokopediaDownload.$set(TokopediaDownload.item, 'product_id', response[0].data.getPDPInfo.basic.id);
               TokopediaDownload.$set(TokopediaDownload.item, 'images', response[0].data.getPDPInfo.pictures);
               TokopediaDownload.$set(TokopediaDownload.item, 'description', response[0].data.getPDPInfo.basic.description);
               TokopediaDownload.$set(TokopediaDownload.item, 'product_weight', response[0].data.getPDPInfo.basic.weight/1000);

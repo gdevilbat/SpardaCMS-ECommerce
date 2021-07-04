@@ -226,14 +226,20 @@
                                         </div>
                                         <input type="hidden" name="post[post_excerpt]" value="{{old('post.post_excerpt') ? old('post.post_excerpt') : (!empty($post) ? $post->post_excerpt : '')}}">
                                     </div>
-                                    <div class="tab-pane" id="ecommerce" role="tabpanel" v-cloak>
+                                    <div class="tab-pane" id="ecommerce" role="tabpanel" data-url-scrapping-tokopedia-product-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductDetail')}}" v-cloak>
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
                                                 <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][merchant]" v-model="tokopedia_supplier.merchant">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" v-model="tokopedia_supplier.slug">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][merchant]" v-model="tokopedia_supplier.merchant" v-on:change="resetTokopediaId('tokopedia_supplier')">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" v-model="tokopedia_supplier.slug" v-on:change="resetTokopediaId('tokopedia_supplier')">
+                                                <div class="col-12 d-flex mx-0 px-0" v-if="tokopedia_supplier.merchant != '' && tokopedia_supplier.slug != ''">
+                                                    <div class="col pl-0">
+                                                        <input type="text" class="form-control m-input" placeholder="Tokopedia Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][product_id]" v-model="tokopedia_supplier.product_id" readonly>
+                                                    </div>
+                                                    <button type="button" class="btn btn-success" v-on:click="getTokopediaId('tokopedia_supplier')">Get ID</button>
+                                                </div>
                                                 <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][is_variant]" v-bind:value="tokopedia_supplier.is_variant">
                                                 <div class="form-group m-form__group row">
                                                     <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
@@ -309,8 +315,14 @@
                                                 <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][merchant]" v-model="tokopedia_store.merchant">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][slug]" v-model="tokopedia_store.slug">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][merchant]" v-model="tokopedia_store.merchant" v-on:change="resetTokopediaId('tokopedia_store')">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][slug]" v-model="tokopedia_store.slug" v-on:change="resetTokopediaId('tokopedia_store')">
+                                                <div class="col-12 d-flex mx-0 px-0" v-if="tokopedia_store.merchant != '' && tokopedia_store.slug != ''">
+                                                    <div class="col pl-0">
+                                                        <input type="text" class="form-control m-input" placeholder="Tokopedia Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][product_id]" v-model="tokopedia_store.product_id" readonly>
+                                                    </div>
+                                                    <button type="button" class="btn btn-success" v-on:click="getTokopediaId('tokopedia_store')">Get ID</button>
+                                                </div>
                                                 <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][is_variant]" v-bind:value="tokopedia_store.is_variant">
                                                 <div class="form-group m-form__group row">
                                                     <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
@@ -478,6 +490,32 @@
                         this.$set( this[$attr], 'children', []);
 
                     this[$attr].children.push({product_id: ''});
+                },
+                resetTokopediaId: function($attr){
+                    this.$set( this[$attr], 'product_id', '');
+                },
+                getTokopediaId: function($attr){
+                    self = this;
+                    $.ajax({
+                      url: $('#ecommerce').attr('data-url-scrapping-tokopedia-product-detail'),
+                      method: "POST",
+                      headers: {
+                        "Accept": "application/json",
+                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                      },
+                      data: {merchant: self[$attr].merchant, slug: self[$attr].slug}
+                    }).done(function(response){
+                        if(response[0].data != null)
+                        {
+                            self.$set( self[$attr], 'product_id', response[0].data.getPDPInfo.basic.id);
+                        }
+                        else
+                        {
+                            alert('Tokopedia ID Tidak Ditemukan, Periksa Merchant dan Slug');
+                        }
+                    }).fail(function() {
+                      console.log("error");
+                    })
                 }
             },
             mounted: function(){
