@@ -507,7 +507,7 @@
                     }).done(function(response){
                         if(response[0].data != null)
                         {
-                            self.$set( self[$attr], 'product_id', response[0].data.getPDPInfo.basic.id);
+                            self.$set( self[$attr], 'product_id', response[0].data.pdpGetLayout.basicInfo.id);
                         }
                         else
                         {
