@@ -100,36 +100,44 @@ window.tokopediaScrap = function(){
                 let suplier_weight = response[0].data.pdpGetLayout.basicInfo.weight;
                 $('#web-price-'+$(self).attr('data-index')).append('<br/><span class="text-danger">('+($('#web-price-'+$(self).attr('data-index')).attr('data-price') - supplier_price)+')</span>');
 
-                if(response[0].data.pdpGetLayout.basicInfo.status== "ACTIVE" && response[0].data.pdpGetLayout.components[3].data[0].stock.useStock)
+                if(response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant)
                 {
-                    supplier_status = 'available';
-                    $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
-                }
-                else
-                {
-                    if(response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant)
-                    {
-                        let status_boolean;
-                        $.each(response[0].data.pdpGetLayout.components[2].data[0].children, function(index, val) {
-                            if(parseInt(val.stock.stock) > 0)
-                                status_boolean = true; 
-                        });
+                    $.each(response[0].data.pdpGetLayout.components[2].data[0].children, function(index, val) {
+                        let child_supplier_price;
+                        let child_supplier_status;
 
-                        if(status_boolean)
+                        if(val.campaignInfo.discountPrice > 0)
                         {
-                            supplier_status = 'available';
+                            child_supplier_price = val.campaignInfo.discountPrice;
                         }
                         else
                         {
-                            supplier_status = 'empty';
+                            child_supplier_price = val.price;
                         }
 
-                        $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
+                        if(val.stock.isBuyable)
+                        {
+                            child_supplier_status = 'available';
+                        }
+                        else
+                        {
+                            child_supplier_status = 'empty';
+                        }
+
+                        $(self).append(currencyFormat(child_supplier_price) + ', <br/><span class="badge '+ (child_supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + child_supplier_status + '</span><br/>'); 
+                    });
+                }
+                else
+                {
+                    if(response[0].data.pdpGetLayout.basicInfo.status== "ACTIVE" && response[0].data.pdpGetLayout.components[3].data[0].stock.useStock)
+                    {
+                        supplier_status = 'available';
+                        $(self).append(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
                     }
                     else
                     {
                         supplier_status = 'empty';
-                        $(self).html(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
+                        $(self).append(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
                     }
                 }
 
@@ -198,7 +206,7 @@ window.tokopediaScrap = function(){
                                             status: html.item.stock > 0 ? 'available' : 'empty'
                                         }
                                         let shopee_store_price = devtoList[0].price;
-                                        $('#shopee-store-'+$(self).attr('data-index')).html(currencyFormat(shopee_store_price) + '<br/><span class="text-danger">('+(shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
+                                        $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(shopee_store_price) + '<br/><span class="text-danger">('+(shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
                                     }
                             }, (error) => console.log(err) );
 
