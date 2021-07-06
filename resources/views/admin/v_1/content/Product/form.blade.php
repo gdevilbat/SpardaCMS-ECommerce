@@ -226,7 +226,7 @@
                                         </div>
                                         <input type="hidden" name="post[post_excerpt]" value="{{old('post.post_excerpt') ? old('post.post_excerpt') : (!empty($post) ? $post->post_excerpt : '')}}">
                                     </div>
-                                    <div class="tab-pane" id="ecommerce" role="tabpanel" data-url-scrapping-tokopedia-product-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductDetail')}}" v-cloak>
+                                    <div class="tab-pane" id="ecommerce" role="tabpanel" data-url-scrapping-tokopedia-product-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductDetail')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" v-cloak>
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
                                                 <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) }}</label>
@@ -238,7 +238,7 @@
                                                     <div class="col pl-0">
                                                         <input type="text" class="form-control m-input" placeholder="Tokopedia Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][product_id]" v-model="tokopedia_supplier.product_id" readonly>
                                                     </div>
-                                                    <button type="button" class="btn btn-success" v-on:click="getTokopediaId('tokopedia_supplier')">Get ID</button>
+                                                    <button type="button" class="btn btn-success" v-on:click="getTokopediaData('tokopedia_supplier')">Get Data</button>
                                                 </div>
                                                 <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][is_variant]" v-bind:value="tokopedia_supplier.is_variant">
                                                 <div class="form-group m-form__group row">
@@ -277,7 +277,12 @@
                                             </div>
                                             <div class="col">
                                                 <input type="text" class="form-control m-input" placeholder="Shop ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][shop_id]" v-model="shopee_supplier.shop_id">
-                                                <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][product_id]" v-model="shopee_supplier.product_id">
+                                                <div class="col-12 d-flex px-0">
+                                                    <div class="col pl-0">
+                                                        <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][product_id]" v-model="shopee_supplier.product_id">
+                                                    </div>
+                                                    <button type="button" class="btn btn-success" v-on:click="getShopeeData('shopee_supplier')">Get Data</button>
+                                                </div>
                                                 <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][is_variant]" v-bind:value="shopee_supplier.is_variant">
                                                 <div class="form-group m-form__group row">
                                                     <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
@@ -321,7 +326,7 @@
                                                     <div class="col pl-0">
                                                         <input type="text" class="form-control m-input" placeholder="Tokopedia Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][product_id]" v-model="tokopedia_store.product_id" readonly>
                                                     </div>
-                                                    <button type="button" class="btn btn-success" v-on:click="getTokopediaId('tokopedia_store')">Get ID</button>
+                                                    <button type="button" class="btn btn-success" v-on:click="getTokopediaData('tokopedia_store')">Get Data</button>
                                                 </div>
                                                 <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][is_variant]" v-bind:value="tokopedia_store.is_variant">
                                                 <div class="form-group m-form__group row">
@@ -360,7 +365,12 @@
                                             </div>
                                             <div class="col">
                                                 <input type="text" class="form-control m-input" placeholder="Shop ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][shop_id]" v-model="shopee_store.shop_id">
-                                                <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][product_id]" v-model="shopee_store.product_id">
+                                                <div class="col-12 d-flex px-0">
+                                                    <div class="col pl-0">
+                                                        <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][product_id]" v-model="shopee_store.product_id">
+                                                    </div>
+                                                    <button type="button" class="btn btn-success" v-on:click="getShopeeData('shopee_store')">Get Data</button>
+                                                </div>
                                                 <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][is_variant]" v-bind:value="shopee_store.is_variant">
                                                 <div class="form-group m-form__group row">
                                                     <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
@@ -494,7 +504,7 @@
                 resetTokopediaId: function($attr){
                     this.$set( this[$attr], 'product_id', '');
                 },
-                getTokopediaId: function($attr){
+                getTokopediaData: function($attr){
                     self = this;
                     $.ajax({
                       url: $('#ecommerce').attr('data-url-scrapping-tokopedia-product-detail'),
@@ -508,10 +518,59 @@
                         if(response[0].data != null)
                         {
                             self.$set( self[$attr], 'product_id', response[0].data.pdpGetLayout.basicInfo.id);
+                            self.$set( self[$attr], 'is_variant', response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant);
+
+                            children = response[0].data.pdpGetLayout.components[2].data[0].children;
+
+                            if(self[$attr].is_variant)
+                            {
+                                $.each(children, function(index, val) {
+                                     children[index]['product_id'] = val.productID;
+                                });
+
+                                self.$set( self[$attr], 'children', children);
+                            }
+
                         }
                         else
                         {
-                            alert('Tokopedia ID Tidak Ditemukan, Periksa Merchant dan Slug');
+                            alert('Product Tidak Ditemukan, Periksa Merchant dan Slug');
+                        }
+                    }).fail(function() {
+                      console.log("error");
+                    })
+                },
+                getShopeeData: function($attr){
+                    self = this;
+                    $.ajax({
+                      url: $('#ecommerce').attr('data-url-scrapping-shopee'),
+                      method: "POST",
+                      dataType: "json",
+                      headers: {
+                        "Accept": "application/json",
+                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                      },
+                      data: {shopid: self[$attr].shop_id, itemid: self[$attr].product_id}
+                    }).done(function(response){
+                        if(response.item != null)
+                        {
+                            self.$set( self[$attr], 'is_variant', true);
+
+                            children = response.item.models;
+
+                            if(self[$attr].is_variant)
+                            {
+                                $.each(children, function(index, val) {
+                                     children[index]['product_id'] = val.modelid;
+                                });
+
+                                self.$set( self[$attr], 'children', children);
+                            }
+
+                        }
+                        else
+                        {
+                            alert('Product Tidak Ditemukan, Periksa Shop ID dan Product ID');
                         }
                     }).fail(function() {
                       console.log("error");
