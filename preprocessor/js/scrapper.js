@@ -205,7 +205,7 @@ window.tokopediaScrap = function(){
                                             price: (html.item.price)/100000,
                                             status: html.item.stock > 0 ? 'available' : 'empty'
                                         }
-                                        $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(devtoList[0].price) + '<br/><span class="text-danger">('+(devtoList[0].price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
+                                        //$('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(devtoList[0].price) + '<br/><span class="text-danger">('+(devtoList[0].price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
 
                                         let child_shopee_store_price;
                                         let child_shopee_store_status;
