@@ -16,8 +16,16 @@ class ScrappingController extends Controller
         {
           if($response[0]->data->pdpGetLayout->components[3]->data[0]->variant->isVariant)
           {
+            $parent_name = $response[0]->data->pdpGetLayout->components[3]->data[0]->name;
             $children = collect($response[0]->data->pdpGetLayout->components[2]->data[0]->children);
-            $sorted = array_values($children->sortBy('productName')->toArray());
+            $sorted = $children->sortBy('productName');
+
+            $children = $sorted->map(function ($item, $key) use ($parent_name) {
+              $item->name = str_replace($parent_name.' - ', '', $item->productName);
+              return $item;
+            });
+
+            $sorted = array_values($children->toArray());
 
             $response[0]->data->pdpGetLayout->components[2]->data[0]->children = $sorted;
           }

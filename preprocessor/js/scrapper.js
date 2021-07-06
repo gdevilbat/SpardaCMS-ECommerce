@@ -124,7 +124,7 @@ window.tokopediaScrap = function(){
                             child_supplier_status = 'empty';
                         }
 
-                        $(self).append(currencyFormat(child_supplier_price) + ', <br/><span class="badge '+ (child_supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + child_supplier_status + '</span><br/>'); 
+                        $(self).append('<div class="mb-3"><span>'+ val.name + '</span><br/>' + currencyFormat(child_supplier_price) + ', <br/><span class="badge '+ (child_supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + child_supplier_status + '</span></div>'); 
                     });
                 }
                 else
@@ -132,12 +132,12 @@ window.tokopediaScrap = function(){
                     if(response[0].data.pdpGetLayout.basicInfo.status== "ACTIVE" && response[0].data.pdpGetLayout.components[3].data[0].stock.useStock)
                     {
                         supplier_status = 'available';
-                        $(self).append(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
+                        $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span></div>');
                     }
                     else
                     {
                         supplier_status = 'empty';
-                        $(self).append(currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span><br/>');
+                        $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span></div>');
                     }
                 }
 
@@ -214,11 +214,11 @@ window.tokopediaScrap = function(){
 
                                             if(child_shopee_store_price == devtoList[0].price)
                                             {
-                                                $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(child_shopee_store_price) + '<br/><span class="text-danger">('+(child_shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(child_shopee_store_status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store_status + '</span><br/>');
+                                                $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_shopee_store_price) + '<br/><span class="text-danger">('+(child_shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(child_shopee_store_status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store_status + '</span></div>');
                                             }
                                             else
                                             {
-                                                $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(child_shopee_store_price) + '<br/><span class="badge '+(child_shopee_store_status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store_status + '</span><br/>');
+                                                $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_shopee_store_price) + '<br/><span class="badge '+(child_shopee_store_status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store_status + '</span></div>');
                                             }
                                         });
                                     }
