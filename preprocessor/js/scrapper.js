@@ -207,21 +207,19 @@ window.tokopediaScrap = function(){
                                         }
                                         //$('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(devtoList[0].price) + '<br/><span class="text-danger">('+(devtoList[0].price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
 
-                                        let child_shopee_store_price;
-                                        let child_shopee_store_status;
 
                                         $.each(html.item.models, function(index, val) {
-                                             child_shopee_store_price = val.price/100000;
-                                             child_shopee_store_status =  val.stock > 0 ? 'available' : 'empty';
+                                             let child_shopee_store_price = val.price/100000;
+                                             let child_shopee_store_status =  val.stock > 0 ? 'available' : 'empty';
 
-                                        if(child_shopee_store_price == devtoList[0].price)
-                                        {
-                                            $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(child_shopee_store_price) + '<br/><span class="text-danger">('+(child_shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(child_shopee_store_status.status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
-                                        }
-                                        else
-                                        {
-                                            $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(child_shopee_store_price) + '<br/><span class="badge '+(child_shopee_store_status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store_status + '</span><br/>');
-                                        }
+                                            if(child_shopee_store_price == devtoList[0].price)
+                                            {
+                                                $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(child_shopee_store_price) + '<br/><span class="text-danger">('+(child_shopee_store_price - supplier_price)+')</span>,<br/><span class="badge '+(child_shopee_store_status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store_status + '</span><br/>');
+                                            }
+                                            else
+                                            {
+                                                $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(child_shopee_store_price) + '<br/><span class="badge '+(child_shopee_store_status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store_status + '</span><br/>');
+                                            }
                                         });
                                     }
                             }, (error) => console.log(err) );
