@@ -10,7 +10,20 @@ class ScrappingController extends Controller
 {
     public function scrappingTokopediaProductDetail(Request $request)
     {
-        return resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\TokopediaRepository::class)->itemDetail($request);
+        $response = resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\TokopediaRepository::class)->itemDetail($request);
+
+        if(!empty($response[0]->data))
+        {
+          if($response[0]->data->pdpGetLayout->components[3]->data[0]->variant->isVariant)
+          {
+            $children = collect($response[0]->data->pdpGetLayout->components[2]->data[0]->children);
+            $sorted = array_values($children->sortBy('productName')->toArray());
+
+            $response[0]->data->pdpGetLayout->components[2]->data[0]->children = $sorted;
+          }
+        }
+
+        return $response;
     }
 
     public function scrappingTokopediaProductVariant(Request $request)
@@ -64,7 +77,17 @@ class ScrappingController extends Controller
         if(empty($response))
             return response()->json(['message' => 'Check Connection'], 500);
 
-        return $response;
+        $response = json_decode($response);
+
+        if(!empty($response->item))
+        {
+          $children = collect($response->item->models);
+          $sorted = array_values($children->sortBy('name')->toArray());
+
+          $response->item->models = $sorted;
+        }
+
+        return json_encode($response);
     }
 
     public function shopeeDetail(Request $request)
