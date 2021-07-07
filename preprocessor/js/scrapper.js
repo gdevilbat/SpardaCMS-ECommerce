@@ -83,7 +83,7 @@ window.tokopediaScrap = function(){
 
         $.ajax(settings).done(function (response) {
 
-            if(response[0].data != null)
+            if(response[0].errors == null)
             {
                 let supplier_status;
                 let supplier_price;
