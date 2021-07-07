@@ -12,7 +12,7 @@ class ScrappingController extends Controller
     {
         $response = resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\TokopediaRepository::class)->itemDetail($request);
 
-        if(!empty($response[0]->data))
+        if(empty($response[0]->errors))
         {
           if($response[0]->data->pdpGetLayout->components[3]->data[0]->variant->isVariant)
           {

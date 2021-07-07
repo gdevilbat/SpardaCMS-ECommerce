@@ -240,8 +240,8 @@
                                                 <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][merchant]" v-model="tokopedia_supplier.merchant" v-on:change="resetTokopediaId('tokopedia_supplier')">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" v-model="tokopedia_supplier.slug" v-on:change="resetTokopediaId('tokopedia_supplier')">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][merchant]" v-model="tokopedia_supplier.merchant" v-on:change="resetTokopediaData('tokopedia_supplier')">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" v-model="tokopedia_supplier.slug" v-on:change="resetTokopediaData('tokopedia_supplier')">
                                                 <div class="col-12 d-flex mx-0 px-0" v-if="tokopedia_supplier.merchant != '' && tokopedia_supplier.slug != ''">
                                                     <div class="col pl-0">
                                                         <input type="text" class="form-control m-input" placeholder="Tokopedia Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][product_id]" v-model="tokopedia_supplier.product_id" readonly>
@@ -284,10 +284,10 @@
                                                 <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input" placeholder="Shop ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][shop_id]" v-model="shopee_supplier.shop_id">
+                                                <input type="text" class="form-control m-input" placeholder="Shop ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][shop_id]" v-model="shopee_supplier.shop_id" v-on:change="resetShopeeData('shopee_supplier')">
                                                 <div class="col-12 d-flex px-0">
                                                     <div class="col pl-0">
-                                                        <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][product_id]" v-model="shopee_supplier.product_id">
+                                                        <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][product_id]" v-model="shopee_supplier.product_id" v-on:change="resetShopeeData('shopee_supplier')">
                                                     </div>
                                                     <button type="button" class="btn btn-success" v-on:click="getShopeeData('shopee_supplier')">Get Data</button>
                                                 </div>
@@ -328,8 +328,8 @@
                                                 <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][merchant]" v-model="tokopedia_store.merchant" v-on:change="resetTokopediaId('tokopedia_store')">
-                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][slug]" v-model="tokopedia_store.slug" v-on:change="resetTokopediaId('tokopedia_store')">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][merchant]" v-model="tokopedia_store.merchant" v-on:change="resetTokopediaData('tokopedia_store')">
+                                                <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][slug]" v-model="tokopedia_store.slug" v-on:change="resetTokopediaData('tokopedia_store')">
                                                 <div class="col-12 d-flex mx-0 px-0" v-if="tokopedia_store.merchant != '' && tokopedia_store.slug != ''">
                                                     <div class="col pl-0">
                                                         <input type="text" class="form-control m-input" placeholder="Tokopedia Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][product_id]" v-model="tokopedia_store.product_id" readonly>
@@ -372,10 +372,10 @@
                                                 <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) }}</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" class="form-control m-input" placeholder="Shop ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][shop_id]" v-model="shopee_store.shop_id">
+                                                <input type="text" class="form-control m-input" placeholder="Shop ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][shop_id]" v-model="shopee_store.shop_id" v-on:change="resetShopeeData('shopee_store')">
                                                 <div class="col-12 d-flex px-0">
                                                     <div class="col pl-0">
-                                                        <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][product_id]" v-model="shopee_store.product_id">
+                                                        <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][product_id]" v-model="shopee_store.product_id" v-on:change="resetShopeeData('shopee_store')">
                                                     </div>
                                                     <button type="button" class="btn btn-success" v-on:click="getShopeeData('shopee_store')">Get Data</button>
                                                 </div>
@@ -509,8 +509,12 @@
 
                     this[$attr].children.push({product_id: ''});
                 },
-                resetTokopediaId: function($attr){
+                resetTokopediaData: function($attr){
                     this.$set( this[$attr], 'product_id', '');
+                    this.$set( this[$attr], 'is_variant', false);
+                },
+                resetShopeeData: function($attr){
+                    this.$set( this[$attr], 'is_variant', false);
                 },
                 getTokopediaData: function($attr){
                     self = this;
@@ -523,7 +527,7 @@
                       },
                       data: {merchant: self[$attr].merchant, slug: self[$attr].slug}
                     }).done(function(response){
-                        if(response[0].data != null)
+                        if(response[0].errors == null)
                         {
                             self.$set( self[$attr], 'product_id', response[0].data.pdpGetLayout.basicInfo.id);
                             self.$set( self[$attr], 'is_variant', response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant);
