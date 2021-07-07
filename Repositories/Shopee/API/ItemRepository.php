@@ -217,7 +217,7 @@ class ItemRepository extends AbstractRepository
             $path = '/api/v1/items/update_stock';
             $parameter = $this->getPrimaryParameter($request['shop_id']);
             $parameter['item_id'] = (int) $request['product_id'];
-            $parameter['stock'] = $post->productMeta->product_stock;
+            $parameter['stock'] = (int) $post->productMeta->product_stock;
 
             $base_string = $this->getBaseString($path, $parameter);
             $sign = $this->getSignature($base_string);
