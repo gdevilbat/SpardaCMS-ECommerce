@@ -55,7 +55,7 @@ class BlogProductController extends AbstractBlog
         
             $query = $this->post_m->with('postMeta')
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
+                                                    $query->where('product_stock', '>', 0);
                                                 })
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
@@ -79,7 +79,7 @@ class BlogProductController extends AbstractBlog
             $query = $this->buildPostByTaxonomy($this->data['post_categories']->first())
                                                 ->with('postMeta')
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
+                                                    $query->where('product_stock', '>', 0);
                                                 })
                                                 ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
@@ -97,7 +97,7 @@ class BlogProductController extends AbstractBlog
             $query = $this->post_m->with('postMeta')
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->whereHas('productMeta', function($query){
-                                                    $query->whereNotIn('availability', [Product::STAT_OUT, Product::STAT_DISCONTINUED]);
+                                                    $query->where('product_stock', '>', 0);
                                                 })
                                                 ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
@@ -122,7 +122,7 @@ class BlogProductController extends AbstractBlog
     {
         $query_1 = $this->buildPostByTaxonomy($taxonomy)
                         ->join(ProductMeta::getTableName(), Product::getTableName().'.'.Product::getPrimaryKey(), '=', ProductMeta::getTableName().'.product_id')
-                        ->orderByRaw(ProductMeta::getTableWithPrefix().'.availability ASC, '.Product::getTableWithPrefix().'.created_at DESC');
+                        ->orderByRaw('if('.ProductMeta::getTableWithPrefix().'.product_stock > 0, "'.ProductMeta::STAT_IN_STOCK.'", "'.ProductMeta::STAT_OUT_STOCK.'") ASC, '.Product::getTableWithPrefix().'.created_at DESC');
 
         return $query_1;
     }

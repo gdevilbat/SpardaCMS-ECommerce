@@ -66,7 +66,7 @@ class ShopeeController extends CoreController
                                   ->where('meta_value', 'LIKE', '%'.addslashes('product\/'.getSettingConfig('shopee_id')).'%'); 
                         })
                         ->whereHas('productMeta', function($query){
-                            $query->where('availability', Product::STAT_INSTOCK);
+                            $query->where('product_stock', '>', 0);
                         })
                         ->orderBy($column, $dir)
                         ->limit($length);
