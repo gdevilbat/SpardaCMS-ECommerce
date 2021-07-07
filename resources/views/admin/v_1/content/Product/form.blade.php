@@ -130,6 +130,14 @@
                                         </div>
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
+                                                <label for="exampleInputEmail1">Product Stock<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="number" class="form-control m-input" placeholder="Product Stock" name="product_meta[product_stock]" value="{{old('product_meta.product_stock') ? old('product_meta.product_stock') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_stock : '')}}">
+                                            </div>
+                                        </div>
+                                        {{-- <div class="form-group m-form__group d-flex px-0">
+                                            <div class="col-4 d-flex justify-content-end py-3">
                                                 <label for="exampleInputEmail1">Product Availablity<span class="ml-1 m--font-warning" aria-required="true">*</span></label>
                                             </div>
                                             <div class="col d-flex align-items-center">
@@ -158,7 +166,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
                                                 <label for="exampleInputEmail1">Product Condition<span class="ml-1 m--font-warning" aria-required="true">*</span></label>

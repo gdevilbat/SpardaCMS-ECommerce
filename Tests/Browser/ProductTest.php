@@ -39,7 +39,8 @@ class ProductTest extends DuskTestCase
             $browser->script('document.getElementsByName("post[comment_status]")[0].checked = true');
             //$browser->script('document.getElementsByName("post[post_parent]")[0].selectedIndex = 1'); Disable For A While
             $browser->script('document.getElementsByName("product_meta[product_price]")[0].value = "'.$faker->randomNumber(6).'"');
-            $browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
+            //$browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
+            $browser->script('document.getElementsByName("product_meta[product_stock]")[0].value = 10');
             $browser->script('document.getElementsByName("product_meta[condition]")[0].checked = true');
             $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 1');
             $browser->script('document.getElementsByName("taxonomy[tag][]")[0].selectedIndex = 0');
@@ -81,7 +82,8 @@ class ProductTest extends DuskTestCase
             $browser->script('document.getElementsByName("post[comment_status]")[0].checked = true');
             //$browser->script('document.getElementsByName("post[post_parent]")[0].selectedIndex = 1'); Disable For A While
             $browser->script('document.getElementsByName("product_meta[product_price]")[0].value = "'.$faker->randomNumber(6).'"');
-            $browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
+            //$browser->script('document.getElementsByName("product_meta[availability]")[0].checked = true');
+            $browser->script('document.getElementsByName("product_meta[product_stock]")[0].value = 10');
             $browser->script('document.getElementsByName("product_meta[condition]")[0].checked = true');
             $browser->script('document.getElementsByName("taxonomy[category][]")[0].selectedIndex = 1');
             $browser->script('document.getElementsByName("taxonomy[tag][]")[0].selectedIndex = 0');

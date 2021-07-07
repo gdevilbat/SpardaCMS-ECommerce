@@ -22,6 +22,12 @@ class ProductMeta extends Model
     CONST TOKPED_STORE = 'tokopedia_store_account';
     CONST SHOPEE_STORE = 'shopee_store_account';
 
+    CONST STAT_IN_STOCK = 'in stock';
+    CONST STAT_OUT_STOCK = 'out of stock';
+    CONST STAT_PREORDER = 'preorder';
+    CONST STAT_AVAILABLE = 'available for order';
+    CONST STAT_DISCONTINUED = 'discontinued';
+
     /**
      * Set the Post Status.
      *
@@ -39,19 +45,19 @@ class ProductMeta extends Model
 
     public function getSchemaAvailabilityAttribute()
     {
-        if($this->availability == 'in stock')
+        if($this->availability == SELF::STAT_IN_STOCK)
             return 'http://schema.org/InStock';
 
-        if($this->availability == 'out of stock')
+        if($this->availability == SELF::STAT_OUT_STOCK)
             return 'http://schema.org/OutOfStock';
 
-        if($this->availability == 'preorder')
+        if($this->availability == SELF::STAT_PREORDER)
             return 'http://schema.org/PreOrder';
 
-        if($this->availability == 'available for order')
+        if($this->availability == SELF::STAT_AVAILABLE)
             return 'http://schema.org/LimitedAvailability';
 
-        if($this->availability == 'discontinued')
+        if($this->availability == SELF::STAT_DISCONTINUED)
             return 'http://schema.org/Discontinued';
 
         return 'http://schema.org/InStock';;
@@ -72,6 +78,14 @@ class ProductMeta extends Model
             return 'http://schema.org/LimitedAvailability';
 
         return 'http://schema.org/NewCondition';;
+    }
+
+    public function getAvailabilityAttribute()
+    {
+        if($this->product_stock > 0)
+            return SELF::STAT_IN_STOCK;
+
+        return SELF::STAT_OUT_STOCK;
     }
     
     public function setProductPriceAttribute($value)
