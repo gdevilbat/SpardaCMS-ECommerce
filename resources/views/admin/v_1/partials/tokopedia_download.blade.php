@@ -72,7 +72,7 @@
                                     <label for="exampleInputEmail1">Product Stock<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 </div>
                                 <div class="col">
-                                    <input type="number" class="form-control m-input" placeholder="Product Weight"name="product_meta[product_stock]" v-model="item.product_stock">
+                                    <input type="number" class="form-control m-input" placeholder="Product Stock" name="product_meta[product_stock]" v-model="item.product_stock">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">

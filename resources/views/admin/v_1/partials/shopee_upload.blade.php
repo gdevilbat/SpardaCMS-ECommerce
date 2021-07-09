@@ -91,7 +91,7 @@
                             <div class="form-group m-form__group row">
                                 <label for="example-text-input" class="col-3 col-form-label">Product Stock <span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 <div class="col">
-                                    <input class="form-control m-input" type="number" name="product_stock" min="0">
+                                    <input class="form-control m-input" type="number" name="product_stock" v-model="item.product_stock" min="0">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
