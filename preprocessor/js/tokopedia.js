@@ -44,6 +44,8 @@
               if(response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant)
               {
                 TokopediaDownload.$set(TokopediaDownload.item, 'children', response[0].data.pdpGetLayout.components[2].data[0].children);
+                TokopediaDownload.$set(Variant, 'children', response[0].data.pdpGetLayout.components[2].data[0].children);
+                TokopediaDownload.$set(Variant, 'variants', response[0].data.pdpGetLayout.components[2].data[0].variants);
               }
             })
             .fail(function() {
@@ -96,12 +98,13 @@
           addChildren: function(){
             this.item.children.push({product_id: ''});
           },
-          submit: function(){
+          submit: function(event){
+              event.preventDefault();
               self = this;
               $.ajax({
-                  url: $("#tokopedia_download").attr('data-action'),
+                  url: $("#tokopedia_form").attr('data-action'),
                   type: 'POST',
-                  data: $("#tokopedia_download").serialize(),
+                  data: $("#tokopedia_form").serialize(),
                   headers: {
                       "Accept": "application/json",
                       "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
@@ -129,7 +132,8 @@
         errors: [],
         product_sale: null,
         product_weight: null,
-        product_avalability: null
+        product_avalability: null,
+        product_stock: null,
       }
     }
 

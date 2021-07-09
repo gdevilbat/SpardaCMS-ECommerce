@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-tokopedia-download" tabindex="-1" role="dialog" aria-hidden="true"  aria-labelledby="exampleModalLabel" data-dismiss="modal">
   <div class="modal-dialog modal-lg">
       <div class="modal-content">
-          <form  id="tokopedia_download" data-action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\TokopediaController@store') }}" v-on:submit.prevent="submit">
+          <form  id="tokopedia_form" data-action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\TokopediaController@store') }}" onsubmit="TokopediaDownload.submit(event)">
               <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">Tokopedia Download</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -9,7 +9,7 @@
                   </button>
               </div>
               <div class="modal-body"> 
-                    <div class="row">
+                    <div class="row" id="tokopedia_download">
                     	<div class="col-12" v-if="objSize(errors) > 0">
                     		<div class="alert alert-danger">
 	                            <ul v-for="error in errors">
@@ -67,35 +67,12 @@
                                     <input type="number" class="form-control m-input" placeholder="Product Weight" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_WEIGHT}}]" v-model="item.product_weight" step="0.01">
                                 </div>
                             </div>
-                            <div class="form-group m-form__group row">
+                             <div class="form-group m-form__group row">
                                 <div class="col-3 col-form-label">
-                                    <label for="exampleInputEmail1">Product Availablity<span class="ml-1 m--font-warning" aria-required="true">*</span></label>
+                                    <label for="exampleInputEmail1">Product Stock<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                                 </div>
-                                <div class="col d-flex align-items-center">
-                                    <div class="m-form__group form-group">
-                                        <div class="m-radio-inline">
-                                            <label class="m-radio">
-                                                <input type="radio" name="product_meta[availability]"  value="in stock" v-model="product_avalability"> In Stock
-                                                <span></span>
-                                            </label>
-                                            <label class="m-radio">
-                                                <input type="radio" name="product_meta[availability]"  value="out of stock" v-model="product_avalability"> Out Of Stock
-                                                <span></span>
-                                            </label>
-                                            <label class="m-radio">
-                                                <input type="radio" name="product_meta[availability]"  value="preorder" v-model="product_avalability"> Preorder
-                                                <span></span>
-                                            </label>
-                                            <label class="m-radio">
-                                                <input type="radio" name="product_meta[availability]"  value="available for order" v-model="product_avalability"> Available For Order
-                                                <span></span>
-                                            </label>
-                                            <label class="m-radio">
-                                                <input type="radio" name="product_meta[availability]"  value="discontinued" v-model="product_avalability"> Discontinued
-                                                <span></span>
-                                            </label>
-                                        </div>
-                                    </div>
+                                <div class="col">
+                                    <input type="number" class="form-control m-input" placeholder="Product Weight"name="product_meta[product_stock]" v-model="item.product_stock">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
@@ -201,6 +178,7 @@
                             <input type="hidden" class="form-control m-input" name="meta[meta_title]" data-target-count-text="#meta-title" v-model="item.product_name">
                         </div>
                     </div>
+                    @include('ecommerce::admin.v_1.partials.variant')
               </div>
               {{ csrf_field() }}
               <div class="modal-footer">

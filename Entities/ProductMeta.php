@@ -10,6 +10,8 @@ class ProductMeta extends Model
     protected $table = 'product_meta';
     protected $primaryKey = 'product_id';
 
+    CONST PRODUCT_VARIANT = "product_variant";
+
     CONST PRODUCT_WEIGHT = "product_weight";
 
     CONST SHOPEE_ATTR_COMBO = "COMBO_BOX";
