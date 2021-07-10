@@ -1,4 +1,4 @@
-<div class="tab-pane" id="variant" role="tabpanel">
+<div class="tab-pane" id="variant-{{$id}}" data-id="{{$id}}" role="tabpanel" v-cloak>
     <div class="form-group m-form__group d-flex">
         <div class="col">
             <div class="mb-5" v-for="(variant, index_variant) in (variants)">
@@ -59,6 +59,7 @@
               <td>
                 @{{ child.name }}
                 <input class="form-control w-100" type="hidden" v-bind:name="'meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT}}][children]['+index+'][name]'" v-model="child.name">
+                <input class="form-control w-100" type="hidden" v-bind:name="'meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT}}][children]['+index+'][tier_index]'" v-model="child.tier_index">
               </td>
               <td>
                 <input class="form-control w-100" type="number" v-bind:name="'meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT}}][children]['+index+'][price]'" v-model="child.price" min="0">
@@ -75,8 +76,8 @@
 
 @push('page_script_js')
   <script type="text/javascript">
-    var Variant = new Vue({
-        el: "#variant",
+    window['Variant_'+'{{$id}}'] = new Vue({
+        el: "#variant-{{$id}}",
         data: {
             variants: {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT.'.variants') ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT.'.variants')) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT)->variants) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT)->variants) : json_encode([])) !!},
             children: {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT.'.children') ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT.'.children')) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT)->children) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT)->children) : json_encode([])) !!},
@@ -107,7 +108,7 @@
         watch: {
           variants: {
             handler(val){
-              self = this;
+              let self = this;
              let args = [];
              $.each(this.variants, function(index_variant, variant) {
                 let index_key = [];
@@ -129,9 +130,10 @@
                 });
 
                 if(self.children[index] == undefined){
-                  self.$set(self.children, index, {'name' : name, 'price': '', 'stock': {stock: ''}});
+                  self.$set(self.children, index, {'tier_index' : val,'name' : name, 'price': '', 'stock': {stock: ''}});
                 }else{
                   let old_data = self.children[index];
+                  old_data.tier_index = val;
                   old_data.name = name;
                   self.$set(self.children, index, old_data);
                 }
@@ -140,7 +142,9 @@
              sub = self.children.length - data.length;
 
              if(sub > 0){
-              self.children.splice(-1, sub);
+              for (let i = 0; i < sub; i++) {
+                self.children.splice(-1, 1);
+              }
              }
 
              if(data[0].length == 0){

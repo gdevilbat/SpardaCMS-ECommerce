@@ -1,4 +1,4 @@
-<div class="tab-pane" id="gallery" role="tabpanel">
+<div class="tab-pane" id="gallery" role="tabpanel" v-cloak>
     <div class="form-group m-form__group d-flex">
         <div class="col">
             <div v-for="(item, index) in (components)">

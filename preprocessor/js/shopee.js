@@ -99,8 +99,8 @@ $(document).ready(function() {
         }, 
         methods: {
             addSelected: function(e, index_selected){
-                self = this;
-                var tmp = this.categories;
+                let self = this;
+                let tmp = this.categories;
                 this.children_categories = [];
                 this.attributes = [];
                 this.category_id = null;
@@ -128,7 +128,7 @@ $(document).ready(function() {
                         self.selected_category.splice(index, 1);
                         self.category_id = tmp[el].category_id;
                         $.ajax({
-                            url: $("#shopee_upload").attr('data-url-shopee-attribute'),
+                            url: $("#shopee_form").attr('data-url-shopee-attribute'),
                             data: {category_id: self.category_id, shop_id: $("[name='shop_id']").val()},
                         })
                         .done(function(response) {
@@ -151,9 +151,9 @@ $(document).ready(function() {
             },
             setDataForm: function(id){
                 this.id_posts = id;
-                self = this;
+                let self = this;
                 $.ajax({
-                    url: $("#shopee_upload").attr('data-url-product-detail'),
+                    url: $("#shopee_form").attr('data-url-product-detail'),
                     type: 'POST',
                     data: {id_posts: this.id_posts},
                     headers: {
@@ -165,7 +165,7 @@ $(document).ready(function() {
                     $('#modal-shopee-upload').modal('show');
 
                     $.ajax({
-                        url: $("#shopee_upload").attr('data-url-shopee-logistics'),
+                        url: $("#shopee_form").attr('data-url-shopee-logistics'),
                          data: {shop_id: $("[name='shop_id']").val()},
                     })
                     .done(function(response) {
@@ -174,6 +174,17 @@ $(document).ready(function() {
                     .fail(function() {
                         console.log("error");
                     });
+
+                    if(window.objSize(response.product_variant) > 0)
+                    {
+                        Variant_shopee_upload.variants = response.product_variant.variants;
+                        Variant_shopee_upload.children = response.product_variant.children;
+                    }
+                    else
+                    {
+                        Variant_shopee_upload.variants = [];
+                        Variant_shopee_upload.children = [];
+                    }
 
                 })
                 .fail(function() {
@@ -184,12 +195,13 @@ $(document).ready(function() {
             resetWindow: function(){
                  Object.assign(this.$data, initialState());
             },
-            submit: function(){
-                self = this;
+            submit: function(event){
+                event.preventDefault();
+                let self = this;
                 $.ajax({
-                    url: $("#shopee_upload").attr('data-action'),
+                    url: $("#shopee_form").attr('data-action'),
                     type: 'POST',
-                    data: $("#shopee_upload").serialize(),
+                    data: $("#shopee_form").serialize(),
                     headers: {
                         "Accept": "application/json",
                         "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
@@ -235,7 +247,7 @@ $(document).ready(function() {
 
         $("#modal-shopee-upload").on('shown.bs.modal', function(){
             $.ajax({
-                url: $("#shopee_upload").attr('data-url-shopee-category'),
+                url: $("#shopee_form").attr('data-url-shopee-category'),
                 data: {shop_id: $("[name='shop_id']").val()},
               })
               .done(function(response) {

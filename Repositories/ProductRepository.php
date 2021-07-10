@@ -4,7 +4,9 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories;
 
 use Gdevilbat\SpardaCMS\Modules\Post\Repositories\AbstractRepository;
 
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
+use Gdevilbat\SpardaCMS\Modules\Post\Entities\PostMeta;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -115,6 +117,11 @@ class ProductRepository extends AbstractRepository
         foreach ($request->input('product_meta') as $key => $value) 
         {
             $product_meta->$key = $value;
+        }
+
+        if(!$request->has('meta.'.ProductMeta::PRODUCT_VARIANT))
+        {
+            PostMeta::where(['meta_key' => ProductMeta::PRODUCT_VARIANT, Product::FOREIGN_KEY => $post->getKey()])->delete();
         }
 
         $product_meta->save();

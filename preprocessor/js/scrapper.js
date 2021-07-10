@@ -103,7 +103,7 @@ window.tokopediaScrap = function(){
 
                 if(response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant)
                 {
-                    $.each(response[0].data.pdpGetLayout.components[2].data[0].children, function(index, val) {
+                    $.each(response[0].data.pdpGetLayout.components[2].data[0].sorted_children_by_name, function(index, val) {
                         let price;
                         let status;
                         if(val.campaignInfo.discountPrice > 0)
@@ -218,7 +218,7 @@ window.tokopediaScrap = function(){
                                         else
                                         {
                                             let child_shopee_store = [];
-                                            $.each(html.item.models, function(index, val) {
+                                            $.each(html.item.sorted_models_by_name, function(index, val) {
                                                  let price = val.price/100000;
                                                  let status =  val.stock > 0 ? 'available' : 'empty';
 

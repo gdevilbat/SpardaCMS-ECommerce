@@ -27,7 +27,7 @@ class ScrappingController extends Controller
 
             $sorted = array_values($children->toArray());
 
-            $response[0]->data->pdpGetLayout->components[2]->data[0]->children = $sorted;
+            $response[0]->data->pdpGetLayout->components[2]->data[0]->sorted_children_by_name = $sorted;
           }
         }
 
@@ -92,7 +92,7 @@ class ScrappingController extends Controller
           $children = collect($response->item->models);
           $sorted = array_values($children->sortBy('name')->toArray());
 
-          $response->item->models = $sorted;
+          $response->item->sorted_models_by_name = $sorted;
         }
 
         return json_encode($response);

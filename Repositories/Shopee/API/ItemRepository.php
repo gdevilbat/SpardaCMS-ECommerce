@@ -128,14 +128,10 @@ class ItemRepository extends AbstractRepository
     public function itemUpdate(array $request)
     {
         $this->validateRequest($request, [
-          'product_id' => 'required',
-          Product::FOREIGN_KEY => 'required'
+          'item_id' => 'required',
+          'name' => 'required',
+          'description' => 'required',
         ]);
-
-        $post = Product::with('productMeta')
-                        ->findOrfail($request[Product::FOREIGN_KEY]);
-
-        $response = [];
 
         /*========================================
         =            Update Item Info            =
@@ -143,9 +139,9 @@ class ItemRepository extends AbstractRepository
         
             $path = '/api/v1/item/update';
             $parameter = $this->getPrimaryParameter($request['shop_id']);
-            $parameter['item_id'] = (int) $request['product_id'];
-            $parameter['name'] = $post->post_title;
-            $parameter['description'] = html_entity_decode(strip_tags($post->post_content));
+            $parameter['item_id'] = (int) $request['item_id'];
+            $parameter['name'] = $request['name'];
+            $parameter['description'] = $request['description'];
 
             $base_string = $this->getBaseString($path, $parameter);
             $sign = $this->getSignature($base_string);
@@ -159,84 +155,91 @@ class ItemRepository extends AbstractRepository
 
             $data = json_decode($body);
 
-            array_push($response, $data);
-
-        
         /*=====  End of Update Item Info  ======*/
 
-        /*========================================
-        =            Update Item Info            =
-        ========================================*/
+        return response()->json($data);;
+    }
 
-            if($post->productMeta->product_sale > 0 && $post->productMeta->product_sale < $post->productMeta->product_price)
-            {
-                $price = $post->productMeta->product_sale;
-            }
-            else
-            {
-                $price = $post->productMeta->product_price;
-            }
-        
-            $path = '/api/v1/items/update_price';
-            $parameter = $this->getPrimaryParameter($request['shop_id']);
-            $parameter['item_id'] = (int) $request['product_id'];
-            $parameter['price'] = (int )$price;
+    public function itemUpdatePrice(array $request)
+    {
+        $this->validateRequest($request, [
+          'item_id' => 'required',
+          'price' => 'required',
+        ]);
 
-            $base_string = $this->getBaseString($path, $parameter);
-            $sign = $this->getSignature($base_string);
+        $path = '/api/v1/items/update_price';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['item_id'] = (int) $request['item_id'];
+        $parameter['price'] = (int ) $request['price'];
 
-            $res = $this->makeRequest($path, $parameter, $sign);
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
 
-            $body = $res->getBody();
+        $res = $this->makeRequest($path, $parameter, $sign);
 
-            if(empty($body))
-                return response()->json(['message' => 'Check Connection'], 500);
+        $body = $res->getBody();
 
-            $data = json_decode($body);
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
 
-            array_push($response, $data);
+        $data = json_decode($body);
 
-        
-        /*=====  End of Update Item Info  ======*/
+        return response()->json($data);
+    }
 
-        /*========================================
-        =            Update Stock Info            =
-        ========================================*/
+    public function itemUpdateStock(array $request)
+    {
+        $this->validateRequest($request, [
+          'item_id' => 'required',
+          'stock' => 'required',
+        ]);
 
-            $availability = [Product::STAT_INSTOCK, Product::STAT_PREORDER];
+        $path = '/api/v1/items/update_stock';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['item_id'] = (int) $request['item_id'];
+        $parameter['stock'] = (int) $request['stock'];
 
-            if (in_array( $post->productMeta->availability, $availability)) 
-            {
-                $stock = rand(5,9);
-            }
-            else
-            {
-                $stock = 0;
-            }
-        
-            $path = '/api/v1/items/update_stock';
-            $parameter = $this->getPrimaryParameter($request['shop_id']);
-            $parameter['item_id'] = (int) $request['product_id'];
-            $parameter['stock'] = (int) $post->productMeta->product_stock;
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
 
-            $base_string = $this->getBaseString($path, $parameter);
-            $sign = $this->getSignature($base_string);
+        $res = $this->makeRequest($path, $parameter, $sign);
 
-            $res = $this->makeRequest($path, $parameter, $sign);
+        $body = $res->getBody();
 
-            $body = $res->getBody();
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
 
-            if(empty($body))
-                return response()->json(['message' => 'Check Connection'], 500);
+        $data = json_decode($body);
 
-            $data = json_decode($body);
+        return response()->json($data);
+    }
 
-            array_push($response, $data);
+    public function itemInitTierVariations(array $request)
+    {
+        $this->validateRequest($request, [
+          'item_id' => 'required',
+          'tier_variation' => 'required|array',
+          'variation' => 'required|array'
+        ]);
 
-        
-        /*=====  End of Update Item Info  ======*/
+        $path = '/api/v1/item/tier_var/init';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['item_id'] = $request['item_id'];
+        $parameter['tier_variation'] = $request['tier_variation'];
+        $parameter['variation'] = $request['variation'];
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
 
-        return response()->json($response);
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
     }
 
     public function getBoostedItem(array $request)

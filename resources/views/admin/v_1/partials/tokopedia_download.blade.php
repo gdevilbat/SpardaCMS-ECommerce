@@ -9,7 +9,7 @@
                   </button>
               </div>
               <div class="modal-body"> 
-                    <div class="row" id="tokopedia_download">
+                    <div class="row" id="tokopedia_download" v-cloak>
                     	<div class="col-12" v-if="objSize(errors) > 0">
                     		<div class="alert alert-danger">
 	                            <ul v-for="error in errors">
@@ -178,7 +178,7 @@
                             <input type="hidden" class="form-control m-input" name="meta[meta_title]" data-target-count-text="#meta-title" v-model="item.product_name">
                         </div>
                     </div>
-                    @include('ecommerce::admin.v_1.partials.variant')
+                    @include('ecommerce::admin.v_1.partials.variant', ['id' => 'tokopedia_download'])
               </div>
               {{ csrf_field() }}
               <div class="modal-footer">

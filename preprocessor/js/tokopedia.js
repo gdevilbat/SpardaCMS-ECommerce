@@ -44,8 +44,8 @@
               if(response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant)
               {
                 TokopediaDownload.$set(TokopediaDownload.item, 'children', response[0].data.pdpGetLayout.components[2].data[0].children);
-                TokopediaDownload.$set(Variant, 'children', response[0].data.pdpGetLayout.components[2].data[0].children);
-                TokopediaDownload.$set(Variant, 'variants', response[0].data.pdpGetLayout.components[2].data[0].variants);
+                TokopediaDownload.$set(Variant_tokopedia_download, 'children', response[0].data.pdpGetLayout.components[2].data[0].children);
+                TokopediaDownload.$set(Variant_tokopedia_download, 'variants', response[0].data.pdpGetLayout.components[2].data[0].variants);
               }
             })
             .fail(function() {

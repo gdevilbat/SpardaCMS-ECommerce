@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-shopee-upload" tabindex="-1" role="dialog" aria-hidden="true"  aria-labelledby="exampleModalLabel" data-dismiss="modal">
   <div class="modal-dialog modal-lg">
       <div class="modal-content">
-          <form data-action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemAdd') }}" cloak data-url-shopee-category="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getCategories') }}"  data-url-shopee-attribute="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getAttributes') }}" data-url-shopee-logistics="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getLogistics') }}" data-url-product-detail="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@apiProductDetail') }}" id="shopee_upload" v-on:submit.prevent="submit">
+          <form data-action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemAdd') }}" data-url-shopee-category="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getCategories') }}"  data-url-shopee-attribute="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getAttributes') }}" data-url-shopee-logistics="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getLogistics') }}" data-url-product-detail="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@apiProductDetail') }}" id="shopee_form" onsubmit="ShopeeUpload.submit(event)">
               <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">Shopee Upload</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -9,7 +9,7 @@
                   </button>
               </div>
               <div class="modal-body"> 
-                    <div class="row">
+                    <div class="row" id="shopee_upload" v-cloak>
                     	<div class="col-12" v-if="objSize(errors) > 0">
                     		<div class="alert alert-danger">
 	                            <ul v-for="error in errors">
@@ -192,6 +192,7 @@
                         <input type="hidden" name="category_id" v-model="category_id" required>
                         <input type="hidden" name="id_posts" v-model="id_posts" required>
                     </div>
+                    @include('ecommerce::admin.v_1.partials.variant', ['id' => 'shopee_upload'])
               </div>
               {{ csrf_field() }}
               <input type="hidden" class="form-control m-input" name="shop_id" value="{{getSettingConfig('shopee_id')}}">

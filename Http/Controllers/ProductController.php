@@ -208,6 +208,7 @@ class ProductController extends AbstractPost
         $post->condition = $post->productMeta->condition;
         $post->product_weight = $post->meta->getMetaData(ProductMeta::PRODUCT_WEIGHT);
         $post->product_stock = $post->productMeta->product_stock;
+        $post->product_variant = !empty($post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT)) ? $post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT)->get() : [];
 
         return $post;
 

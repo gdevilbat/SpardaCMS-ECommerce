@@ -80,7 +80,7 @@
                                         <a class="nav-link active" data-toggle="tab" href="#" data-target="#content">Content</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#" data-target="#variant">Variant</a>
+                                        <a class="nav-link" data-toggle="tab" href="#" data-target="#variant-ecommerce">Variant</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-toggle="tab" href="#" data-target="#marketplace">Ecommerce</a>
@@ -237,7 +237,7 @@
                                         </div>
                                         <input type="hidden" name="post[post_excerpt]" value="{{old('post.post_excerpt') ? old('post.post_excerpt') : (!empty($post) ? $post->post_excerpt : '')}}">
                                     </div>
-                                    @include('ecommerce::admin.v_1.partials.variant')
+                                    @include('ecommerce::admin.v_1.partials.variant', ['id' => 'ecommerce'])
                                     @include('ecommerce::admin.v_1.partials.marketplace')
                                     @include('ecommerce::admin.v_1.partials.gallery')
                                 </div>
