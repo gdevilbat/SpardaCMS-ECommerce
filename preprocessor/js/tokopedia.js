@@ -26,7 +26,12 @@
               });
 
               TokopediaDownload.$set(TokopediaDownload.item, 'images', images);
-              TokopediaDownload.$set(TokopediaDownload.item, 'description', response[0].data.pdpGetLayout.components[4].data[0].content[6].subtitle);
+
+              $.each(response[0].data.pdpGetLayout.components[4].data[0].content, function(index, el) {
+                if(el.title == 'Deskripsi')
+                  TokopediaDownload.$set(TokopediaDownload.item, 'description', el.subtitle);
+              });
+
               TokopediaDownload.$set(TokopediaDownload.item, 'product_weight', response[0].data.pdpGetLayout.basicInfo.weight/1000);
 
               if(response[0].data.pdpGetLayout.components[3].data[0].campaign.discountedPrice > 0)
