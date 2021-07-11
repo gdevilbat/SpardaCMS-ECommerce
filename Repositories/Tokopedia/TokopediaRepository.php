@@ -82,10 +82,12 @@ class TokopediaRepository
             $response[0]->data->pdpGetLayout->components[2]->data[0]->sorted_children_by_name = $sorted_children_by_name;
             $response[0]->data->pdpGetLayout->components[2]->data[0]->sorted_children_by_option_id = $sorted_children_by_option_id;
 
-            $option = collect($response[0]->data->pdpGetLayout->components[2]->data[0]->variants[0]->option);
-            $sorted_option_by_id = $option->sortBy('productVariantOptionID');
-            $sorted_option_by_id = array_values($sorted_option_by_id->toArray());
-            $response[0]->data->pdpGetLayout->components[2]->data[0]->variants[0]->option = $sorted_option_by_id;
+            foreach ($response[0]->data->pdpGetLayout->components[2]->data[0]->variants as $key => $variant) {
+              $option = collect($variant->option);
+              $sorted_option_by_id = $option->sortBy('productVariantOptionID');
+              $sorted_option_by_id = array_values($sorted_option_by_id->toArray());
+              $response[0]->data->pdpGetLayout->components[2]->data[0]->variants[$key]->option = $sorted_option_by_id;
+            }
           }
         }
 
