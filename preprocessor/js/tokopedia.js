@@ -49,7 +49,7 @@
               if(response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant)
               {
                 TokopediaDownload.$set(TokopediaDownload.item, 'children', response[0].data.pdpGetLayout.components[2].data[0].children);
-                TokopediaDownload.$set(Variant_tokopedia_download, 'children', response[0].data.pdpGetLayout.components[2].data[0].children);
+                TokopediaDownload.$set(Variant_tokopedia_download, 'children', response[0].data.pdpGetLayout.components[2].data[0].sorted_children_by_option_id);
                 TokopediaDownload.$set(Variant_tokopedia_download, 'variants', response[0].data.pdpGetLayout.components[2].data[0].variants);
               }
             })

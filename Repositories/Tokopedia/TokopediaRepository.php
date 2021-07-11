@@ -70,14 +70,17 @@ class TokopediaRepository
               return $item;
             });
 
+            $sorted_children_by_option_id = $new_children->sortBy('optionID');
             $sorted_children_by_id = $new_children->sortBy('productID');
             $sorted_children_by_name = $new_children->sortBy('productName');
 
+            $sorted_children_by_option_id = array_values($sorted_children_by_option_id->toArray());
             $sorted_children_by_id = array_values($sorted_children_by_id->toArray());
             $sorted_children_by_name = array_values($sorted_children_by_name->toArray());
 
             $response[0]->data->pdpGetLayout->components[2]->data[0]->children = $sorted_children_by_id;
             $response[0]->data->pdpGetLayout->components[2]->data[0]->sorted_children_by_name = $sorted_children_by_name;
+            $response[0]->data->pdpGetLayout->components[2]->data[0]->sorted_children_by_option_id = $sorted_children_by_option_id;
 
             $option = collect($response[0]->data->pdpGetLayout->components[2]->data[0]->variants[0]->option);
             $sorted_option_by_id = $option->sortBy('productVariantOptionID');
