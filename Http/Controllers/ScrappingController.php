@@ -10,28 +10,7 @@ class ScrappingController extends Controller
 {
     public function scrappingTokopediaProductDetail(Request $request)
     {
-        $response = resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\TokopediaRepository::class)->itemDetail($request);
-
-        if(empty($response[0]->errors))
-        {
-          if($response[0]->data->pdpGetLayout->components[3]->data[0]->variant->isVariant)
-          {
-            $parent_name = $response[0]->data->pdpGetLayout->components[3]->data[0]->name;
-            $children = collect($response[0]->data->pdpGetLayout->components[2]->data[0]->children);
-            $sorted = $children->sortBy('productName');
-
-            $children = $sorted->map(function ($item, $key) use ($parent_name) {
-              $item->name = str_replace($parent_name.' - ', '', $item->productName);
-              return $item;
-            });
-
-            $sorted = array_values($children->toArray());
-
-            $response[0]->data->pdpGetLayout->components[2]->data[0]->sorted_children_by_name = $sorted;
-          }
-        }
-
-        return $response;
+        return resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\TokopediaRepository::class)->itemDetail($request);
     }
 
     public function scrappingTokopediaProductVariant(Request $request)

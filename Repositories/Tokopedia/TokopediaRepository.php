@@ -52,7 +52,41 @@ class TokopediaRepository
         if(empty($response))
             return response()->json(['message' => 'Check Connection'], 500);
 
-        return json_decode($response);
+        $response = json_decode($response);
+
+        if(empty($response[0]->errors))
+        {
+          if($response[0]->data->pdpGetLayout->components[3]->data[0]->variant->isVariant)
+          {
+            $parent_name = $response[0]->data->pdpGetLayout->components[3]->data[0]->name;
+            $children = collect($response[0]->data->pdpGetLayout->components[2]->data[0]->children);
+
+            $new_children = $children->map(function($item, $key) use ($parent_name){
+              $item->name = str_replace($parent_name.' - ', '', $item->productName);
+
+              if(!$item->stock->isBuyable)
+                $item->stock->stock = 0;
+
+              return $item;
+            });
+
+            $sorted_children_by_id = $new_children->sortBy('productID');
+            $sorted_children_by_name = $new_children->sortBy('productName');
+
+            $sorted_children_by_id = array_values($sorted_children_by_id->toArray());
+            $sorted_children_by_name = array_values($sorted_children_by_name->toArray());
+
+            $response[0]->data->pdpGetLayout->components[2]->data[0]->children = $sorted_children_by_id;
+            $response[0]->data->pdpGetLayout->components[2]->data[0]->sorted_children_by_name = $sorted_children_by_name;
+
+            $option = collect($response[0]->data->pdpGetLayout->components[2]->data[0]->variants[0]->option);
+            $sorted_option_by_id = $option->sortBy('productVariantOptionID');
+            $sorted_option_by_id = array_values($sorted_option_by_id->toArray());
+            $response[0]->data->pdpGetLayout->components[2]->data[0]->variants[0]->option = $sorted_option_by_id;
+          }
+        }
+
+        return $response;
 	}
 
 	public function itemVariant(Request $request)
