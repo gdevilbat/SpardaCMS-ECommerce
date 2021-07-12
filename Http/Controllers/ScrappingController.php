@@ -51,7 +51,7 @@ class ScrappingController extends Controller
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
-              'if-none-match-: 55b03-5a87c55d1c152d9fd7a1cf2613bb0b91',
+              'if-none-match-: '.getSettingConfig('scrapping', 'shopee_none_match'),
               'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
               'cookie: '.getSettingConfig('scrapping', 'shopee_session')
             ),

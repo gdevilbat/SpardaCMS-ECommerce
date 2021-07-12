@@ -76,6 +76,30 @@ class ItemRepository extends AbstractRepository
         return response()->json($item);
     }
 
+    public function getVariations(array $request)
+    {
+        $this->validateRequest($request, [
+          'item_id' => 'required',
+        ]);
+
+        $path = '/api/v1/item/tier_var/get';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['item_id'] = $request['item_id'];
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
+
     public function addItem(array $request)
     {
         $this->validateRequest($request, [
@@ -219,7 +243,13 @@ class ItemRepository extends AbstractRepository
         $this->validateRequest($request, [
           'item_id' => 'required',
           'tier_variation' => 'required|array',
-          'variation' => 'required|array'
+          'tier_variation.*.name' => 'required',
+          'tier_variation.*.options' => 'required|array',
+          'tier_variation.*.options.*' => 'required',
+          'variation' => 'required|array',
+          'variation.*.tier_index' => 'required|array',
+          'variation.*.stock' => 'required',
+          'variation.*.price' => 'required'
         ]);
 
         $path = '/api/v1/item/tier_var/init';
@@ -227,6 +257,146 @@ class ItemRepository extends AbstractRepository
         $parameter['item_id'] = $request['item_id'];
         $parameter['tier_variation'] = $request['tier_variation'];
         $parameter['variation'] = $request['variation'];
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
+
+    public function itemAddTierVariations(array $request)
+    {
+        $this->validateRequest($request, [
+          'item_id' => 'required',
+          'variation' => 'required|array',
+          'variation.*.tier_index' => 'required|array',
+          'variation.*.stock' => 'required',
+          'variation.*.price' => 'required'
+        ]);
+
+        $path = '/api/v1/item/tier_var/add';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['item_id'] = $request['item_id'];
+        $parameter['variation'] = $request['variation'];
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
+
+    public function itemUpdateTierVariationList(array $request)
+    {
+        $this->validateRequest($request, [
+          'item_id' => 'required',
+          'tier_variation' => 'required|array',
+          'tier_variation.*.name' => 'required',
+          'tier_variation.*.options' => 'required|array',
+          'tier_variation.*.options.*' => 'required',
+        ]);
+
+        $path = '/api/v1/item/tier_var/update_list';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['item_id'] = $request['item_id'];
+        $parameter['tier_variation'] = $request['tier_variation'];
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
+
+    public function itemUpdateTierVariationIndex(array $request)
+    {
+        $this->validateRequest($request, [
+          'item_id' => 'required',
+          'variation' => 'required|array',
+          'variation.*.tier_index' => 'required|array',
+          'variation.*.variation_id' => 'required',
+        ]);
+
+        $path = '/api/v1/item/tier_var/update';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['item_id'] = $request['item_id'];
+        $parameter['variation'] = $request['variation'];
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
+
+    public function itemUpdateVariationPriceBatch(array $request)
+    {
+        $this->validateRequest($request, [
+          'variations' => 'required|array',
+          'variations.*.price' => 'required',
+          'variations.*.variation_id' => 'required',
+          'variations.*.item_id' => 'required'
+        ]);
+
+        $path = '/api/v1/items/update/vars_price';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['variations'] = $request['variations'];
+        $base_string = $this->getBaseString($path, $parameter);
+        $sign = $this->getSignature($base_string);
+
+        $res = $this->makeRequest($path, $parameter, $sign);
+
+        $body = $res->getBody();
+
+        if(empty($body))
+            return response()->json(['message' => 'Check Connection'], 500);
+
+        $data = json_decode($body);
+
+        return response()->json($data);
+    }
+
+    public function itemUpdateVariationStockBatch(array $request)
+    {
+        $this->validateRequest($request, [
+          'variations' => 'required|array',
+          'variations.*.stock' => 'required',
+          'variations.*.variation_id' => 'required',
+          'variations.*.item_id' => 'required'
+        ]);
+
+        $path = '/api/v1/items/update/vars_stock';
+        $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['variations'] = $request['variations'];
         $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 

@@ -133,11 +133,25 @@ class ProductController extends AbstractPost
 
                 if($post->productMeta->availability == 'in stock')
                 {
-                    $data[$i][] = '<span class="badge badge-info">'.$post->productMeta->availability.'</span>';
+                    if(empty($post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT)))
+                    {
+                        $data[$i][] = '<span class="badge badge-info">'.$post->productMeta->availability.'</span>';
+                    }
+                    else
+                    {
+                        $data[$i][] = '<span class="badge badge-info">'.$post->productMeta->availability.'</span><br/><span class="badge badge-danger">is variant</span>';
+                    }
                 }
                 elseif($post->productMeta->availability == 'out of stock')
                 {
-                    $data[$i][] = '<span class="badge badge-dark">'.$post->productMeta->availability.'</span>';
+                    if(empty($post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT)))
+                    {
+                        $data[$i][] = '<span class="badge badge-dark">'.$post->productMeta->availability.'</span>';
+                    }
+                    else
+                    {
+                        $data[$i][] = '<span class="badge badge-dark">'.$post->productMeta->availability.'</span><br/><span class="badge badge-danger">is variant</span>';
+                    }
                 }
                 else
                 {

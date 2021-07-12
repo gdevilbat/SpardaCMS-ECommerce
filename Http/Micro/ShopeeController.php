@@ -55,25 +55,6 @@ class ShopeeController
 
         $response = [];
 
-        /*========================================
-        =            Update Item Info            =
-        ========================================*/
-
-            $parameter = [];
-        
-            $parameter['shop_id'] = $request->input('shop_id');
-            $parameter['item_id'] = (int) $request->input('product_id');
-            $parameter['name'] = $post->post_title;
-            $parameter['description'] = html_entity_decode(strip_tags($post->post_content));
-
-            $data = $this->shopeeRepository->item->itemUpdate($parameter);
-
-            $data_item = json_decode($data->getContent());
-
-            array_push($response, $data_item);
-        
-        /*=====  End of Update Item Info  ======*/
-
         $product_variant = $post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT);
 
         if(empty($product_variant))
@@ -133,26 +114,6 @@ class ShopeeController
                 array_push($response, $data);
             
             /*=====  End of Section comment block  ======*/
-
-            if(!empty($data_item->item->variations))
-            {
-                $variant = [];
-
-                foreach ($data_item->item->variations as $key => $value) {
-                    $variant[$key] = ['product_id' => $value->variation_id];
-                }
-
-                $value = ['shop_id' => $data_item->item->shopid, 'product_id' => $data_item->item->item_id, 'is_variant' =>  true, 'children' => $variant];
-
-                PostMeta::unguard();
-
-                PostMeta::updateOrCreate(
-                    ['meta_key' => ProductMeta::SHOPEE_STORE, Product::FOREIGN_KEY => $request->input(Product::FOREIGN_KEY)],
-                    ['meta_value' => $value]
-                );
-
-                PostMeta::reguard();
-            }
         }
         else
         {
@@ -194,7 +155,135 @@ class ShopeeController
 
             array_push($response, $data);
 
+            if(!property_exists($data, 'variation_id_list'))
+            {
+                $parameter = [];
+
+                $parameter['shop_id'] = $request->input('shop_id');
+                $parameter['item_id'] = (int) $request->input('product_id');
+                $parameter['tier_variation'] = $tiers;
+
+                $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemUpdateTierVariationList($parameter);
+
+                $data = json_decode($data->getContent());
+
+                array_push($response, $data);
+
+                $parameter = [];
+
+                $parameter['shop_id'] = $request->input('shop_id');
+                $parameter['item_id'] = (int) $request->input('product_id');
+
+                $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->getVariations($parameter);
+
+                $data = json_decode($data->getContent());
+
+                $response_variant = collect($data->variations);
+                $sorted_variations = array_values($response_variant->sortBy('variation_id')->toArray());
+
+                $update_variation = [];
+                $add_variation = [];
+                foreach ($variations as $key => $variation) 
+                {
+                    if(array_key_exists($key, $sorted_variations))
+                    {
+                        $update_variation[$key]['tier_index'] = $variations[$key]['tier_index']; 
+                        $update_variation[$key]['variation_id'] = $sorted_variations[$key]->variation_id; 
+                        $update_variation[$key]['item_id'] = (int) $request->input('product_id');
+                        $update_variation[$key]['price'] = $variations[$key]['price']; 
+                        $update_variation[$key]['stock'] = $variations[$key]['stock']; 
+                    }
+                    else
+                    {
+                        $add_variation[$key]['tier_index'] = $variations[$key]['tier_index']; 
+                        $add_variation[$key]['price'] = $variations[$key]['price']; 
+                        $add_variation[$key]['stock'] = $variations[$key]['stock']; 
+                    }
+                }
+
+                if(!empty($update_variation))
+                {
+                    $parameter = [];
+
+                    $parameter['shop_id'] = $request->input('shop_id');
+                    $parameter['item_id'] = (int) $request->input('product_id');
+                    $parameter['variation'] = $update_variation;
+                    $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemUpdateTierVariationIndex($parameter);
+
+                    $data = json_decode($data->getContent());
+                    array_push($response, $data);
+
+                    $parameter = [];
+
+                    $parameter['shop_id'] = $request->input('shop_id');
+                    $parameter['variations'] = $update_variation;
+                    $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemUpdateVariationPriceBatch($parameter);
+
+                    $data = json_decode($data->getContent());
+                    array_push($response, $data);
+
+                    $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemUpdateVariationStockBatch($parameter);
+
+                    $data = json_decode($data->getContent());
+                    array_push($response, $data);
+                }
+
+                if(!empty($add_variation))
+                {
+                    $add_variation = array_values($add_variation);
+                    $parameter = [];
+
+                    $parameter['shop_id'] = $request->input('shop_id');
+                    $parameter['item_id'] = (int) $request->input('product_id');
+                    $parameter['variation'] = $add_variation;
+                    $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemAddTierVariations($parameter);
+
+                    $data = json_decode($data->getContent());
+                    array_push($response, $data);
+                }
+
+            }            
+
         }
+
+        /*========================================
+        =            Update Item Info            =
+        ========================================*/
+
+            $parameter = [];
+        
+            $parameter['shop_id'] = $request->input('shop_id');
+            $parameter['item_id'] = (int) $request->input('product_id');
+            $parameter['name'] = $post->post_title;
+            $parameter['description'] = html_entity_decode(strip_tags($post->post_content));
+
+            $data = $this->shopeeRepository->item->itemUpdate($parameter);
+
+            $data_item = json_decode($data->getContent());
+
+            array_push($response, $data_item);
+
+            if(!empty($data_item->item->variations))
+            {
+                $variant = [];
+
+                foreach ($data_item->item->variations as $key => $value) {
+                    $variant[$key] = ['product_id' => $value->variation_id];
+                }
+
+                $value = ['shop_id' => $data_item->item->shopid, 'product_id' => $data_item->item->item_id, 'is_variant' =>  true, 'children' => $variant];
+
+                PostMeta::unguard();
+
+                PostMeta::updateOrCreate(
+                    ['meta_key' => ProductMeta::SHOPEE_STORE, Product::FOREIGN_KEY => $request->input(Product::FOREIGN_KEY)],
+                    ['meta_value' => $value]
+                );
+
+                PostMeta::reguard();
+            }
+        
+        /*=====  End of Update Item Info  ======*/
 
         return response()->json($response);
     }
