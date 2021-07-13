@@ -129,7 +129,7 @@
                 </div>
 
                 <!--begin: Datatable -->
-                <table class="table table-striped display responsive nowrap" id="data-product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-tokopedia-product-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductDetail')}}" data-url-scrapping-tokopedia-product-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductVariant')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-shopee-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetDetail')}}">
+                <table class="table table-striped data-table-ajax display responsive nowrap" id="data_product" width="100%" data-ajax="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@serviceMaster')}}" data-url-scrapping-tokopedia-product-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductDetail')}}" data-url-scrapping-tokopedia-product-variant="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductVariant')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-shopee-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetDetail')}}">
                     <thead>
                         <tr>
                         	<th class="no-sort" data-priority="1"></th>
@@ -186,40 +186,16 @@
 
     <script type="text/javascript">
         (function($){
-            var table;
             $(document).ready(function() {
-                table = $("#data-product").DataTable( {
-                    "pagingType": "full_numbers",
-                    "processing": true,
-                    "serverSide": true,
-                    "order": [],
-                    "ajax": $.fn.dataTable.pipeline( {
-                        url: $(this).attr('data-ajax'),
-                        pages: 5 // number of pages to cache
-                    }),
-                     "columnDefs": [
-                     { orderable: false, targets: [1] }
-                    ],
-                    "drawCallback": function( settings ) {
-                        deleteData();
-                        if($("[name='syncronize_ecommerce']").val() == 'true')
-                        {
-                            tokopediaScrap();
-                        }
-                    },
-                    "initComplete": function(settings, json) {
-                        var $searchBox = $("div.dataTables_filter input");
-                        $searchBox.unbind();
-                        var searchDebouncedFn = debounce(function() {
-                            var api = new $.fn.dataTable.Api( settings );
-                            api.search( this.value ).draw();
-                        }, 1000);
-                        $searchBox.on("keyup", searchDebouncedFn);
+                table_data_product.on('draw.dt', function ( e, settings, json, xhr ) {
+                    if($("[name='syncronize_ecommerce']").val() == 'true')
+                    {
+                        tokopediaScrap();
                     }
-                } );
+                } )
 
                 $("#reload-datatable").click(function(event) {
-                    table.ajax.reload( null, false );
+                    table_data_product.ajax.reload( null, false );
                 });
             });
         }(jQuery));

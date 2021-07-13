@@ -60,7 +60,7 @@ window.tokopediaScrap = function(){
         if($("[name='scrapping[suplier_sync]']:checked").val() == 'cloud')
         {
             settings = {
-              "url": $("#data-product").attr('data-url-scrapping-tokopedia-product-detail'),
+              "url": $("#data_product").attr('data-url-scrapping-tokopedia-product-detail'),
               "method": "POST",
                "headers": {
     		    "Accept": "application/json",
@@ -187,7 +187,7 @@ window.tokopediaScrap = function(){
                         {
                             config = {
                               method: 'post',
-                              url: $("#data-product").attr('data-url-scrapping-shopee')+'?shopid='+shopee[0]+'&itemid='+shopee[1],
+                              url: $("#data_product").attr('data-url-scrapping-shopee')+'?shopid='+shopee[0]+'&itemid='+shopee[1],
                               headers: {
                                 "Accept": "application/json",
                                 "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content') 
@@ -251,7 +251,7 @@ window.tokopediaScrap = function(){
 
                         let config_detail = {
                           method: 'post',
-                          url: $("#data-product").attr('data-url-shopee-detail'),
+                          url: $("#data_product").attr('data-url-shopee-detail'),
                           headers: {
                             "Accept": "application/json",
                             "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content') 

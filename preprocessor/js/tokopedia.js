@@ -8,7 +8,7 @@
         setTokopediaDownloadItem: function(item){
             TokopediaDownload.item = item;
             $.ajax({
-              url: $('#data-product').attr('data-url-scrapping-tokopedia-product-detail'),
+              url: $('#data_product').attr('data-url-scrapping-tokopedia-product-detail'),
               method: "POST",
               headers: {
                 "Accept": "application/json",
