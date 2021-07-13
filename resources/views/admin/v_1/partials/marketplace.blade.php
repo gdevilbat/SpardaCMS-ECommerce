@@ -219,10 +219,11 @@
                             self.$set( self[$attr], 'product_id', response[0].data.pdpGetLayout.basicInfo.id);
                             self.$set( self[$attr], 'is_variant', response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant);
 
-                            children = response[0].data.pdpGetLayout.components[2].data[0].children;
 
                             if(self[$attr].is_variant)
                             {
+                                children = response[0].data.pdpGetLayout.components[2].data[0].children;
+                                
                                 $.each(children, function(index, val) {
                                      children[index]['product_id'] = val.productID;
                                 });

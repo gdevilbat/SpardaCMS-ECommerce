@@ -103,7 +103,16 @@
                    });
                 }).reduce((acc,val) => acc.concat(val) ,[]);
              }, [[]]);
-          }
+          },
+          initialState: function(){
+            return {
+              variants: [],
+              children: [],
+            }
+          },
+          resetWindow: function(){
+               Object.assign(this.$data, this.initialState());
+          },
         },
         watch: {
           variants: {

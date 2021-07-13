@@ -243,6 +243,7 @@ $(document).ready(function() {
     $(document).ready(function() {
         $("#modal-shopee-upload").on("hidden.bs.modal", function(e){
             ShopeeUpload.resetWindow();
+            Variant_shopee_upload.resetWindow();
         });
 
         $("#modal-shopee-upload").on('shown.bs.modal', function(){

@@ -145,6 +145,7 @@
     $(document).ready(function() {
       $("#modal-tokopedia-download").on("hidden.bs.modal", function(e){
           TokopediaDownload.resetWindow();
+          Variant_tokopedia_download.resetWindow();
       });
     });
 
