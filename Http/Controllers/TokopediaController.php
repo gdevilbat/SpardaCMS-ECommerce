@@ -107,30 +107,33 @@ class TokopediaController extends Controller
       $response = resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository::class)->save($request);
       $post = $response->data;
 
-      foreach ($request->product_image as $key => $value) {
+      if($request->has('product_image'))
+      {
+        foreach ($request->product_image as $key => $value) {
 
-        if($key == 0)
-        {
-          $path = StorageService::putImageUrl('scrapping/'.$post->post_slug, $value, true);
-          $cover_image['caption'] = null;
-          $cover_image['file'] = $path->file;
-          $cover_image['small'] = $path->small;
-          $cover_image['thumb'] = $path->thumb;
-          $cover_image['medium'] = $path->medium;
+          if($key == 0)
+          {
+            $path = StorageService::putImageUrl('scrapping/'.$post->post_slug, $value, true);
+            $cover_image['caption'] = null;
+            $cover_image['file'] = $path->file;
+            $cover_image['small'] = $path->small;
+            $cover_image['thumb'] = $path->thumb;
+            $cover_image['medium'] = $path->medium;
 
-          resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository::class)->saveImage($post, $cover_image);
-        }
-        else
-        {
-          $path = StorageService::putImageUrl('scrapping/'.$post->post_slug, $value);
-          $data[] = ['photo' => '/'.$path->file];
+            resolve(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository::class)->saveImage($post, $cover_image);
+          }
+          else
+          {
+            $path = StorageService::putImageUrl('scrapping/'.$post->post_slug, $value);
+            $data[] = ['photo' => '/'.$path->file];
 
-          PostMeta::unguard();
-          PostMeta::updateOrCreate(
-              ['meta_key' => 'gallery', Post::FOREIGN_KEY => $post->getKey()],
-              ['meta_value' => $data]
-          );
-          PostMeta::reguard();
+            PostMeta::unguard();
+            PostMeta::updateOrCreate(
+                ['meta_key' => 'gallery', Post::FOREIGN_KEY => $post->getKey()],
+                ['meta_value' => $data]
+            );
+            PostMeta::reguard();
+          }
         }
       }
 
