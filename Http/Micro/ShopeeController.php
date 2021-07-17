@@ -13,33 +13,28 @@ use Log;
 
 use Validator;
 
+use MarketPlace;
+
 class ShopeeController
 {
-    protected $shopeeRepository;
-
-    public function __construct()
-    {
-        $this->shopeeRepository = new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository;
-    }
-
     public function shopGetDetail(Request $request)
     {
-        return $this->shopeeRepository->shop->getShopDetail($request->all());
+        return response()->json(MarketPlace::driver('shopee')->shop->getShopDetail($request));
     }
 
     public function itemUpload(Request $request)
     {
-        return $this->shopeeRepository->item->Upload($request->all());
+        return response()->json(MarketPlace::driver('shopee')->item->Upload($request));
     }
 
     public function itemGetList(Request $request)
     {
-        return $this->shopeeRepository->item->getItemsList($request->all());
+        return response()->json(MarketPlace::driver('shopee')->item->getItemsList($request));
     }
 
     public function itemGetDetail(Request $request)
     {
-        return $this->shopeeRepository->item->getItemDetail($request->all());
+        return response()->json(MarketPlace::driver('shopee')->item->getItemDetail($request));
     }
 
     public function itemUpdate(Request $request)
@@ -72,15 +67,17 @@ class ShopeeController
                     $price = $post->productMeta->product_price;
                 }
 
+                $req_prm = clone $request;
+
                 $parameter = [];
             
                 $parameter['shop_id'] = $request->input('shop_id');
                 $parameter['item_id'] = (int) $request->input('product_id');
                 $parameter['price'] = (int )$price;
 
-                $data = $this->shopeeRepository->item->itemUpdatePrice($parameter);
+                $req_prm->merge($parameter);
 
-                $data = json_decode($data->getContent());
+                $data = MarketPlace::driver('shopee')->item->itemUpdatePrice($req_prm);
 
                 array_push($response, $data);
             
@@ -100,6 +97,8 @@ class ShopeeController
                 {
                     $stock = 0;
                 }
+
+                $req_prm = clone $request;
             
                 $parameter = [];
             
@@ -107,9 +106,9 @@ class ShopeeController
                 $parameter['item_id'] = (int) $request->input('product_id');
                 $parameter['stock'] = (int ) $stock;
 
-                $data = $this->shopeeRepository->item->itemUpdateStock($parameter);
+                $req_prm->merge($parameter);
 
-                $data = json_decode($data->getContent());
+                $data = MarketPlace::driver('shopee')->item->itemUpdateStock($req_prm);
 
                 array_push($response, $data);
             
@@ -151,32 +150,35 @@ class ShopeeController
 
             $data = $this->addVariation($parameter);
 
-            $data = json_decode($data->getContent());
-
             array_push($response, $data);
 
             if(!property_exists($data, 'variation_id_list'))
             {
+                $req_prm = clone $request;
+
                 $parameter = [];
 
                 $parameter['shop_id'] = $request->input('shop_id');
                 $parameter['item_id'] = (int) $request->input('product_id');
                 $parameter['tier_variation'] = $tiers;
 
-                $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemUpdateTierVariationList($parameter);
+                $req_prm->merge($parameter);
 
-                $data = json_decode($data->getContent());
+                $data = MarketPlace::driver('shopee')->item->itemUpdateTierVariationList($req_prm);
 
                 array_push($response, $data);
+
+                $req_prm = clone $request;
 
                 $parameter = [];
 
                 $parameter['shop_id'] = $request->input('shop_id');
                 $parameter['item_id'] = (int) $request->input('product_id');
 
-                $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->getVariations($parameter);
+                $req_prm->merge($parameter);
 
-                $data = json_decode($data->getContent());
+                $data = MarketPlace::driver('shopee')->item->getVariations($req_prm);
+
 
                 $response_variant = collect($data->variations);
                 $sorted_variations = array_values($response_variant->sortBy('variation_id')->toArray());
@@ -203,42 +205,53 @@ class ShopeeController
 
                 if(!empty($update_variation))
                 {
+                    $req_prm = clone $request;
+
                     $parameter = [];
 
                     $parameter['shop_id'] = $request->input('shop_id');
                     $parameter['item_id'] = (int) $request->input('product_id');
                     $parameter['variation'] = $update_variation;
-                    $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemUpdateTierVariationIndex($parameter);
 
-                    $data = json_decode($data->getContent());
+                    $req_prm->merge($parameter);
+
+                    $data = MarketPlace::driver('shopee')->item->itemUpdateTierVariationIndex($req_prm);
+
                     array_push($response, $data);
+
+                    $req_prm = clone $request;
 
                     $parameter = [];
 
                     $parameter['shop_id'] = $request->input('shop_id');
                     $parameter['variations'] = $update_variation;
-                    $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemUpdateVariationPriceBatch($parameter);
 
-                    $data = json_decode($data->getContent());
+                    $req_prm->merge($parameter);
+
+                    $data = MarketPlace::driver('shopee')->item->itemUpdateVariationPriceBatch($req_prm);
+
                     array_push($response, $data);
 
-                    $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemUpdateVariationStockBatch($parameter);
+                    $data = MarketPlace::driver('shopee')->item->itemUpdateVariationStockBatch($req_prm);
 
-                    $data = json_decode($data->getContent());
                     array_push($response, $data);
                 }
 
                 if(!empty($add_variation))
                 {
                     $add_variation = array_values($add_variation);
+                    $req_prm = clone $request;
+
                     $parameter = [];
 
                     $parameter['shop_id'] = $request->input('shop_id');
                     $parameter['item_id'] = (int) $request->input('product_id');
                     $parameter['variation'] = $add_variation;
-                    $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemAddTierVariations($parameter);
 
-                    $data = json_decode($data->getContent());
+                    $req_prm->merge($parameter);
+
+                    $data = MarketPlace::driver('shopee')->item->itemAddTierVariations($req_prm);
+
                     array_push($response, $data);
                 }
 
@@ -250,6 +263,8 @@ class ShopeeController
         =            Update Item Info            =
         ========================================*/
 
+            $req_prm = clone $request;
+
             $parameter = [];
         
             $parameter['shop_id'] = $request->input('shop_id');
@@ -257,9 +272,11 @@ class ShopeeController
             $parameter['name'] = $post->post_title;
             $parameter['description'] = html_entity_decode(strip_tags($post->post_content));
 
-            $data = $this->shopeeRepository->item->itemUpdate($parameter);
+            $req_prm->merge($parameter);
 
-            $data_item = json_decode($data->getContent());
+            $data = MarketPlace::driver('shopee')->item->itemUpdate($req_prm);
+
+            $data_item = $data;
 
             array_push($response, $data_item);
 
@@ -290,7 +307,7 @@ class ShopeeController
 
     public function itemGetBoosted(Request $request)
     {
-        return $this->shopeeRepository->item->getBoostedItem($request->all());
+        return response()->json(MarketPlace::driver('shopee')->item->getBoostedItem($request));
     }
 
     public function itemAdd(Request $request)
@@ -340,7 +357,7 @@ class ShopeeController
         =            Parsing Image            =
         =====================================*/
         
-            $images_data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->image->uploadImage($request->only(['shop_id', 'product_image']));
+            $images_data = MarketPlace::driver('shopee')->image->uploadImage($request);
             $images_data = json_decode($images_data->getContent());
 
             if(!property_exists($images_data, 'images')){
@@ -374,8 +391,10 @@ class ShopeeController
         
         /*=====  End of Parsing logistics  ======*/
 
-        $response = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->addItem($data);
-        $response = json_decode($response->getContent());
+        $request->merge($data);
+
+        $response = MarketPlace::driver('shopee')->item->addItem($request);
+        $response = $response;
 
         if(!property_exists($response, 'item')){
             return response()->json([
@@ -440,8 +459,11 @@ class ShopeeController
             Product::FOREIGN_KEY => 'required',
         ]);
 
-        $response = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->itemInitTierVariations($data);
-        $response_variant = json_decode($response->getContent());
+        $request = resolve(Request::class);
+        $request->merge($data);
+
+        $response = MarketPlace::driver('shopee')->item->itemInitTierVariations($request);
+        $response_variant = $response;
 
         if(property_exists($response_variant, 'variation_id_list'))
         {

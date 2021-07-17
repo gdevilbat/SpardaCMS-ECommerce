@@ -44,7 +44,7 @@ $(document).ready(function() {
                         }
                     })
                     .done(function(response) {
-                        let items = response;
+                        let items = response.items;
                         $.each(items, function(index, el) {
                             $.ajax({
                                 url: $("#boosted-item").attr('data-url-item'),

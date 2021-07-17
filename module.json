@@ -9,7 +9,9 @@
         "Gdevilbat\\SpardaCMS\\Modules\\Ecommerce\\Providers\\EcommerceServiceProvider",
         "Gdevilbat\\SpardaCMS\\Modules\\Ecommerce\\Providers\\ScheduleServiceProvider"
     ],
-    "aliases": {},
+    "aliases": {
+        "MarketPlace": "\\Gdevilbat\\SpardaCMS\\Modules\\Ecommerce\\Facades\\MarketPlace"
+    },
     "files": [],
     "requires": []
 }

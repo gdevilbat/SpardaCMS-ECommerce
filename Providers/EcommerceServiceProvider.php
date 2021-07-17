@@ -42,6 +42,10 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->app->bind(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository::class, function($app){
             return new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\ProductRepository(new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product, $app->make(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class));
         });
+
+        $this->app->singleton(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceDriver::class, function ($app) {
+           return new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\MarketPlace($app);
+        });
     }
 
     /**

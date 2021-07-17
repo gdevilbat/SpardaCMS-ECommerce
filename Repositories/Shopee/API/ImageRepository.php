@@ -5,6 +5,8 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
 use Illuminate\Http\Request;
 
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceImageInterface;
+
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Log;
 
@@ -13,9 +15,9 @@ use Log;
  *
  * @package Gdevilbat\SpardaCMS\Modules\Core\Repositories\Eloquent
  */
-class ImageRepository extends AbstractRepository
+class ImageRepository extends AbstractRepository implements MarketPlaceImageInterface
 {
-	public function uploadImage(array $request)
+	public function uploadImage(Request $request): Object
     {
     	$this->validateRequest($request, [
 	        'product_image' => 'required',

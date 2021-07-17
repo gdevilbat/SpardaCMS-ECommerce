@@ -83,27 +83,27 @@ window.tokopediaScrap = function(){
 
         $.ajax(settings).done(function (response) {
 
-            if(response[0].errors == null)
+            if(response.errors == null)
             {
                 let supplier_status;
                 let supplier_price;
                 let child_supplier = [];
 
-                if(response[0].data.pdpGetLayout.components[3].data[0].campaign.discountedPrice > 0)
+                if(response.data.pdpGetLayout.components[3].data[0].campaign.discountedPrice > 0)
                 {
-                    supplier_price = response[0].data.pdpGetLayout.components[3].data[0].campaign.discountedPrice;
+                    supplier_price = response.data.pdpGetLayout.components[3].data[0].campaign.discountedPrice;
                 }
                 else
                 {
-                    supplier_price = response[0].data.pdpGetLayout.components[3].data[0].price.value;
+                    supplier_price = response.data.pdpGetLayout.components[3].data[0].price.value;
                 }
 
-                let suplier_weight = response[0].data.pdpGetLayout.basicInfo.weight;
+                let suplier_weight = response.data.pdpGetLayout.basicInfo.weight;
                 $('#web-price-'+$(self).attr('data-index')).append('<br/><span class="text-danger">('+($('#web-price-'+$(self).attr('data-index')).attr('data-price') - supplier_price)+')</span>');
 
-                if(response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant)
+                if(response.data.pdpGetLayout.components[3].data[0].variant.isVariant)
                 {
-                    $.each(response[0].data.pdpGetLayout.components[2].data[0].sorted_children_by_name, function(index, val) {
+                    $.each(response.data.pdpGetLayout.components[2].data[0].sorted_children_by_name, function(index, val) {
                         let price;
                         let status;
                         if(val.campaignInfo.discountPrice > 0)
@@ -134,7 +134,7 @@ window.tokopediaScrap = function(){
                 }
                 else
                 {
-                    if(response[0].data.pdpGetLayout.basicInfo.status== "ACTIVE" && response[0].data.pdpGetLayout.components[3].data[0].stock.useStock)
+                    if(response.data.pdpGetLayout.basicInfo.status== "ACTIVE" && response.data.pdpGetLayout.components[3].data[0].stock.useStock)
                     {
                         supplier_status = 'available';
                         $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span></div>');

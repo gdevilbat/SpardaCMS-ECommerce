@@ -17,9 +17,9 @@
               data: {merchant: item.store, slug: item.slug}
             })
             .done(function(response) {
-              TokopediaDownload.$set(TokopediaDownload.item, 'product_id', response[0].data.pdpGetLayout.basicInfo.id);
+              TokopediaDownload.$set(TokopediaDownload.item, 'product_id', response.data.pdpGetLayout.basicInfo.id);
 
-              let images = response[0].data.pdpGetLayout.components[0].data[0].media;
+              let images = response.data.pdpGetLayout.components[0].data[0].media;
 
               $.each(images, function(index, val) {
                  images[index].urlOriginal = val.prefix+'700'+val.suffix;
@@ -27,30 +27,30 @@
 
               TokopediaDownload.$set(TokopediaDownload.item, 'images', images);
 
-              $.each(response[0].data.pdpGetLayout.components[4].data[0].content, function(index, el) {
+              $.each(response.data.pdpGetLayout.components[4].data[0].content, function(index, el) {
                 if(el.title == 'Deskripsi')
                   TokopediaDownload.$set(TokopediaDownload.item, 'description', el.subtitle);
               });
 
-              TokopediaDownload.$set(TokopediaDownload.item, 'product_weight', response[0].data.pdpGetLayout.basicInfo.weight/1000);
+              TokopediaDownload.$set(TokopediaDownload.item, 'product_weight', response.data.pdpGetLayout.basicInfo.weight/1000);
 
-              if(response[0].data.pdpGetLayout.components[3].data[0].campaign.discountedPrice > 0)
+              if(response.data.pdpGetLayout.components[3].data[0].campaign.discountedPrice > 0)
               {
-                TokopediaDownload.$set(TokopediaDownload.item, 'price', response[0].data.pdpGetLayout.components[3].data[0].campaign.discountedPrice);
+                TokopediaDownload.$set(TokopediaDownload.item, 'price', response.data.pdpGetLayout.components[3].data[0].campaign.discountedPrice);
               }
               else
               {
-                TokopediaDownload.$set(TokopediaDownload.item, 'price', response[0].data.pdpGetLayout.components[3].data[0].price.value);
+                TokopediaDownload.$set(TokopediaDownload.item, 'price', response.data.pdpGetLayout.components[3].data[0].price.value);
               }
 
-              TokopediaDownload.$set(TokopediaDownload.item, 'is_variant', response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant);
-              TokopediaDownload.$set(TokopediaDownload.item, 'condition', response[0].data.pdpGetLayout.basicInfo.condition.toLowerCase());
+              TokopediaDownload.$set(TokopediaDownload.item, 'is_variant', response.data.pdpGetLayout.components[3].data[0].variant.isVariant);
+              TokopediaDownload.$set(TokopediaDownload.item, 'condition', response.data.pdpGetLayout.basicInfo.condition.toLowerCase());
 
-              if(response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant)
+              if(response.data.pdpGetLayout.components[3].data[0].variant.isVariant)
               {
-                TokopediaDownload.$set(TokopediaDownload.item, 'children', response[0].data.pdpGetLayout.components[2].data[0].children);
-                TokopediaDownload.$set(Variant_tokopedia_download, 'children', response[0].data.pdpGetLayout.components[2].data[0].sorted_children_by_option_id);
-                TokopediaDownload.$set(Variant_tokopedia_download, 'variants', response[0].data.pdpGetLayout.components[2].data[0].variants);
+                TokopediaDownload.$set(TokopediaDownload.item, 'children', response.data.pdpGetLayout.components[2].data[0].children);
+                TokopediaDownload.$set(Variant_tokopedia_download, 'children', response.data.pdpGetLayout.components[2].data[0].sorted_children_by_option_id);
+                TokopediaDownload.$set(Variant_tokopedia_download, 'variants', response.data.pdpGetLayout.components[2].data[0].variants);
               }
             })
             .fail(function() {

@@ -14,7 +14,7 @@ use Validator;
  */
 abstract class AbstractRepository
 {
-	protected function getAccessToken(Request $request = null)
+	final public function getAccessToken(Request $request)
     {
         $time = \Carbon\Carbon::now()->timestamp;
         $path = '/api/v2/auth/token/get';
@@ -68,7 +68,7 @@ abstract class AbstractRepository
                 ]);
     }
 
-    protected final function validateRequest(array $request, array $parameter)
+    public final function validateRequest(Request $request, array $parameter)
     {
         $mandatory = [
             'shop_id' => 'required'
@@ -76,7 +76,7 @@ abstract class AbstractRepository
 
         $data = array_merge($mandatory, $parameter);
 
-        $validator = Validator::make($request, $data);
+        $validator = Validator::make($request->input(), $data);
 
         $validator->validate();
     }

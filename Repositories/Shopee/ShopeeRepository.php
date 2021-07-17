@@ -2,18 +2,24 @@
 
 namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee;
 
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceInterface;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceShopInterface;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceItemInterface;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceLogisticsInterface;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceImageInterface;
+
 /**
  * Class EloquentCoreRepository
  *
  * @package Gdevilbat\SpardaCMS\Modules\Core\Repositories\Eloquent
  */
-class ShopeeRepository
+class ShopeeRepository implements MarketPlaceInterface
 {
-	public function __construct()
+	public function __construct(MarketPlaceShopInterface $shop, MarketPlaceItemInterface $item, MarketPlaceLogisticsInterface $logistics, MarketPlaceImageInterface $image)
 	{
-		$this->item = new API\ItemRepository;
-		$this->shop = new API\ShopRepository;
-		$this->image = new API\ImageRepository;
-		$this->logistics = new API\LogisticsRepository;
+		$this->shop = $shop;
+		$this->item = $item;
+		$this->logistics = $logistics;
+		$this->image = $image;
 	}
 }

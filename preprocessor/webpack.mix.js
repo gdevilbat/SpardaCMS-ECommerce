@@ -1,4 +1,5 @@
-const { mix } = require('laravel-mix');
+const mix  = require('laravel-mix');
+mix.setPublicPath('../resources/views/admin');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,9 +12,9 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('js/scrapper.js', '../../resources/views/admin/v_1/js/scrapper.js')
-    .js('js/shopee.js', '../../resources/views/admin/v_1/js/shopee.js')
-    .js('js/tokopedia.js', '../../resources/views/admin/v_1/js/tokopedia.js')
+mix.js('js/scrapper.js', 'v_1/js/scrapper.js')
+    .js('js/shopee.js', 'v_1/js/shopee.js')
+    .js('js/tokopedia.js', 'v_1/js/tokopedia.js')
     .options({
       processCssUrls: false
    });

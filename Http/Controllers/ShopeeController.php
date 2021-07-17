@@ -12,17 +12,13 @@ use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 
 use Log;
 use DB;
+use MarketPlace;
 
 class ShopeeController extends CoreController
 {
     public function authentication(Request $request)
     {
-        $time = \Carbon\Carbon::now()->timestamp;
-        $path = '/api/v2/shop/auth_partner';
-        $base_string =  config('cms-ecommerce.SHOPEE_PARTNER_ID').$path.$time;
-        $sign = $this->getSignature($base_string);
-        $url = url(config('cms-ecommerce.SHOPEE_API_URL').$path.'?'.http_build_query(['partner_id' => config('cms-ecommerce.SHOPEE_PARTNER_ID'), 'redirect' => url(action('\\'.Self::class.'@callback').'?'.http_build_query(['callback' => $request->input('callback')])), 'timestamp' => $time, 'sign' => $sign]));
-        return redirect($url);
+        return MarketPlace::driver('shopee')->shop->getAuthUrl(url(action('\\'.Self::class.'@callback').'?'.http_build_query(['callback' => $request->input('callback')])));
     }
 
     public function callback(Request $request)
@@ -193,9 +189,9 @@ class ShopeeController extends CoreController
             'language' => 'id'
         ]);
 
-        $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->getCategories($request->input());
+        $data = MarketPlace::driver('shopee')->item->getCategories($request);
 
-        $content = json_decode($data->getContent());
+        $content = $data;
 
         $tmp = collect($content->categories);
 
@@ -220,9 +216,9 @@ class ShopeeController extends CoreController
             'language' => 'id'
         ]);
 
-        $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->getAttributes($request->input());
+        $data = MarketPlace::driver('shopee')->item->getAttributes($request);
 
-        $content = json_decode($data->getContent());
+        $content = $data;
 
         $content = collect($content);
 
@@ -235,9 +231,9 @@ class ShopeeController extends CoreController
             'language' => 'id'
         ]);
 
-        $data = (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->logistics->getLogistics($request->input());
+        $data = MarketPlace::driver('shopee')->logistics->getLogistics($request);
 
-        $content = json_decode($data->getContent());
+        $content = $data;
 
         $tmp = collect($content->logistics);
 
@@ -269,7 +265,7 @@ class ShopeeController extends CoreController
         return$this->publishItemPromotion();
     }
 
-    public function publishItemPromotion()
+    public function publishItemPromotion(Request $request)
     {
         if(empty(getSettingConfig('shopee_id')))
             return redirect()->back()->with('global_message',['status' => 500, 'message' => 'Gagal Boost Item, Authentication First !!!']);
@@ -291,7 +287,12 @@ class ShopeeController extends CoreController
                     array_push($item_id, $id);
                 }
 
-                (new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository)->item->SetBoostedItem(['shop_id' => (int) $shopee_id, 'item_id' => $item_id]);
+                $request->merge([
+                    'shop_id' => (int) $shopee_id, 
+                    'item_id' => $item_id]
+                );
+
+                MarketPlace::driver('shopee')->item->setBoostedItem($request);
             }
         }
 

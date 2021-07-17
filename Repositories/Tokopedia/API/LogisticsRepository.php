@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API;
+namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\API;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
 use Illuminate\Http\Request;

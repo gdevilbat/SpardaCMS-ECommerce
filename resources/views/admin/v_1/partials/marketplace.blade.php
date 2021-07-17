@@ -214,15 +214,15 @@
                       },
                       data: {merchant: self[$attr].merchant, slug: self[$attr].slug}
                     }).done(function(response){
-                        if(response[0].errors == null)
+                        if(response.errors == null)
                         {
-                            self.$set( self[$attr], 'product_id', response[0].data.pdpGetLayout.basicInfo.id);
-                            self.$set( self[$attr], 'is_variant', response[0].data.pdpGetLayout.components[3].data[0].variant.isVariant);
+                            self.$set( self[$attr], 'product_id', response.data.pdpGetLayout.basicInfo.id);
+                            self.$set( self[$attr], 'is_variant', response.data.pdpGetLayout.components[3].data[0].variant.isVariant);
 
 
                             if(self[$attr].is_variant)
                             {
-                                children = response[0].data.pdpGetLayout.components[2].data[0].children;
+                                children = response.data.pdpGetLayout.components[2].data[0].children;
                                 
                                 $.each(children, function(index, val) {
                                      children[index]['product_id'] = val.productID;

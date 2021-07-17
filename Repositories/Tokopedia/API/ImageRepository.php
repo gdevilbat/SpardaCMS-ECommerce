@@ -1,13 +1,13 @@
 <?php
 
-namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API;
+namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\API;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
 use Illuminate\Http\Request;
 
-use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
-use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceLogisticsInterface;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceImageInterface;
 
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Log;
 
 /**
@@ -15,15 +15,17 @@ use Log;
  *
  * @package Gdevilbat\SpardaCMS\Modules\Core\Repositories\Eloquent
  */
-class LogisticsRepository extends AbstractRepository implements MarketPlaceLogisticsInterface
+class ImageRepository extends AbstractRepository implements MarketPlaceImageInterface
 {
-	public function getLogistics(Request $request): Object
+	public function uploadImage(Request $request): Object
     {
-        $this->validateRequest($request, [
+    	$this->validateRequest($request, [
+	        'product_image' => 'required',
         ]);
 
-        $path = '/api/v1/logistics/channel/get';
+        $path = '/api/v1/image/upload';
         $parameter = $this->getPrimaryParameter($request['shop_id']);
+        $parameter['images'] =  $request['product_image'];
 
         $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
