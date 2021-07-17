@@ -129,7 +129,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         $parameter['attributes'] = $request['attributes'];
         $parameter['condition'] = $request['condition'];
 
-        if(array_key_exists('is_pre_order', $request))
+        if($request->has('is_pre_order'))
         {
             $parameter['days_to_ship'] = $request['days_to_ship'];
             $parameter['is_pre_order'] = $request['is_pre_order'];
