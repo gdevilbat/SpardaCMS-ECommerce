@@ -16,9 +16,13 @@ use Illuminate\Http\Request;
  */
 interface MarketPlaceApiInterface
 {
-	public function getAccessToken(Request $request);
+	public function getAccessToken($shop_id);
 
 	public function validateRequest(Request $request, array $parameter);
 
-	public function makeRequest($path, array $parameter, $sign);
+	public function getSignature($base_string);
+
+	public function getBaseString($path, array $parameter);
+
+	public function makeRequest(string $url, string $path, array $parameter, string $sign);
 }

@@ -5,6 +5,7 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceDriver;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\ShopeeRepository;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\TokopediaRepository;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\LazadaRepository;
 
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
@@ -57,6 +58,23 @@ class MarketPlace extends Manager implements MarketPlaceDriver
                 new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\API\ItemRepository,
                 new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\API\LogisticsRepository,
                 new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\API\ImageRepository,
+            ]
+        );
+    }
+
+    /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Laravel\Socialite\Two\AbstractProvider
+     */
+    protected function createLazadaDriver()
+    {
+        return $this->buildProvider(
+            LazadaRepository::class, [
+                new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\API\ShopRepository,
+                new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\API\ItemRepository,
+                new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\API\LogisticsRepository,
+                new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\API\ImageRepository,
             ]
         );
     }

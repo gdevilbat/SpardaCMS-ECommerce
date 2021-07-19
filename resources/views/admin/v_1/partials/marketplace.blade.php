@@ -1,4 +1,4 @@
-<div class="tab-pane" id="marketplace" role="tabpanel" data-url-scrapping-tokopedia-product-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductDetail')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" v-cloak>
+<div class="tab-pane" id="marketplace" role="tabpanel" data-url-scrapping-tokopedia-product-detail="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingTokopediaProductDetail')}}" data-url-scrapping-shopee="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingShopee')}}" data-url-scrapping-lazada="{{action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ScrappingController@scrappingLazada')}}" v-cloak>
   <div class="form-group m-form__group d-flex px-0">
       <div class="col-4 d-flex justify-content-end py-3">
           <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) }}</label>
@@ -6,7 +6,7 @@
       <div class="col">
           <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][merchant]" v-model="tokopedia_supplier.merchant" v-on:change="resetTokopediaData('tokopedia_supplier')">
           <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][slug]" v-model="tokopedia_supplier.slug" v-on:change="resetTokopediaData('tokopedia_supplier')">
-          <div class="col-12 d-flex mx-0 px-0" v-if="tokopedia_supplier.merchant != '' && tokopedia_supplier.slug != ''">
+          <div class="col-12 d-flex mx-0 px-0" v-if="Boolean(tokopedia_supplier.merchant) && Boolean(tokopedia_supplier.slug)">
               <div class="col pl-0">
                   <input type="text" class="form-control m-input" placeholder="Tokopedia Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER}}][product_id]" v-model="tokopedia_supplier.product_id" readonly>
               </div>
@@ -53,7 +53,7 @@
               <div class="col pl-0">
                   <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][product_id]" v-model="shopee_supplier.product_id" v-on:change="resetShopeeData('shopee_supplier')">
               </div>
-              <button type="button" class="btn btn-success" v-on:click="getShopeeData('shopee_supplier')">Get Data</button>
+              <button type="button" class="btn btn-success" v-on:click="getShopeeData('shopee_supplier')" v-if="Boolean(shopee_supplier.shop_id) && Boolean(shopee_supplier.product_id)">Get Data</button>
           </div>
           <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER}}][is_variant]" v-bind:value="shopee_supplier.is_variant">
           <div class="form-group m-form__group row">
@@ -86,6 +86,50 @@
           </div>
       </div>
   </div>
+  <div class="form-group m-form__group d-flex px-0">
+      <div class="col-4 d-flex justify-content-end py-3">
+          <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER)) }}</label>
+      </div>
+      <div class="col">
+          <input type="text" class="form-control m-input" placeholder="Lazada Seller" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][shop_id]" v-model="lazada_supplier.shop_id" readonly>
+          <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][slug]" v-model="lazada_supplier.slug" v-on:change="resetLazadaData('lazada_supplier')">
+          <div class="col-12 d-flex mx-0 px-0" v-if="Boolean(lazada_supplier.slug)">
+              <div class="col pl-0">
+                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][product_id]" v-model="lazada_supplier.product_id" readonly>
+              </div>
+              <button type="button" class="btn btn-success" v-on:click="getLazadaData('lazada_supplier')">Get Data</button>
+          </div>
+          <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][is_variant]" v-bind:value="lazada_supplier.is_variant">
+          <div class="form-group m-form__group row">
+              <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
+              <div class="col">
+                  <div class="col-12">
+                      <span class="m-switch m-switch--icon m-switch--success ml-1 d-flex align-items-center">
+                          <label>
+                              <label>
+                                  <input type="checkbox" v-model="lazada_supplier.is_variant" value="true">
+                                  <span></span>
+                              </label>
+                          </label>
+                      </span>
+                  </div>
+              </div>
+          </div>
+          <div v-if="lazada_supplier.is_variant">
+              <div class="col-12 d-flex" v-for="(children, index) in lazada_supplier.children">
+                  <div class="col">
+                      <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
+                  </div>
+                  <div class="col-2">
+                      <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeChildren('lazada_supplier',index)"><span><i class="fa fa-minus"></i></span></button>
+                  </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                  <button type="button" class="btn btn-success" v-on:click="addChildren('lazada_supplier')">Add Children</button>
+              </div>
+          </div>
+      </div>
+  </div>
   <hr>
   <div class="form-group m-form__group d-flex px-0">
       <div class="col-4 d-flex justify-content-end py-3">
@@ -94,7 +138,7 @@
       <div class="col">
           <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][merchant]" v-model="tokopedia_store.merchant" v-on:change="resetTokopediaData('tokopedia_store')">
           <input type="text" class="form-control m-input slug-me" placeholder="Tokopedia Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][slug]" v-model="tokopedia_store.slug" v-on:change="resetTokopediaData('tokopedia_store')">
-          <div class="col-12 d-flex mx-0 px-0" v-if="tokopedia_store.merchant != '' && tokopedia_store.slug != ''">
+          <div class="col-12 d-flex mx-0 px-0" v-if="Boolean(tokopedia_store.merchant) && Boolean(tokopedia_store.slug)">
               <div class="col pl-0">
                   <input type="text" class="form-control m-input" placeholder="Tokopedia Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][product_id]" v-model="tokopedia_store.product_id" readonly>
               </div>
@@ -141,7 +185,7 @@
               <div class="col pl-0">
                   <input type="text" class="form-control m-input" placeholder="Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][product_id]" v-model="shopee_store.product_id" v-on:change="resetShopeeData('shopee_store')">
               </div>
-              <button type="button" class="btn btn-success" v-on:click="getShopeeData('shopee_store')">Get Data</button>
+              <button type="button" class="btn btn-success" v-on:click="getShopeeData('shopee_store')" v-if="Boolean(shopee_store.shop_id) && Boolean(shopee_store.product_id)">Get Data</button>
           </div>
           <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][is_variant]" v-bind:value="shopee_store.is_variant">
           <div class="form-group m-form__group row">
@@ -179,13 +223,13 @@
           <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)) }}</label>
       </div>
       <div class="col">
-          <input type="text" class="form-control m-input slug-me" placeholder="Lazada Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][merchant]" v-model="lazada_store.merchant" v-on:change="resetTokopediaData('lazada_store')">
-          <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][slug]" v-model="lazada_store.slug" v-on:change="resetTokopediaData('lazada_store')">
-          <div class="col-12 d-flex mx-0 px-0" v-if="lazada_store.merchant != '' && lazada_store.slug != ''">
+          <input type="text" class="form-control m-input" placeholder="Lazada Seller" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][shop_id]" v-model="lazada_store.shop_id" readonly>
+          <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][slug]" v-model="lazada_store.slug" v-on:change="resetLazadaData('lazada_store')">
+          <div class="col-12 d-flex mx-0 px-0" v-if="Boolean(lazada_store.slug)">
               <div class="col pl-0">
                   <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][product_id]" v-model="lazada_store.product_id" readonly>
               </div>
-              {{-- <button type="button" class="btn btn-success" v-on:click="getTokopediaData('lazada_store')">Get Data</button> --}}
+              <button type="button" class="btn btn-success" v-on:click="getLazadaData('lazada_store')">Get Data</button>
           </div>
           <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][is_variant]" v-bind:value="lazada_store.is_variant">
           <div class="form-group m-form__group row">
@@ -227,9 +271,10 @@
             data:{
                 'tokopedia_supplier' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_SUPPLIER)->get()) : json_encode(['children' => [], 'merchant' => '', 'slug' => '', 'is_variant' => 'false'])) !!},
                 'shopee_supplier' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER)->get()) : json_encode(['children' => [], 'shop_id' => '', 'product_id' => '', 'is_variant' => 'false'])) !!},
+                'lazada_supplier' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER)->get()) : json_encode(['children' => [], 'shop_id' => '', 'slug' => '', 'is_variant' => 'false'])) !!},
                 'tokopedia_store' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)->get()) : json_encode(['children' => [], 'merchant' => '', 'slug' => '', 'is_variant' => 'false'])) !!},
                 'shopee_store' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)->get()) : json_encode(['children' => [], 'shop_id' => '', 'product_id' => '', 'is_variant' => 'false'])) !!},
-                'lazada_store' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)->get()) : json_encode(['children' => [], 'shop_id' => '', 'product_id' => '', 'is_variant' => 'false'])) !!},
+                'lazada_store' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)->get()) : json_encode(['children' => [], 'shop_id' => '', 'slug' => '', 'is_variant' => 'false'])) !!},
             },
             methods: {
                 removeChildren: function($attr, index){
@@ -242,6 +287,11 @@
                     this[$attr].children.push({product_id: ''});
                 },
                 resetTokopediaData: function($attr){
+                    this.$set( this[$attr], 'product_id', '');
+                    this.$set( this[$attr], 'is_variant', false);
+                },
+                resetLazadaData: function($attr){
+                    this.$set( this[$attr], 'shop_id', '');
                     this.$set( this[$attr], 'product_id', '');
                     this.$set( this[$attr], 'is_variant', false);
                 },
@@ -280,6 +330,44 @@
                         else
                         {
                             alert('Product Tidak Ditemukan, Periksa Merchant dan Slug');
+                        }
+                    }).fail(function() {
+                      console.log("error");
+                    })
+                },
+                getLazadaData: function($attr){
+                    self = this;
+                    $.ajax({
+                      url: $('#marketplace').attr('data-url-scrapping-lazada'),
+                      method: "POST",
+                      headers: {
+                        "Accept": "application/json",
+                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                      },
+                      data: {slug: self[$attr].slug}
+                    }).done(function(response){
+                        if(response.errors == null)
+                        {
+                            self.$set( self[$attr], 'shop_id', response.primaryKey.sellerId);
+                            self.$set( self[$attr], 'product_id', response.primaryKey.itemId);
+                            self.$set( self[$attr], 'is_variant', true);
+
+
+                            if(self[$attr].is_variant)
+                            {
+                                children = response.skuInfosSortByName;
+                                
+                                $.each(children, function(index, val) {
+                                     children[index]['product_id'] = val.skuId;
+                                });
+
+                                self.$set( self[$attr], 'children', children);
+                            }
+
+                        }
+                        else
+                        {
+                            alert('Product Tidak Ditemukan, Periksa Slug');
                         }
                     }).fail(function() {
                       console.log("error");
@@ -326,6 +414,7 @@
                 this.$nextTick(function(){
                     this.tokopedia_supplier.is_variant = JSON.parse(this.tokopedia_supplier.is_variant)
                     this.shopee_supplier.is_variant = JSON.parse(this.shopee_supplier.is_variant)
+                    this.lazada_supplier.is_variant = JSON.parse(this.lazada_supplier.is_variant)
                     this.tokopedia_store.is_variant = JSON.parse(this.tokopedia_store.is_variant)
                     this.shopee_store.is_variant = JSON.parse(this.shopee_store.is_variant)
                     this.lazada_store.is_variant = JSON.parse(this.lazada_store.is_variant)

@@ -17,9 +17,9 @@
                             <input type="text" class="form-control m-input" name="scrapping[url]" placeholder="https://[API Scrapping]" value="{{getSettingConfig('scrapping', 'url')}}">
                         </div>
                     </div> --}}
-          <div class="form-group m-form__group d-md-flex">
+                    <div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
-                            <label for="exampleInputEmail1">Suplier Sync Mode</label>
+                            <label class="text-right" for="exampleInputEmail1">Suplier Sync Mode</label>
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
                             <div class="m-radio-inline">
@@ -47,7 +47,7 @@
                     </div>
                     <div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
-                            <label for="exampleInputEmail1">Store Sync Mode</label>
+                            <label class="text-right" for="exampleInputEmail1">Store Sync Mode</label>
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
                             <div class="m-radio-inline">
@@ -64,7 +64,7 @@
                     </div>
                     <div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
-                            <label for="exampleInputEmail1">Shopee Session</label>
+                            <label class="text-right" for="exampleInputEmail1">Shopee Session</label>
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
                             <input type="text" class="form-control" name="scrapping[shopee_session]" value="{{ getSettingConfig('scrapping', 'shopee_session') }}">
@@ -72,12 +72,24 @@
                     </div>
                     <div class="form-group m-form__group d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
-                            <label for="exampleInputEmail1">Shopee None Match</label>
+                            <label class="text-right" for="exampleInputEmail1">Shopee None Match</label>
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
                             <input type="text" class="form-control" name="scrapping[shopee_none_match]" value="{{ getSettingConfig('scrapping', 'shopee_none_match') }}">
                         </div>
                     </div>
+                    <hr> 
+                    <div class="m-form__group form-group row  d-md-flex">
+                        <div class="ml-4 col-col-md-8">
+                            <a onclick="popupWindow('{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\LazadaController@authentication') }}', 'test', window, 800, 600);" href="javascript:void(0)" class="btn btn-danger m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                                <span>
+                                    <i class="la la-refresh"></i>
+                                    <span>Authentication Lazada</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="m-form__group form-group row  d-md-flex">
                         <div class="col-md-4 d-md-flex justify-content-end py-3">
                             <label for="exampleInputEmail1">Weight Check</label>

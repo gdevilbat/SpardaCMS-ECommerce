@@ -14,7 +14,7 @@ use Validator;
  */
 abstract class AbstractRepository
 {
-	final public function getAccessToken(Request $request)
+	final public function getAccessToken($shop_id)
     {
         $time = \Carbon\Carbon::now()->timestamp;
         $path = '/api/v2/auth/token/get';
@@ -47,17 +47,17 @@ abstract class AbstractRepository
       ];
     }
 
-    protected final function getSignature($base_string)
+    public final function getSignature($base_string)
     {
       return hash_hmac('SHA256', $base_string, config('cms-ecommerce.SHOPEE_PARTNER_SECRET'));
     }
 
-    protected final function getBaseString($path, array $parameter)
+    public final function getBaseString($path, array $parameter)
     {
         return config('cms-ecommerce.SHOPEE_API_URL').$path.'|'.json_encode($parameter);
     }
 
-    public final function makeRequest($path, array $parameter, $sign)
+    public final function makeRequest(string $url, string $path, array $parameter, string $sign)
     {
         $client = new \GuzzleHttp\Client();
         return $res = $client->request('POST', config('cms-ecommerce.SHOPEE_API_URL').$path, [

@@ -42,6 +42,11 @@ Route::group(['middleware' => 'core.auth'], function() {
 					    Route::get('master', 'ShopeeController@serviceMaster')->middleware('can:menu-ecommerce');
 				    });
 			    });
+
+			    Route::group(['prefix' => 'lazada'], function() {
+				    Route::get('authentication', 'LazadaController@authentication');
+					Route::get('callback', 'LazadaController@callback');
+			    });
 	        
 	        /*=====  End of Product CMS  ======*/
 

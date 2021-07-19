@@ -1,8 +1,8 @@
 <?php
 
-namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API;
+namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\API;
 
-use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\Foundation\AbstractRepository;
 use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
@@ -28,7 +28,7 @@ class LogisticsRepository extends AbstractRepository implements MarketPlaceLogis
         $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 
-        $res = $this->makeRequest(config('cms-ecommerce.SHOPEE_API_URL'), $path, $parameter, $sign);
+        $res = $this->makeRequest($path, $parameter, $sign);
 
         $body = $res->getBody();
 

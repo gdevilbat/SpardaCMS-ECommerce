@@ -104,6 +104,9 @@ class ScrappingController extends Controller
 
       preg_match('/var __moduleData__ = (.+);([\s]+)var __googleBot__/i', $response, $match);
 
+      if(empty($match))
+        return response()->json(['errors' => 'Page Not Found']);
+
       $data = preg_replace('/(var __moduleData__ = |;(\s+)var __googleBot__$)/i', '', $match[0]);
 
       $data = json_decode($data);

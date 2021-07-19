@@ -1,8 +1,8 @@
 <?php
 
-namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API;
+namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\API;
 
-use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\Foundation\AbstractRepository;
 use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
@@ -32,7 +32,7 @@ class ShopRepository extends AbstractRepository implements MarketPlaceShopInterf
         $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);
 
-        $res = $this->makeRequest(config('cms-ecommerce.SHOPEE_API_URL'), $path, $parameter, $sign);
+        $res = $this->makeRequest($path, $parameter, $sign);
 
         $body = $res->getBody();
 
@@ -46,11 +46,8 @@ class ShopRepository extends AbstractRepository implements MarketPlaceShopInterf
 
     public function getAuthUrl($callback)
     {
-        $time = \Carbon\Carbon::now()->timestamp;
-        $path = '/api/v2/shop/auth_partner';
-        $base_string =  config('cms-ecommerce.SHOPEE_PARTNER_ID').$path.$time;
-        $sign = $this->getSignature($base_string);
-        $url = url(config('cms-ecommerce.SHOPEE_API_URL').$path.'?'.http_build_query(['partner_id' => config('cms-ecommerce.SHOPEE_PARTNER_ID'), 'redirect' => $callback, 'timestamp' => $time, 'sign' => $sign]));
+        $path = '/oauth/authorize';
+        $url = url(config('cms-ecommerce.LAZADA_AUTH_URL').$path.'?'.http_build_query(['client_id' => config('cms-ecommerce.LAZADA_PARTNER_ID'), 'redirect_url' => $callback, 'response_type' => 'code', 'force_auth' => 'true']));
         return redirect($url);
     }
 }

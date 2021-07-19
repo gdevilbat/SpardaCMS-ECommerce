@@ -50,6 +50,29 @@ $(document).ready(function() {
         }
     });
 
+    $("#shopee-sycronize").click(function(event) {
+        if(window.confirm("Apakah Anda Yakin Ingin Update Data Shopee Sesuai Ecommerce ?"))
+        {
+            let counter_shopee_sycronize = 0;
+            $(".data-checklist:checked").each(function(index, el) {
+                let post_id = $(this).attr('data-index');
+                $.ajax({
+                    url: $("#shopee-sycronize").attr('data-url-update'),
+                    type: 'POST',
+                    data: {'shop_id': $('#shopee-store-'+$(self).attr('data-index')).attr('data-merchant'), 'product_id': $('#shopee-store-'+$(self).attr('data-index')).attr('data-product'), 'post_id': post_id},
+                    headers: {
+                        "Accept": "application/json",
+                        "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                    }
+                }).done(function(response){
+                    counter_shopee_sycronize++;
+                    if(counter_shopee_sycronize >= $(".data-checklist:checked").length)
+                        $("#reload-datatable").click();
+                });
+            });
+        }
+    });
+
 });
 
 window.tokopediaScrap = function(){
