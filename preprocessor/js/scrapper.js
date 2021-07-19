@@ -170,39 +170,33 @@ window.tokopediaScrap = function(){
                 /*=====  End of Tokopedia  ======*/
 
                 /*=============================================
-                =            Shopee comment block            =
+                =            Shopee            =
                 =============================================*/
                 
-                    let url = $('#shopee-store-'+$(self).attr('data-index')).attr('data-url')
-
-                    if(url != undefined)
+                    if($('#shopee-store-'+$(self).attr('data-index')).attr('data-merchant'))
                     {
-                        let shopee = url.split('/').slice(-2);
-
-                        let api_url;
-
-                        let config;
+                        let config_shopee;
 
                         if($("[name='scrapping[store_sync]']:checked").val() == 'cloud')
                         {
-                            config = {
+                            config_shopee = {
                               method: 'post',
                               url: $("#data_product").attr('data-url-scrapping-shopee'),
                               headers: {
                                 "Accept": "application/json",
                                 "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content') 
                               },
-                              data: {'shopid': shopee[0], 'itemid': shopee[1]}
+                              data: {'shopid': $('#shopee-store-'+$(self).attr('data-index')).attr('data-merchant'), 'itemid': $('#shopee-store-'+$(self).attr('data-index')).attr('data-product')}
                             };
                         }
                         else
                         {
-                            config = {
-                              url: 'https://shopee.co.id/api/v2/item/get'+'?itemid='+shopee[1]+'&shopid='+shopee[0],
+                            config_shopee = {
+                              url: 'https://shopee.co.id/api/v2/item/get'+'?itemid='+$('#shopee-store-'+$(self).attr('data-index')).attr('data-product')+'&shopid='+$('#shopee-store-'+$(self).attr('data-index')).attr('data-merchant'),
                             };
                         }
 
-                        axios(config)
+                        axios(config_shopee)
                             .then((response) => {
                                     if(response.status === 200) {
                                         let html = response.data;
@@ -249,7 +243,7 @@ window.tokopediaScrap = function(){
                             "Accept": "application/json",
                             "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content') 
                           },
-                          data: {'shop_id': shopee[0], 'product_id': shopee[1]}
+                          data: {'shop_id': $('#shopee-store-'+$(self).attr('data-index')).attr('data-merchant'), 'product_id': $('#shopee-store-'+$(self).attr('data-index')).attr('data-product')}
                         };
 
                         if($("[name='scrapping[weight_check]']").val() == 'true')
@@ -267,7 +261,65 @@ window.tokopediaScrap = function(){
 
                     }
                 
-                /*=====  End of Shopee comment block  ======*/
+                /*=====  End of Shopee  ======*/
+
+                /*=================================
+                =            Lazada            =
+                =================================*/
+
+                    if($('#lazada-store-'+$(self).attr('data-index')).attr('data-url') != undefined)
+                    {
+                        let config_lazada = {
+                              method: 'post',
+                              url: $("#data_product").attr('data-url-scrapping-lazada'),
+                              headers: {
+                                "Accept": "application/json",
+                                "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content') 
+                              },
+                              data: {'slug': $('#lazada-store-'+$(self).attr('data-index')).attr('data-slug')}
+                            };
+
+                        axios(config_lazada)
+                            .then((response) => {
+                                    if(response.status === 200) {
+                                        let data = response.data;
+                                        let child_lazada_store = [];
+
+                                        if(data.skuInfosSortByName[0].name == 'Random,')
+                                        {
+                                            child_lazada_store = {
+                                                'price' : data.skuInfosSortByName[0].price.salePrice.value,
+                                                'status': data.skuInfosSortByName[0].stock > 0 ? 'available' : 'empty'
+                                            }
+                                            $('#lazada-store-'+$(self).attr('data-index')).html(currencyFormat(child_lazada_store.price) + '<br/><span class="text-danger">('+(child_lazada_store.price - supplier_price)+')</span>,<br/><span class="badge '+(child_lazada_store.status == "empty" ? "badge-dark" : "badge-info")+'">' + child_lazada_store.status + '</span><br/>');
+                                        }
+                                        else
+                                        {
+                                            $.each(data.skuInfosSortByName, function(index, val) {
+                                                 let price = val.price.salePrice.value;
+                                                 let status =  val.stock > 0 ? 'available' : 'empty';
+
+                                                 child_lazada_store[index] = {
+                                                    price: price,
+                                                    status: status
+                                                 }
+
+                                                if(child_supplier[index] != undefined)
+                                                {
+                                                    $('#lazada-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_lazada_store[index].price) + '<br/><span class="text-danger">('+(child_lazada_store[index].price - child_supplier[index].price)+')</span>,<br/><span class="badge '+(child_lazada_store[index].status == "empty" ? "badge-dark" : "badge-info")+'">' + child_lazada_store[index].status + '</span></div>');
+                                                }
+                                                else
+                                                {
+                                                    $('#lazada-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_lazada_store[index].price) + '<br/><span class="badge '+(child_lazada_store[index].status == "empty" ? "badge-dark" : "badge-info")+'">' + child_lazada_store[index].status + '</span></div>');
+                                                }
+                                            });
+                                        }                                        
+                                    }
+                            }, (error) => console.log(error) );
+                    }
+                
+                
+                /*=====  End of Lazada  ======*/
 
             }
             else
@@ -281,6 +333,12 @@ window.tokopediaScrap = function(){
 
 function currencyFormat(num) {
   return 'Rp. ' + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}
+
+function findTextAndReturnRemainder(target, variable, endString){
+    var chopFront = target.substring(target.search(variable)+variable.length,target.length);
+    var result = chopFront.substring(0,chopFront.search(endString));
+    return result;
 }
 
 window.popupWindow = function(url, windowName, win, w, h) {

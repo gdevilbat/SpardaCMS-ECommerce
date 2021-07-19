@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation;
+namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\Foundation;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Exceptions\HttpResponseException;

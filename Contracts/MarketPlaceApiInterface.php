@@ -19,4 +19,6 @@ interface MarketPlaceApiInterface
 	public function getAccessToken(Request $request);
 
 	public function validateRequest(Request $request, array $parameter);
+
+	public function makeRequest($path, array $parameter, $sign);
 }

@@ -19,6 +19,7 @@ Route::group(['prefix' => 'ecommerce'], function() {
     Route::post('scrapping-tokopedia-product-detail', 'ScrappingController@scrappingTokopediaProductDetail');
     Route::post('scrapping-tokopedia-product-variant', 'ScrappingController@scrappingTokopediaProductVariant');
 	Route::post('scrapping-shopee', 'ScrappingController@scrappingShopee');
+	Route::post('scrapping-lazada', 'ScrappingController@scrappingLazada');
 	Route::post('get-shopee-detail', 'ScrappingController@shopeeDetail');
 
 	Route::group(['prefix' => 'shopee'], function() {

@@ -174,6 +174,50 @@
           </div>
       </div>
   </div>
+  <div class="form-group m-form__group d-flex px-0">
+      <div class="col-4 d-flex justify-content-end py-3">
+          <label for="exampleInputEmail1">{{ ucwords(str_replace('_', ' ', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)) }}</label>
+      </div>
+      <div class="col">
+          <input type="text" class="form-control m-input slug-me" placeholder="Lazada Merchant" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][merchant]" v-model="lazada_store.merchant" v-on:change="resetTokopediaData('lazada_store')">
+          <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][slug]" v-model="lazada_store.slug" v-on:change="resetTokopediaData('lazada_store')">
+          <div class="col-12 d-flex mx-0 px-0" v-if="lazada_store.merchant != '' && lazada_store.slug != ''">
+              <div class="col pl-0">
+                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][product_id]" v-model="lazada_store.product_id" readonly>
+              </div>
+              {{-- <button type="button" class="btn btn-success" v-on:click="getTokopediaData('lazada_store')">Get Data</button> --}}
+          </div>
+          <input type="hidden" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][is_variant]" v-bind:value="lazada_store.is_variant">
+          <div class="form-group m-form__group row">
+              <label for="example-text-input" class="col-3 col-form-label">Is Variant</label>
+              <div class="col">
+                  <div class="col-12">
+                      <span class="m-switch m-switch--icon m-switch--success ml-1 d-flex align-items-center">
+                          <label>
+                              <label>
+                                  <input type="checkbox" v-model="lazada_store.is_variant" value="true">
+                                  <span></span>
+                              </label>
+                          </label>
+                      </span>
+                  </div>
+              </div>
+          </div>
+          <div v-if="lazada_store.is_variant">
+              <div class="col-12 d-flex" v-for="(children, index) in lazada_store.children">
+                  <div class="col">
+                      <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
+                  </div>
+                  <div class="col-2">
+                      <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeChildren('lazada_store',index)"><span><i class="fa fa-minus"></i></span></button>
+                  </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                  <button type="button" class="btn btn-success" v-on:click="addChildren('lazada_store')">Add Children</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 
 @push('page_script_js')
@@ -185,6 +229,7 @@
                 'shopee_supplier' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_SUPPLIER)->get()) : json_encode(['children' => [], 'shop_id' => '', 'product_id' => '', 'is_variant' => 'false'])) !!},
                 'tokopedia_store' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE)->get()) : json_encode(['children' => [], 'merchant' => '', 'slug' => '', 'is_variant' => 'false'])) !!},
                 'shopee_store' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE)->get()) : json_encode(['children' => [], 'shop_id' => '', 'product_id' => '', 'is_variant' => 'false'])) !!},
+                'lazada_store' : {!! old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE) ? json_encode(old('meta.'.Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)) : (!empty($post) && !empty($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)) ? json_encode($post->meta->getMetaData(Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE)->get()) : json_encode(['children' => [], 'shop_id' => '', 'product_id' => '', 'is_variant' => 'false'])) !!},
             },
             methods: {
                 removeChildren: function($attr, index){
@@ -283,6 +328,7 @@
                     this.shopee_supplier.is_variant = JSON.parse(this.shopee_supplier.is_variant)
                     this.tokopedia_store.is_variant = JSON.parse(this.tokopedia_store.is_variant)
                     this.shopee_store.is_variant = JSON.parse(this.shopee_store.is_variant)
+                    this.lazada_store.is_variant = JSON.parse(this.lazada_store.is_variant)
                 });
             }
         });

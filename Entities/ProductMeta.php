@@ -20,9 +20,11 @@ class ProductMeta extends Model
 
     CONST TOKPED_SUPPLIER = 'tokopedia_supplier_account';
     CONST SHOPEE_SUPPLIER = 'shopee_supplier_account';
+    CONST LAZADA_SUPPLIER = 'lazada_supplier_account';
 
     CONST TOKPED_STORE = 'tokopedia_store_account';
     CONST SHOPEE_STORE = 'shopee_store_account';
+    CONST LAZADA_STORE = 'lazada_store_account';
 
     CONST STAT_IN_STOCK = 'in stock';
     CONST STAT_OUT_STOCK = 'out of stock';

@@ -2,7 +2,7 @@
 
 namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\API;
 
-use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\Foundation\AbstractRepository;
 use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;

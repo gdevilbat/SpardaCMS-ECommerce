@@ -124,11 +124,13 @@ class ProductController extends AbstractPost
 
                 $tokopedia_store = $post->meta->getMetaData(ProductMeta::TOKPED_STORE);
                 $shopee_store = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
+                $lazada_store = $post->meta->getMetaData(ProductMeta::LAZADA_STORE);
 
                 $data[$i][] = $this->getStoreLink([
                                     'post' => $post,
                                     'tokopedia_store' => $tokopedia_store,
                                     'shopee_store' => $shopee_store,
+                                    'lazada_store' => $lazada_store,
                                 ]);
 
                 if($post->productMeta->availability == 'in stock')
