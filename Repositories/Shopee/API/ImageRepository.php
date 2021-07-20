@@ -3,7 +3,6 @@
 namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
-use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceImageInterface;
 
@@ -17,10 +16,11 @@ use Log;
  */
 class ImageRepository extends AbstractRepository implements MarketPlaceImageInterface
 {
-	public function uploadImage(Request $request): Object
+	public function uploadImage(array $request): Object
     {
     	$this->validateRequest($request, [
-	        'product_image' => 'required',
+	        'product_image' => 'required|array',
+            'product_image.*' => 'required|url',
         ]);
 
         $path = '/api/v1/image/upload';
@@ -39,6 +39,6 @@ class ImageRepository extends AbstractRepository implements MarketPlaceImageInte
 
         $data = json_decode($body);
 
-        return response()->json($data);
+        return $data;
     }
 }

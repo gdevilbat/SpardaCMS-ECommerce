@@ -178,6 +178,7 @@
 @include('ecommerce::admin.v_1.partials.web_scrapping')
 @include('ecommerce::admin.v_1.partials.tokopedia_download')
 @include('ecommerce::admin.v_1.partials.shopee_upload')
+@include('ecommerce::admin.v_1.partials.lazada_upload')
 
 @endsection
 
@@ -200,7 +201,4 @@
             });
         }(jQuery));
     </script>
-
-    {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/shopee.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/shopee.js')))}}
-    {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/tokopedia.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/tokopedia.js')))}}
 @endsection

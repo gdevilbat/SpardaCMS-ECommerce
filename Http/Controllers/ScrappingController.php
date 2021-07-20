@@ -16,12 +16,12 @@ class ScrappingController extends Controller
             'shop_id' => $request->merchant
         ]);
 
-        return response()->json(MarketPlace::driver('tokopedia')->item->getItemDetail($request));
+        return response()->json(MarketPlace::driver('tokopedia')->item->getItemDetail($request->input()));
     }
 
     public function scrappingTokopediaProductVariant(Request $request)
     {
-        return response()->json(MarketPlace::driver('tokopedia')->item->getVariations($request));
+        return response()->json(MarketPlace::driver('tokopedia')->item->getVariations($request->input()));
     }
 
     public function scrappingShopee(Request $request)
@@ -69,7 +69,7 @@ class ScrappingController extends Controller
 
     public function shopeeDetail(Request $request)
     {
-      return MarketPlace::driver('shopee')->item->getItemDetail($request);
+      return MarketPlace::driver('shopee')->item->getItemDetail($request->input());
     }
 
     public function scrappingLazada(Request $request)

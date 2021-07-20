@@ -4,8 +4,6 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts;
 
 use Illuminate\Support\Facades\Facade;
 
-use Illuminate\Http\Request;
-
 /**
  * Class EloquentCoreRepository
  *
@@ -18,5 +16,5 @@ use Illuminate\Http\Request;
  */
 interface MarketPlaceLogisticsInterface extends MarketPlaceApiInterface
 {
-	public function getLogistics(Request $request): Object;
+	public function getLogistics(array $request): Object;
 }

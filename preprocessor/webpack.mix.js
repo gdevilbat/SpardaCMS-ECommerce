@@ -15,6 +15,7 @@ mix.setPublicPath('../resources/views/admin');
 mix.js('js/scrapper.js', 'v_1/js/scrapper.js')
     .js('js/shopee.js', 'v_1/js/shopee.js')
     .js('js/tokopedia.js', 'v_1/js/tokopedia.js')
+    .js('js/lazada.js', 'v_1/js/lazada.js')
     .options({
       processCssUrls: false
    });

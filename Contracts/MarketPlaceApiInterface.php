@@ -2,8 +2,6 @@
 
 namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts;
 
-use Illuminate\Http\Request;
-
 /**
  * Class EloquentCoreRepository
  *
@@ -18,11 +16,11 @@ interface MarketPlaceApiInterface
 {
 	public function getAccessToken($shop_id);
 
-	public function validateRequest(Request $request, array $parameter);
+	public function validateRequest(array $request, array $parameter);
 
 	public function getSignature($base_string);
 
 	public function getBaseString($path, array $parameter);
 
-	public function makeRequest(string $url, string $path, array $parameter, string $sign);
+	public function makeRequest(string $url, string $path, array $parameter, string $sign, string $method = 'POST');
 }

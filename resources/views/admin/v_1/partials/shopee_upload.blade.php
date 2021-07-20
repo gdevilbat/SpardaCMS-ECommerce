@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-shopee-upload" tabindex="-1" role="dialog" aria-hidden="true"  aria-labelledby="exampleModalLabel" data-dismiss="modal">
   <div class="modal-dialog modal-lg">
       <div class="modal-content">
-          <form data-action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemAdd') }}" data-url-shopee-category="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getCategories') }}"  data-url-shopee-attribute="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getAttributes') }}" data-url-shopee-logistics="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getLogistics') }}" data-url-product-detail="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@apiProductDetail') }}" id="shopee_form" onsubmit="ShopeeUpload.submit(event)">
+          <form data-action="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemAdd') }}" data-url-shopee-category="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetCategories') }}"  data-url-shopee-attribute="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetAttributes') }}" data-url-shopee-logistics="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@getLogistics') }}" data-url-product-detail="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ProductController@apiProductDetail') }}" id="shopee_form" onsubmit="ShopeeUpload.submit(event)">
               <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">Shopee Upload</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -206,3 +206,7 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+@push('page_script_js')
+    {{Html::script(module_asset_url('ecommerce:resources/views/admin/v_1/js/shopee.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/shopee.js')))}}
+@endpush

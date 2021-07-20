@@ -4,7 +4,6 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceItemInterface;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
-use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Log;
@@ -16,7 +15,7 @@ use Log;
  */
 class ItemRepository extends AbstractRepository implements MarketPlaceItemInterface
 {
-	public function getItemsList(Request $request): Object
+	public function getItemsList(array $request): Object
     {
     	$this->validateRequest($request, [
 	        'pagination_offset' => 'required',
@@ -43,7 +42,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function getItemDetail(Request $request): Object
+    public function getItemDetail(array $request): Object
     {
     	$this->validateRequest($request, [
 	        'product_id' => 'required',
@@ -77,7 +76,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $item;
     }
 
-    public function getVariations(Request $request): Object
+    public function getVariations(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -101,7 +100,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function addItem(Request $request): Object
+    public function addItem(array $request): Object
     {
         $this->validateRequest($request, [
             'name' => 'required',
@@ -129,7 +128,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         $parameter['attributes'] = $request['attributes'];
         $parameter['condition'] = $request['condition'];
 
-        if($request->has('is_pre_order'))
+        if(array_key_exists('is_pre_order', $request))
         {
             $parameter['days_to_ship'] = $request['days_to_ship'];
             $parameter['is_pre_order'] = $request['is_pre_order'];
@@ -150,7 +149,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdate(Request $request): Object
+    public function itemUpdate(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -185,7 +184,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdatePrice(Request $request): Object
+    public function itemUpdatePrice(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -212,7 +211,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateStock(Request $request): Object
+    public function itemUpdateStock(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -239,7 +238,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemInitTierVariations(Request $request): Object
+    public function itemInitTierVariations(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -273,7 +272,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemAddTierVariations(Request $request): Object
+    public function itemAddTierVariations(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -302,7 +301,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateTierVariationList(Request $request): Object
+    public function itemUpdateTierVariationList(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -331,7 +330,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateTierVariationIndex(Request $request): Object
+    public function itemUpdateTierVariationIndex(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -359,7 +358,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateVariationPriceBatch(Request $request): Object
+    public function itemUpdateVariationPriceBatch(array $request): Object
     {
         $this->validateRequest($request, [
           'variations' => 'required|array',
@@ -386,7 +385,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateVariationStockBatch(Request $request): Object
+    public function itemUpdateVariationStockBatch(array $request): Object
     {
         $this->validateRequest($request, [
           'variations' => 'required|array',
@@ -413,7 +412,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function getBoostedItem(Request $request): Object
+    public function getBoostedItem(array $request): Object
     {
     	$this->validateRequest($request, [
         ]);
@@ -443,7 +442,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function setBoostedItem(Request $request): Object
+    public function setBoostedItem(array $request): Object
     {
     	$this->validateRequest($request, [
             'item_id' => 'required|array'
@@ -468,7 +467,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function getCategories(Request $request): Object
+    public function getCategories(array $request): Object
     {
         $this->validateRequest($request, [
             'language' => 'required|in:en,vi,th,zh-Hant,zh-Hans,ms-my,pt-br,id'
@@ -493,7 +492,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function getAttributes(Request $request): Object
+    public function getAttributes(array $request): Object
     {
         $this->validateRequest($request, [
             'language' => 'required|in:en,vi,th,zh-Hant,zh-Hans,ms-my,pt-br,id',

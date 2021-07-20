@@ -3,7 +3,6 @@
 namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\Foundation\AbstractRepository;
-use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Log;
@@ -21,7 +20,7 @@ class ShopRepository extends AbstractRepository implements MarketPlaceShopInterf
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function getShopDetail(Request $request): Object
+    public function getShopDetail(array $request): Object
     {
     	$this->validateRequest($request, [
         ]);

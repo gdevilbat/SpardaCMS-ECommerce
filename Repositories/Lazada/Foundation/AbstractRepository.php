@@ -2,7 +2,6 @@
 
 namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\Foundation;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Validator;
@@ -88,7 +87,7 @@ abstract class AbstractRepository
         return $stringToBeSigned;
     }
 
-    public final function makeRequest(string $url, string $path, array $parameter, string $sign)
+    public final function makeRequest(string $url, string $path, array $parameter, string $sign, string $method = 'POST')
     {
         $client = new \GuzzleHttp\Client();
         $parameter = array_merge($parameter, ['sign' => $sign]);
@@ -104,10 +103,10 @@ abstract class AbstractRepository
 
         $requestUrl = substr($requestUrl, 0, -1);
 
-        return $res = $client->request('POST', $requestUrl);
+        return $res = $client->request($method, $requestUrl);
     }
 
-    public final function validateRequest(Request $request, array $parameter)
+    public final function validateRequest(array $request, array $parameter)
     {
         $mandatory = [
             'shop_id' => 'required'
@@ -115,7 +114,7 @@ abstract class AbstractRepository
 
         $data = array_merge($mandatory, $parameter);
 
-        $validator = Validator::make($request->input(), $data);
+        $validator = Validator::make($request, $data);
 
         $validator->validate();
     }

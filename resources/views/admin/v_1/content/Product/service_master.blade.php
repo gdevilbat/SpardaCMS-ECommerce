@@ -20,6 +20,7 @@
                 </form>
                 <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
             @endcan
+            <hr>
             @can('update-ecommerce', $post)
                 @php
                     $shopee_store = $post->meta->getMetaData(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE);
@@ -27,6 +28,16 @@
                 @if((!empty($shopee_store) && $shopee_store->shop_id == '') || empty($shopee_store))
                     <button class="dropdown-item" type="button">
                         <a class="m-link m-link--state m-link--info" href="javascript:void(0)" onclick="ShopeeUpload.setDataForm('{{encrypt($post->getKey())}}')"><i class="fa fa-upload"> Shopee Upload</i></a>
+                    </button>
+                @endif
+            @endcan
+            @can('update-ecommerce', $post)
+                @php
+                    $lazada_store = $post->meta->getMetaData(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE);
+                @endphp
+                @if((!empty($lazada_store) && $lazada_store->shop_id == '') || empty($lazada_store))
+                    <button class="dropdown-item" type="button">
+                        <a class="m-link m-link--state m-link--info" href="javascript:void(0)" onclick="LazadaUpload.setDataForm('{{encrypt($post->getKey())}}')"><i class="fa fa-upload"> Lazada Upload</i></a>
                     </button>
                 @endif
             @endcan

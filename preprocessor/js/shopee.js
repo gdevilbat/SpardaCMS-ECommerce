@@ -104,6 +104,10 @@ $(document).ready(function() {
                         $.ajax({
                             url: $("#shopee_form").attr('data-url-shopee-attribute'),
                             data: {category_id: self.category_id, shop_id: $("[name='shop_id']").val()},
+                            headers: {
+                                "Accept": "application/json",
+                                "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                            }
                         })
                         .done(function(response) {
                             self.attributes = response.attributes;
@@ -141,6 +145,10 @@ $(document).ready(function() {
                     $.ajax({
                         url: $("#shopee_form").attr('data-url-shopee-logistics'),
                          data: {shop_id: $("[name='shop_id']").val()},
+                         headers: {
+                            "Accept": "application/json",
+                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                        }
                     })
                     .done(function(response) {
                         self.logistics = response;
@@ -224,6 +232,10 @@ $(document).ready(function() {
             $.ajax({
                 url: $("#shopee_form").attr('data-url-shopee-category'),
                 data: {shop_id: $("[name='shop_id']").val()},
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
+                }
               })
               .done(function(response) {
                 ShopeeUpload.categories = response;

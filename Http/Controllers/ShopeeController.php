@@ -189,7 +189,7 @@ class ShopeeController extends CoreController
             'language' => 'id'
         ]);
 
-        $data = MarketPlace::driver('shopee')->item->getCategories($request);
+        $data = MarketPlace::driver('shopee')->item->getCategories($request->input());
 
         $content = $data;
 
@@ -216,7 +216,7 @@ class ShopeeController extends CoreController
             'language' => 'id'
         ]);
 
-        $data = MarketPlace::driver('shopee')->item->getAttributes($request);
+        $data = MarketPlace::driver('shopee')->item->getAttributes($request->input());
 
         $content = $data;
 
@@ -231,7 +231,7 @@ class ShopeeController extends CoreController
             'language' => 'id'
         ]);
 
-        $data = MarketPlace::driver('shopee')->logistics->getLogistics($request);
+        $data = MarketPlace::driver('shopee')->logistics->getLogistics($request->input());
 
         $content = $data;
 
@@ -292,7 +292,7 @@ class ShopeeController extends CoreController
                     'item_id' => $item_id]
                 );
 
-                MarketPlace::driver('shopee')->item->setBoostedItem($request);
+                MarketPlace::driver('shopee')->item->setBoostedItem($request->input());
             }
         }
 

@@ -18,6 +18,12 @@ class ProductMeta extends Model
     CONST SHOPEE_ATTR_DROPDOWN = "DROP_DOWN";
     CONST SHOPEE_ATTR_TEXT = "TEXT_FILED";
 
+    CONST LAZADA_ATTR_COMBO = "multiSelect";
+    CONST LAZADA_ATTR_DROPDOWN = "singleSelect";
+    CONST LAZADA_ATTR_TEXT = "text";
+    CONST LAZADA_ATTR_LONGTEXT = "richText";
+    CONST LAZADA_ATTR_NUMERIC = "numeric";
+
     CONST TOKPED_SUPPLIER = 'tokopedia_supplier_account';
     CONST SHOPEE_SUPPLIER = 'shopee_supplier_account';
     CONST LAZADA_SUPPLIER = 'lazada_supplier_account';

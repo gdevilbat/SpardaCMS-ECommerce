@@ -4,11 +4,11 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
 use Gdevilbat\SpardaCMS\Modules\Post\Entities\PostMeta;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Log;
 
@@ -16,7 +16,7 @@ use Validator;
 
 use MarketPlace;
 
-class ShopeeController
+class LazadaController
 {
     public function shopGetDetail(Request $request)
     {
@@ -63,13 +63,17 @@ class ShopeeController
                     $price = $post->productMeta->product_price;
                 }
 
+                $req_prm = clone $request;
+
                 $parameter = [];
             
                 $parameter['shop_id'] = $request->input('shop_id');
                 $parameter['item_id'] = (int) $request->input('product_id');
                 $parameter['price'] = (int )$price;
 
-                $data = MarketPlace::driver('shopee')->item->itemUpdatePrice($parameter);
+                $req_prm->merge($parameter);
+
+                $data = MarketPlace::driver('shopee')->item->itemUpdatePrice($req_prm);
 
                 array_push($response, $data);
             
@@ -90,13 +94,17 @@ class ShopeeController
                     $stock = 0;
                 }
 
+                $req_prm = clone $request;
+            
                 $parameter = [];
             
                 $parameter['shop_id'] = $request->input('shop_id');
                 $parameter['item_id'] = (int) $request->input('product_id');
                 $parameter['stock'] = (int ) $stock;
 
-                $data = MarketPlace::driver('shopee')->item->itemUpdateStock($parameter);
+                $req_prm->merge($parameter);
+
+                $data = MarketPlace::driver('shopee')->item->itemUpdateStock($req_prm);
 
                 array_push($response, $data);
             
@@ -142,22 +150,31 @@ class ShopeeController
 
             if(!property_exists($data, 'variation_id_list'))
             {
+                $req_prm = clone $request;
+
                 $parameter = [];
 
                 $parameter['shop_id'] = $request->input('shop_id');
                 $parameter['item_id'] = (int) $request->input('product_id');
                 $parameter['tier_variation'] = $tiers;
 
-                $data = MarketPlace::driver('shopee')->item->itemUpdateTierVariationList($parameter);
+                $req_prm->merge($parameter);
+
+                $data = MarketPlace::driver('shopee')->item->itemUpdateTierVariationList($req_prm);
 
                 array_push($response, $data);
+
+                $req_prm = clone $request;
 
                 $parameter = [];
 
                 $parameter['shop_id'] = $request->input('shop_id');
                 $parameter['item_id'] = (int) $request->input('product_id');
 
-                $data = MarketPlace::driver('shopee')->item->getVariations($parameter);
+                $req_prm->merge($parameter);
+
+                $data = MarketPlace::driver('shopee')->item->getVariations($req_prm);
+
 
                 $response_variant = collect($data->variations);
                 $sorted_variations = array_values($response_variant->sortBy('variation_id')->toArray());
@@ -184,26 +201,34 @@ class ShopeeController
 
                 if(!empty($update_variation))
                 {
+                    $req_prm = clone $request;
+
                     $parameter = [];
 
                     $parameter['shop_id'] = $request->input('shop_id');
                     $parameter['item_id'] = (int) $request->input('product_id');
                     $parameter['variation'] = $update_variation;
 
-                    $data = MarketPlace::driver('shopee')->item->itemUpdateTierVariationIndex($parameter);
+                    $req_prm->merge($parameter);
+
+                    $data = MarketPlace::driver('shopee')->item->itemUpdateTierVariationIndex($req_prm);
 
                     array_push($response, $data);
+
+                    $req_prm = clone $request;
 
                     $parameter = [];
 
                     $parameter['shop_id'] = $request->input('shop_id');
                     $parameter['variations'] = $update_variation;
 
-                    $data = MarketPlace::driver('shopee')->item->itemUpdateVariationPriceBatch($parameter);
+                    $req_prm->merge($parameter);
+
+                    $data = MarketPlace::driver('shopee')->item->itemUpdateVariationPriceBatch($req_prm);
 
                     array_push($response, $data);
 
-                    $data = MarketPlace::driver('shopee')->item->itemUpdateVariationStockBatch($parameter);
+                    $data = MarketPlace::driver('shopee')->item->itemUpdateVariationStockBatch($req_prm);
 
                     array_push($response, $data);
                 }
@@ -211,13 +236,17 @@ class ShopeeController
                 if(!empty($add_variation))
                 {
                     $add_variation = array_values($add_variation);
+                    $req_prm = clone $request;
+
                     $parameter = [];
 
                     $parameter['shop_id'] = $request->input('shop_id');
                     $parameter['item_id'] = (int) $request->input('product_id');
                     $parameter['variation'] = $add_variation;
 
-                    $data = MarketPlace::driver('shopee')->item->itemAddTierVariations($parameter);
+                    $req_prm->merge($parameter);
+
+                    $data = MarketPlace::driver('shopee')->item->itemAddTierVariations($req_prm);
 
                     array_push($response, $data);
                 }
@@ -230,6 +259,8 @@ class ShopeeController
         =            Update Item Info            =
         ========================================*/
 
+            $req_prm = clone $request;
+
             $parameter = [];
         
             $parameter['shop_id'] = $request->input('shop_id');
@@ -237,7 +268,9 @@ class ShopeeController
             $parameter['name'] = $post->post_title;
             $parameter['description'] = html_entity_decode(strip_tags($post->post_content));
 
-            $data = MarketPlace::driver('shopee')->item->itemUpdate($parameter);
+            $req_prm->merge($parameter);
+
+            $data = MarketPlace::driver('shopee')->item->itemUpdate($req_prm);
 
             $data_item = $data;
 
@@ -280,20 +313,8 @@ class ShopeeController
             'days_to_ship' => 'numeric|between:7,30',
         ]);
 
-        $data['shop_id'] = $request->input('shop_id');
-        $data['name'] = $request->input('product_name');
-        $data['description'] = $request->input('product_description');
-        $data['stock'] = (integer) $request->input('product_stock');
-        $data['price'] = (float) $request->input('product_price');
-        $data['weight'] = (float) $request->input('product_weight');
-        $data['category_id'] = (integer) $request->input('category_id');
-        $data['condition'] = strtoupper($request->input('condition'));
-
-        if($request->has('is_pre_order'))
-        {
-            $data['days_to_ship'] = (integer) $request->input('days_to_ship');
-            $data['is_pre_order'] = (boolean) $request->input('is_pre_order');
-        }
+        $data['shop_id'] = $request->shop_id;
+        $data['Product']['PrimaryCategory'] = (integer) $request->input('category_id');
 
         /*=========================================
         =            Parsing Attribute            =
@@ -305,64 +326,51 @@ class ShopeeController
                 return !empty($attribute['value']);
             });
 
-            $attributes = $filtetered_attributes->map(function ($attribute, $key) {
-                $attribute['attributes_id'] = (integer) $attribute['attributes_id'];
-                return $attribute;
-            })->toArray();
+            $attributes = array_values($filtetered_attributes->toArray());
 
-            $attributes = array_values($attributes);
+            foreach ($attributes as $key => $value) {
+                if($value['attribute_type'] == 'normal')
+                {
+                    $data['Product']['Attributes'][$value['attribute_name']] = $value['value'];
+                }
 
-            $data['attributes'] = $attributes;
+                if($value['attribute_type'] == 'sku')
+                {
+                    $data['Product']['Skus']['Sku'][$value['attribute_name']] = $value['value'];
+                }
+            }
+
         
         /*=====  End of Parsing Attribute  ======*/
-        
+
+
         /*=====================================
         =            Parsing Image            =
         =====================================*/
         
-            $images_data = MarketPlace::driver('shopee')->image->uploadImage($request->only('product_image', 'shop_id'));
+            $images_data = MarketPlace::driver('lazada')->image->uploadImage($request->input());
 
-            if(!property_exists($images_data, 'images')){
+            if(property_exists($images_data, 'errors')){
                 throw new HttpResponseException(response()->json([
-                    'errors'  => [
-                        'msg' => [
-                            $images_data->msg
-                        ]
-                    ]
+                    'errors'  => $images_data->errors
                 ], 422));
             }
 
             foreach ($images_data->images as $image) {
-                $data['images'][]['url'] = $image->shopee_image_url;    
+                $data['Product']['Images']['Url'][] = $image->url;    
             }
         
         /*=====  End of Parsing Image  ======*/
 
-        /*=========================================
-        =            Parsing logistics            =
-        =========================================*/
-        
-            $tmp = collect($request->input('product_logistic'));
+        $request->merge($data);
 
-            $logistics = $tmp->map(function($logistic, $key){
-                $logistic['logistic_id'] = (integer) $logistic['logistic_id'];
-                $logistic['enabled'] = (boolean) $logistic['enabled'];
+        $response = MarketPlace::driver('lazada')->item->addItem($request->input());
 
-                return $logistic;
-            });
-
-            $data['logistics'] = $logistics->toArray();
-        
-        /*=====  End of Parsing logistics  ======*/
-
-        $response = MarketPlace::driver('shopee')->item->addItem($data);
-        $response = $response;
-
-        if(!property_exists($response, 'item')){
+        if(!property_exists($response, 'data')){
             throw new HttpResponseException(response()->json([
                 'errors'  => [
                     'msg' => [
-                        $response->msg
+                        $response->detail
                     ]
                 ]
             ], 422));
@@ -423,23 +431,11 @@ class ShopeeController
             'language' => 'id'
         ]);
 
-        $data = MarketPlace::driver('shopee')->item->getCategories($request->input());
+        $data = MarketPlace::driver('lazada')->item->getCategories($request->input());
 
         $content = $data;
 
-        $tmp = collect($content->categories);
-
-        $cat_data = $tmp->filter(function($value, $key){
-            return $value->parent_id == 0;
-        });
-
-        $col_cat = collect(array_values($cat_data->toArray()))->sortBy('category_name');
-
-        $self = $this;
-
-        $categories = $col_cat->map(function($item, $key) use ($tmp, $self){
-                            return $self->getCatChildren($item, $tmp);
-                        });
+        $categories = collect($content->data)->sortBy('name');
 
         return array_values($categories->toArray());
     }
@@ -450,11 +446,11 @@ class ShopeeController
             'language' => 'id'
         ]);
 
-        $data = MarketPlace::driver('shopee')->item->getAttributes($request->input());
+        $data = MarketPlace::driver('lazada')->item->getAttributes($request->input());
 
         $content = $data;
 
-        $content = collect($content);
+        $content = collect($content->data);
 
         return $content;
     }
@@ -542,9 +538,10 @@ class ShopeeController
             Product::FOREIGN_KEY => 'required',
         ]);
 
-        $data;
+        $request = resolve(Request::class);
+        $request->merge($data);
 
-        $response = MarketPlace::driver('shopee')->item->itemInitTierVariations($data);
+        $response = MarketPlace::driver('shopee')->item->itemInitTierVariations($request->input());
         $response_variant = $response;
 
         if(property_exists($response_variant, 'variation_id_list'))

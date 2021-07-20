@@ -18,5 +18,5 @@ use Illuminate\Http\Request;
  */
 interface MarketPlaceImageInterface extends MarketPlaceApiInterface
 {
-	public function uploadImage(Request $request): Object;
+	public function uploadImage(array $request): Object;
 }

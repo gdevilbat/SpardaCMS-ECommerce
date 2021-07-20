@@ -59,7 +59,7 @@ $(document).ready(function() {
                 $.ajax({
                     url: $("#shopee-sycronize").attr('data-url-update'),
                     type: 'POST',
-                    data: {'shop_id': $('#shopee-store-'+$(self).attr('data-index')).attr('data-merchant'), 'product_id': $('#shopee-store-'+$(self).attr('data-index')).attr('data-product'), 'post_id': post_id},
+                    data: {'shop_id': $('#shopee-store-'+$(this).attr('data-index')).attr('data-merchant'), 'product_id': $('#shopee-store-'+$(this).attr('data-index')).attr('data-product'), 'post_id': post_id},
                     headers: {
                         "Accept": "application/json",
                         "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')

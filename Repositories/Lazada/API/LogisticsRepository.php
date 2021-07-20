@@ -3,7 +3,6 @@
 namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\API;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Lazada\Foundation\AbstractRepository;
-use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceLogisticsInterface;
@@ -17,7 +16,7 @@ use Log;
  */
 class LogisticsRepository extends AbstractRepository implements MarketPlaceLogisticsInterface
 {
-	public function getLogistics(Request $request): Object
+	public function getLogistics(array $request): Object
     {
         $this->validateRequest($request, [
         ]);

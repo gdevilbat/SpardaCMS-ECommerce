@@ -3,7 +3,6 @@
 namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\API;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\Foundation\AbstractRepository;
-use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceImageInterface;
 
@@ -17,7 +16,7 @@ use Log;
  */
 class ImageRepository extends AbstractRepository implements MarketPlaceImageInterface
 {
-	public function uploadImage(Request $request): Object
+	public function uploadImage(array $request): Object
     {
     	$this->validateRequest($request, [
 	        'product_image' => 'required',

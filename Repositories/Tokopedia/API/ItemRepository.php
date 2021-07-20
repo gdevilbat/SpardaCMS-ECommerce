@@ -4,7 +4,6 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\API;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceItemInterface;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Tokopedia\Foundation\AbstractRepository;
-use Illuminate\Http\Request;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Log;
@@ -18,21 +17,21 @@ use MarketPlace;
  */
 class ItemRepository extends AbstractRepository implements MarketPlaceItemInterface
 {
-	public function getItemsList(Request $request): Object
+	public function getItemsList(array $request): Object
     {
     	$this->validateRequest($request, [
             'page' => 'required|min:1'
         ]);
 
-        $page = $request->input('page') ?: 1;
-        $limit = $request->input('limit') ?: 80;
+        $page = $request['page'] ?: 1;
+        $limit = !empty($request['limit']) ? $request['limit'] : 80;
 
         $id = MarketPlace::driver('tokopedia')->shop->getShopDetail($request)->data->shopInfoByID->result[0]->shopCore->shopID;
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://ace.tokopedia.com/v1/web-service/shop/get_shop_product?etalase=etalase&order_by=9&page=".$request->page."&per_page=".$limit."&shop_id=".$id,
+          CURLOPT_URL => "https://ace.tokopedia.com/v1/web-service/shop/get_shop_product?etalase=etalase&order_by=9&page=".$request['page']."&per_page=".$limit."&shop_id=".$id,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => "",
           CURLOPT_MAXREDIRS => 10,
@@ -57,7 +56,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return json_decode($response);
     }
 
-    public function getItemDetail(Request $request): Object
+    public function getItemDetail(array $request): Object
     {
     	$this->validateRequest($request, [
 	        'slug' => 'required'
@@ -70,7 +69,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
           CURLOPT_ENCODING => "",
           CURLOPT_CUSTOMREQUEST => "POST",
           CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_POSTFIELDS =>"[{\"operationName\":\"PDPGetLayoutQuery\",\"variables\":{\"shopDomain\":\"".$request->shop_id."\",\"productKey\":\"".$request->slug."\",\"layoutID\":\"\",\"apiVersion\":1},\"query\":\"fragment ProductVariant on pdpDataProductVariant {\\n  errorCode\\n  parentID\\n  defaultChild\\n  sizeChart\\n  variants {\\n    productVariantID\\n    variantID\\n    name\\n    identifier\\n    option {\\n      picture {\\n        urlOriginal: url\\n        urlThumbnail: url100\\n        __typename\\n      }\\n      productVariantOptionID\\n      variantUnitValueID\\n      value\\n      hex\\n      __typename\\n    }\\n    __typename\\n  }\\n  children {\\n    productID\\n    price\\n    priceFmt\\n    optionID\\n    productName\\n    productURL\\n    picture {\\n      urlOriginal: url\\n      urlThumbnail: url100\\n      __typename\\n    }\\n    stock {\\n      stock\\n      isBuyable\\n      stockWording\\n      stockWordingHTML\\n      minimumOrder\\n      maximumOrder\\n      __typename\\n    }\\n    isCOD\\n    isWishlist\\n    campaignInfo {\\n      campaignID\\n      campaignType\\n      campaignTypeName\\n      campaignIdentifier\\n      background\\n      discountPercentage\\n      originalPrice\\n      discountPrice\\n      stock\\n      stockSoldPercentage\\n      threshold\\n      startDate\\n      endDate\\n      endDateUnix\\n      appLinks\\n      isAppsOnly\\n      isActive\\n      hideGimmick\\n      isCheckImei\\n      __typename\\n    }\\n    thematicCampaign {\\n      additionalInfo\\n      background\\n      campaignName\\n      icon\\n      __typename\\n    }\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductMedia on pdpDataProductMedia {\\n  media {\\n    type\\n    urlThumbnail: URLThumbnail\\n    videoUrl: videoURLAndroid\\n    prefix\\n    suffix\\n    description\\n    __typename\\n  }\\n  videos {\\n    source\\n    url\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductHighlight on pdpDataProductContent {\\n  name\\n  price {\\n    value\\n    currency\\n    __typename\\n  }\\n  campaign {\\n    campaignID\\n    campaignType\\n    campaignTypeName\\n    campaignIdentifier\\n    background\\n    percentageAmount\\n    originalPrice\\n    discountedPrice\\n    originalStock\\n    stock\\n    stockSoldPercentage\\n    threshold\\n    startDate\\n    endDate\\n    endDateUnix\\n    appLinks\\n    isAppsOnly\\n    isActive\\n    hideGimmick\\n    __typename\\n  }\\n  thematicCampaign {\\n    additionalInfo\\n    background\\n    campaignName\\n    icon\\n    __typename\\n  }\\n  stock {\\n    useStock\\n    value\\n    stockWording\\n    __typename\\n  }\\n  variant {\\n    isVariant\\n    parentID\\n    __typename\\n  }\\n  wholesale {\\n    minQty\\n    price {\\n      value\\n      currency\\n      __typename\\n    }\\n    __typename\\n  }\\n  isCashback {\\n    percentage\\n    __typename\\n  }\\n  isTradeIn\\n  isOS\\n  isPowerMerchant\\n  isWishlist\\n  isCOD\\n  isFreeOngkir {\\n    isActive\\n    __typename\\n  }\\n  preorder {\\n    duration\\n    timeUnit\\n    isActive\\n    preorderInDays\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductCustomInfo on pdpDataCustomInfo {\\n  icon\\n  title\\n  isApplink\\n  applink\\n  separator\\n  description\\n  __typename\\n}\\n\\nfragment ProductInfo on pdpDataProductInfo {\\n  row\\n  content {\\n    title\\n    subtitle\\n    applink\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductDetail on pdpDataProductDetail {\\n  content {\\n    title\\n    subtitle\\n    applink\\n    showAtFront\\n    isAnnotation\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductDataInfo on pdpDataInfo {\\n  icon\\n  title\\n  isApplink\\n  applink\\n  content {\\n    icon\\n    text\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductSocial on pdpDataSocialProof {\\n  row\\n  content {\\n    icon\\n    title\\n    subtitle\\n    applink\\n    type\\n    rating\\n    __typename\\n  }\\n  __typename\\n}\\n\\nquery PDPGetLayoutQuery(\$shopDomain: String, \$productKey: String, \$layoutID: String, \$apiVersion: Float) {\\n  pdpGetLayout(shopDomain: \$shopDomain, productKey: \$productKey, layoutID: \$layoutID, apiVersion: \$apiVersion) {\\n    name\\n    basicInfo {\\n      alias\\n      id: productID\\n      shopID\\n      shopName\\n      minOrder\\n      maxOrder\\n      weight\\n      weightUnit\\n      condition\\n      status\\n      url\\n      needPrescription\\n      catalogID\\n      isLeasing\\n      isBlacklisted\\n      menu {\\n        id\\n        name\\n        url\\n        __typename\\n      }\\n      category {\\n        id\\n        name\\n        title\\n        breadcrumbURL\\n        isAdult\\n        detail {\\n          id\\n          name\\n          breadcrumbURL\\n          isAdult\\n          __typename\\n        }\\n        __typename\\n      }\\n      blacklistMessage {\\n        title\\n        description\\n        button\\n        url\\n        __typename\\n      }\\n      txStats {\\n        transactionSuccess\\n        transactionReject\\n        countSold\\n        paymentVerified\\n        itemSoldPaymentVerified\\n        __typename\\n      }\\n      stats {\\n        countView\\n        countReview\\n        countTalk\\n        rating\\n        __typename\\n      }\\n      __typename\\n    }\\n    components {\\n      name\\n      type\\n      position\\n      data {\\n        ...ProductMedia\\n        ...ProductHighlight\\n        ...ProductInfo\\n        ...ProductDetail\\n        ...ProductSocial\\n        ...ProductDataInfo\\n        ...ProductCustomInfo\\n        ...ProductVariant\\n        __typename\\n      }\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}]",
+          CURLOPT_POSTFIELDS =>"[{\"operationName\":\"PDPGetLayoutQuery\",\"variables\":{\"shopDomain\":\"".$request['shop_id']."\",\"productKey\":\"".$request['slug']."\",\"layoutID\":\"\",\"apiVersion\":1},\"query\":\"fragment ProductVariant on pdpDataProductVariant {\\n  errorCode\\n  parentID\\n  defaultChild\\n  sizeChart\\n  variants {\\n    productVariantID\\n    variantID\\n    name\\n    identifier\\n    option {\\n      picture {\\n        urlOriginal: url\\n        urlThumbnail: url100\\n        __typename\\n      }\\n      productVariantOptionID\\n      variantUnitValueID\\n      value\\n      hex\\n      __typename\\n    }\\n    __typename\\n  }\\n  children {\\n    productID\\n    price\\n    priceFmt\\n    optionID\\n    productName\\n    productURL\\n    picture {\\n      urlOriginal: url\\n      urlThumbnail: url100\\n      __typename\\n    }\\n    stock {\\n      stock\\n      isBuyable\\n      stockWording\\n      stockWordingHTML\\n      minimumOrder\\n      maximumOrder\\n      __typename\\n    }\\n    isCOD\\n    isWishlist\\n    campaignInfo {\\n      campaignID\\n      campaignType\\n      campaignTypeName\\n      campaignIdentifier\\n      background\\n      discountPercentage\\n      originalPrice\\n      discountPrice\\n      stock\\n      stockSoldPercentage\\n      threshold\\n      startDate\\n      endDate\\n      endDateUnix\\n      appLinks\\n      isAppsOnly\\n      isActive\\n      hideGimmick\\n      isCheckImei\\n      __typename\\n    }\\n    thematicCampaign {\\n      additionalInfo\\n      background\\n      campaignName\\n      icon\\n      __typename\\n    }\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductMedia on pdpDataProductMedia {\\n  media {\\n    type\\n    urlThumbnail: URLThumbnail\\n    videoUrl: videoURLAndroid\\n    prefix\\n    suffix\\n    description\\n    __typename\\n  }\\n  videos {\\n    source\\n    url\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductHighlight on pdpDataProductContent {\\n  name\\n  price {\\n    value\\n    currency\\n    __typename\\n  }\\n  campaign {\\n    campaignID\\n    campaignType\\n    campaignTypeName\\n    campaignIdentifier\\n    background\\n    percentageAmount\\n    originalPrice\\n    discountedPrice\\n    originalStock\\n    stock\\n    stockSoldPercentage\\n    threshold\\n    startDate\\n    endDate\\n    endDateUnix\\n    appLinks\\n    isAppsOnly\\n    isActive\\n    hideGimmick\\n    __typename\\n  }\\n  thematicCampaign {\\n    additionalInfo\\n    background\\n    campaignName\\n    icon\\n    __typename\\n  }\\n  stock {\\n    useStock\\n    value\\n    stockWording\\n    __typename\\n  }\\n  variant {\\n    isVariant\\n    parentID\\n    __typename\\n  }\\n  wholesale {\\n    minQty\\n    price {\\n      value\\n      currency\\n      __typename\\n    }\\n    __typename\\n  }\\n  isCashback {\\n    percentage\\n    __typename\\n  }\\n  isTradeIn\\n  isOS\\n  isPowerMerchant\\n  isWishlist\\n  isCOD\\n  isFreeOngkir {\\n    isActive\\n    __typename\\n  }\\n  preorder {\\n    duration\\n    timeUnit\\n    isActive\\n    preorderInDays\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductCustomInfo on pdpDataCustomInfo {\\n  icon\\n  title\\n  isApplink\\n  applink\\n  separator\\n  description\\n  __typename\\n}\\n\\nfragment ProductInfo on pdpDataProductInfo {\\n  row\\n  content {\\n    title\\n    subtitle\\n    applink\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductDetail on pdpDataProductDetail {\\n  content {\\n    title\\n    subtitle\\n    applink\\n    showAtFront\\n    isAnnotation\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductDataInfo on pdpDataInfo {\\n  icon\\n  title\\n  isApplink\\n  applink\\n  content {\\n    icon\\n    text\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ProductSocial on pdpDataSocialProof {\\n  row\\n  content {\\n    icon\\n    title\\n    subtitle\\n    applink\\n    type\\n    rating\\n    __typename\\n  }\\n  __typename\\n}\\n\\nquery PDPGetLayoutQuery(\$shopDomain: String, \$productKey: String, \$layoutID: String, \$apiVersion: Float) {\\n  pdpGetLayout(shopDomain: \$shopDomain, productKey: \$productKey, layoutID: \$layoutID, apiVersion: \$apiVersion) {\\n    name\\n    basicInfo {\\n      alias\\n      id: productID\\n      shopID\\n      shopName\\n      minOrder\\n      maxOrder\\n      weight\\n      weightUnit\\n      condition\\n      status\\n      url\\n      needPrescription\\n      catalogID\\n      isLeasing\\n      isBlacklisted\\n      menu {\\n        id\\n        name\\n        url\\n        __typename\\n      }\\n      category {\\n        id\\n        name\\n        title\\n        breadcrumbURL\\n        isAdult\\n        detail {\\n          id\\n          name\\n          breadcrumbURL\\n          isAdult\\n          __typename\\n        }\\n        __typename\\n      }\\n      blacklistMessage {\\n        title\\n        description\\n        button\\n        url\\n        __typename\\n      }\\n      txStats {\\n        transactionSuccess\\n        transactionReject\\n        countSold\\n        paymentVerified\\n        itemSoldPaymentVerified\\n        __typename\\n      }\\n      stats {\\n        countView\\n        countReview\\n        countTalk\\n        rating\\n        __typename\\n      }\\n      __typename\\n    }\\n    components {\\n      name\\n      type\\n      position\\n      data {\\n        ...ProductMedia\\n        ...ProductHighlight\\n        ...ProductInfo\\n        ...ProductDetail\\n        ...ProductSocial\\n        ...ProductDataInfo\\n        ...ProductCustomInfo\\n        ...ProductVariant\\n        __typename\\n      }\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}]",
           CURLOPT_HTTPHEADER => array(
             "content-type: application/json",
             'x-device: desktop',
@@ -127,7 +126,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return json_decode(json_encode($response[0]));
     }
 
-    public function getVariations(Request $request): Object
+    public function getVariations(array $request): Object
     {
         $request->validate([
             'variant_id' => 'required',
@@ -140,7 +139,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
           CURLOPT_ENCODING => "",
           CURLOPT_CUSTOMREQUEST => "POST",
           CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_POSTFIELDS =>"[\r\n    {\r\n        \"operationName\": \"ProductVariantQuery\",\r\n        \"variables\": {\r\n            \"productID\": \"".$request->variant_id."\",\r\n            \"includeCampaign\": true\r\n        },\r\n        \"query\": \"query ProductVariantQuery(\$productID: String!, \$includeCampaign: Boolean!) {\\n  getProductVariant(productID: \$productID, option: {userID: \\\"0\\\", includeCampaign: \$includeCampaign}) {\\n    parentID\\n    defaultChild\\n    variant {\\n      productVariantID\\n      variantID\\n      variantUnitID\\n      name\\n      identifier\\n      unitName\\n      position\\n      option {\\n        productVariantOptionID\\n        variantUnitValueID\\n        value\\n        hex\\n        picture {\\n          urlOriginal: url\\n          urlThumbnail: url200\\n          __typename\\n        }\\n        __typename\\n      }\\n      __typename\\n    }\\n    children {\\n      productID\\n      price\\n      priceFmt\\n      sku\\n      optionID\\n      productName\\n      productURL\\n      picture {\\n        urlOriginal: url\\n        urlThumbnail: url200\\n        __typename\\n      }\\n      stock {\\n        stock\\n        isBuyable\\n        alwaysAvailable\\n        isLimitedStock\\n        stockWording\\n        stockWordingHTML\\n        otherVariantStock\\n        minimumOrder\\n        maximumOrder\\n        __typename\\n      }\\n      isCOD\\n      isWishlist\\n      campaignInfo {\\n        stock\\n        originalStock\\n        endDateUnix\\n        isActive\\n        appLinks\\n        startDate\\n        campaignID\\n        isAppsOnly\\n        campaignType\\n        originalPrice\\n        discountPrice\\n        originalPriceFmt\\n        discountPriceFmt\\n        campaignTypeName\\n        discountPercentage\\n        hideGimmick\\n        __typename\\n      }\\n      __typename\\n    }\\n    sizeChart\\n    enabled\\n    alwaysAvailable\\n    stock\\n    __typename\\n  }\\n}\\n\"\r\n    }\r\n]",
+          CURLOPT_POSTFIELDS =>"[\r\n    {\r\n        \"operationName\": \"ProductVariantQuery\",\r\n        \"variables\": {\r\n            \"productID\": \"".$request['variant_id']."\",\r\n            \"includeCampaign\": true\r\n        },\r\n        \"query\": \"query ProductVariantQuery(\$productID: String!, \$includeCampaign: Boolean!) {\\n  getProductVariant(productID: \$productID, option: {userID: \\\"0\\\", includeCampaign: \$includeCampaign}) {\\n    parentID\\n    defaultChild\\n    variant {\\n      productVariantID\\n      variantID\\n      variantUnitID\\n      name\\n      identifier\\n      unitName\\n      position\\n      option {\\n        productVariantOptionID\\n        variantUnitValueID\\n        value\\n        hex\\n        picture {\\n          urlOriginal: url\\n          urlThumbnail: url200\\n          __typename\\n        }\\n        __typename\\n      }\\n      __typename\\n    }\\n    children {\\n      productID\\n      price\\n      priceFmt\\n      sku\\n      optionID\\n      productName\\n      productURL\\n      picture {\\n        urlOriginal: url\\n        urlThumbnail: url200\\n        __typename\\n      }\\n      stock {\\n        stock\\n        isBuyable\\n        alwaysAvailable\\n        isLimitedStock\\n        stockWording\\n        stockWordingHTML\\n        otherVariantStock\\n        minimumOrder\\n        maximumOrder\\n        __typename\\n      }\\n      isCOD\\n      isWishlist\\n      campaignInfo {\\n        stock\\n        originalStock\\n        endDateUnix\\n        isActive\\n        appLinks\\n        startDate\\n        campaignID\\n        isAppsOnly\\n        campaignType\\n        originalPrice\\n        discountPrice\\n        originalPriceFmt\\n        discountPriceFmt\\n        campaignTypeName\\n        discountPercentage\\n        hideGimmick\\n        __typename\\n      }\\n      __typename\\n    }\\n    sizeChart\\n    enabled\\n    alwaysAvailable\\n    stock\\n    __typename\\n  }\\n}\\n\"\r\n    }\r\n]",
           CURLOPT_HTTPHEADER => array(
             "content-type: application/json",
           ),
@@ -156,7 +155,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return json_decode($response);
     }
 
-    public function addItem(Request $request): Object
+    public function addItem(array $request): Object
     {
         $this->validateRequest($request, [
             'name' => 'required',
@@ -205,7 +204,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdate(Request $request): Object
+    public function itemUpdate(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -240,7 +239,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;;
     }
 
-    public function itemUpdatePrice(Request $request): Object
+    public function itemUpdatePrice(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -267,7 +266,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateStock(Request $request): Object
+    public function itemUpdateStock(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -294,7 +293,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemInitTierVariations(Request $request): Object
+    public function itemInitTierVariations(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -328,7 +327,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemAddTierVariations(Request $request): Object
+    public function itemAddTierVariations(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -357,7 +356,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateTierVariationList(Request $request): Object
+    public function itemUpdateTierVariationList(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -386,7 +385,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateTierVariationIndex(Request $request): Object
+    public function itemUpdateTierVariationIndex(array $request): Object
     {
         $this->validateRequest($request, [
           'item_id' => 'required',
@@ -414,7 +413,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateVariationPriceBatch(Request $request): Object
+    public function itemUpdateVariationPriceBatch(array $request): Object
     {
         $this->validateRequest($request, [
           'variations' => 'required|array',
@@ -441,7 +440,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function itemUpdateVariationStockBatch(Request $request): Object
+    public function itemUpdateVariationStockBatch(array $request): Object
     {
         $this->validateRequest($request, [
           'variations' => 'required|array',
@@ -468,7 +467,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function getBoostedItem(Request $request): Object
+    public function getBoostedItem(array $request): Object
     {
     	$this->validateRequest($request, [
         ]);
@@ -498,7 +497,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return response()->json($items);
     }
 
-    public function setBoostedItem(Request $request): Object
+    public function setBoostedItem(array $request): Object
     {
     	$this->validateRequest($request, [
             'item_id' => 'required|array'
@@ -523,7 +522,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function getCategories(Request $request): Object
+    public function getCategories(array $request): Object
     {
         $this->validateRequest($request, [
             'language' => 'required|in:en,vi,th,zh-Hant,zh-Hans,ms-my,pt-br,id'
@@ -548,7 +547,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         return $data;
     }
 
-    public function getAttributes(Request $request): Object
+    public function getAttributes(array $request): Object
     {
         $this->validateRequest($request, [
             'language' => 'required|in:en,vi,th,zh-Hant,zh-Hans,ms-my,pt-br,id',

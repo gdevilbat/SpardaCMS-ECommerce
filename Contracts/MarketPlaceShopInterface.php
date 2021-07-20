@@ -4,8 +4,6 @@ namespace Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts;
 
 use Illuminate\Support\Facades\Facade;
 
-use Illuminate\Http\Request;
-
 /**
  * Class EloquentCoreRepository
  *
@@ -20,5 +18,5 @@ interface MarketPlaceShopInterface extends MarketPlaceApiInterface
 {
 	public function getAuthUrl($callback);
 
-	public function getShopDetail(Request $request): Object;
+	public function getShopDetail(array $request): Object;
 }

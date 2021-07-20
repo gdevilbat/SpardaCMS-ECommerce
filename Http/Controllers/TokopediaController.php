@@ -21,7 +21,7 @@ class TokopediaController extends Controller
             'shop_id' => $request->store_name
         ]);
 
-        $result = MarketPlace::driver('tokopedia')->item->getItemsList($request);
+        $result = MarketPlace::driver('tokopedia')->item->getItemsList($request->input());
 
         $tmp = collect($result->data->list);
 
@@ -51,6 +51,10 @@ class TokopediaController extends Controller
 
     public function store(Request $request)
     {
+      $this->validate($request, [
+        'product_image.*' => 'url'
+      ]);
+      
       $text = nl2br($request->input('post.post_content'));
 
       $post = $request->input('post');
