@@ -111,14 +111,17 @@ window.tokopediaScrap = function(){
                 let supplier_status;
                 let supplier_price;
                 let child_supplier = [];
+                let supplier_discount;
 
                 if(response.data.pdpGetLayout.components[3].data[0].campaign.discountedPrice > 0)
                 {
                     supplier_price = response.data.pdpGetLayout.components[3].data[0].campaign.discountedPrice;
+                    supplier_discount = true;
                 }
                 else
                 {
                     supplier_price = response.data.pdpGetLayout.components[3].data[0].price.value;
+                    supplier_discount = false;
                 }
 
                 let suplier_weight = response.data.pdpGetLayout.basicInfo.weight;
@@ -127,46 +130,19 @@ window.tokopediaScrap = function(){
                 if(response.data.pdpGetLayout.components[3].data[0].variant.isVariant)
                 {
                     $.each(response.data.pdpGetLayout.components[2].data[0].sorted_children_by_name, function(index, val) {
-                        let price;
-                        let status;
-                        if(val.campaignInfo.discountPrice > 0)
-                        {
-                            price = val.campaignInfo.discountPrice;
-                        }
-                        else
-                        {
-                            price = val.price;
-                        }
-
-                        if(val.stock.isBuyable)
-                        {
-                            status = 'available';
-                        }
-                        else
-                        {
-                            status = 'empty';
-                        }
-
                         child_supplier[index] = {
-                            price: price,
-                            status: status
+                            price: val.campaignInfo.discountPrice > 0 ? val.campaignInfo.discountPrice : val.price,
+                            status: val.stock.isBuyable ? 'available' : 'empty',
+                            is_discount: val.campaignInfo.discountPrice > 0 ? true : false
                         }
 
-                        $(self).append('<div class="mb-3"><span>'+ val.name + '</span><br/>' + currencyFormat(child_supplier[index]['price']) + ', <br/><span class="badge '+ (child_supplier[index]['status'] == "empty" ? "badge-dark" : "badge-info") +'">' + child_supplier[index]['status'] + '</span></div>'); 
+                        $(self).append('<div class="mb-3"><span>'+ val.name + '</span><br/>' + currencyFormat(child_supplier[index]['price']) + (child_supplier[index].is_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +', <br/><span class="badge '+ (child_supplier[index]['status'] == "empty" ? "badge-dark" : "badge-info") +'">' + child_supplier[index]['status'] + '</span></div>'); 
                     });
                 }
                 else
                 {
-                    if(response.data.pdpGetLayout.basicInfo.status== "ACTIVE" && response.data.pdpGetLayout.components[3].data[0].stock.useStock)
-                    {
-                        supplier_status = 'available';
-                        $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span></div>');
-                    }
-                    else
-                    {
-                        supplier_status = 'empty';
-                        $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + ', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span></div>');
-                    }
+                    supplier_status = response.data.pdpGetLayout.basicInfo.status== "ACTIVE" && response.data.pdpGetLayout.components[3].data[0].stock.useStock ? 'available' : 'empty';
+                    $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + (supplier_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span></div>');
                 }
 
                 /*=================================
@@ -226,32 +202,31 @@ window.tokopediaScrap = function(){
                                         let devtoList = [];
                                         devtoList[0] = {
                                             price: (html.item.price)/100000,
-                                            status: html.item.stock > 0 ? 'available' : 'empty'
+                                            status: html.item.stock > 0 ? 'available' : 'empty',
+                                            is_discount: html.item.price_before_discount > 0 ? true : false
                                         }
 
                                         if(html.item.models[0].name == '')
                                         {
-                                            $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(devtoList[0].price) + '<br/><span class="text-danger">('+(devtoList[0].price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
+                                            $('#shopee-store-'+$(self).attr('data-index')).append(currencyFormat(devtoList[0].price) + (devtoList[0].is_discount ? ' - <i class="fab fa-hotjar"></i>' : '') + '<br/><span class="text-danger">('+(devtoList[0].price - supplier_price)+')</span>,<br/><span class="badge '+(devtoList[0].status == "empty" ? "badge-dark" : "badge-info")+'">' + devtoList[0].status + '</span><br/>');
                                         }
                                         else
                                         {
                                             let child_shopee_store = [];
                                             $.each(html.item.sorted_models_by_name, function(index, val) {
-                                                 let price = val.price/100000;
-                                                 let status =  val.stock > 0 ? 'available' : 'empty';
-
                                                  child_shopee_store[index] = {
-                                                    price: price,
-                                                    status: status
+                                                    price: val.price/100000,
+                                                    status: val.stock > 0 ? 'available' : 'empty',
+                                                    is_discount: val.price_before_discount > 0 ? true : false
                                                  }
 
                                                 if(child_supplier[index] != undefined)
                                                 {
-                                                    $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_shopee_store[index].price) + '<br/><span class="text-danger">('+(child_shopee_store[index].price - child_supplier[index].price)+')</span>,<br/><span class="badge '+(child_shopee_store[index].status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store[index].status + '</span></div>');
+                                                    $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_shopee_store[index].price) + (child_shopee_store[index].is_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +'<br/><span class="text-danger">('+(child_shopee_store[index].price - child_supplier[index].price)+')</span>,<br/><span class="badge '+(child_shopee_store[index].status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store[index].status + '</span></div>');
                                                 }
                                                 else
                                                 {
-                                                    $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_shopee_store[index].price) + '<br/><span class="badge '+(child_shopee_store[index].status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store[index].status + '</span></div>');
+                                                    $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_shopee_store[index].price) + (child_shopee_store[index].is_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +'<br/><span class="badge '+(child_shopee_store[index].status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store[index].status + '</span></div>');
                                                 }
                                             });
                                         }
