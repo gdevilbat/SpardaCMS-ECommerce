@@ -1,43 +1,4 @@
 $(document).ready(function() {
-    if($("#boosted-item").length > 0){
-        var BoostedItem = new Vue({
-            el: "#boosted-item",
-            data: {
-                items: [],
-            },
-            mounted: function(){
-                this.$nextTick(function(){
-                    let self = this;
-                    $.ajax({
-                        url: $("#boosted-item").attr('data-url'),
-                        type: 'POST',
-                        data: {shop_id: $("[name='shop_id']").val()},
-                        headers: {
-                            "Accept": "application/json",
-                            "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content'),
-                        }
-                    })
-                    .done(function(response) {
-                        let items = response.items;
-                        $.each(items, function(index, el) {
-                            $.ajax({
-                                url: $("#boosted-item").attr('data-url-item'),
-                                type: 'POST',
-                                data: {shop_id: $("[name='shop_id']").val(), product_id: el.item_id,},
-                                headers: {
-                                    "Accept": "application/json",
-                                    "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
-                                }
-                            }).done(function(response){
-                                self.items.push(response);
-                            });
-                        });
-                    });
-                });
-            }
-        });
-    }
-    
     if($("#shopee-info").length > 0){
         var ShopeeInfo = new Vue({
             el: "#shopee-info",

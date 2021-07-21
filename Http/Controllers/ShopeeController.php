@@ -9,6 +9,7 @@ use Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\CoreController;
 use Gdevilbat\SpardaCMS\Modules\Core\Entities\Setting;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
 
 use Log;
 use DB;
@@ -49,6 +50,10 @@ class ShopeeController extends CoreController
 
     public function serviceMaster(Request $request)
     {
+        $this->validate($request, [
+            'shop_id' => 'required'
+        ]);
+        
         $column = [Product::getPrimaryKey(), 'post_title', '', ''];
 
         $length = !empty($request->input('length')) ? $request->input('length') : 10 ;
@@ -57,9 +62,9 @@ class ShopeeController extends CoreController
         $searchValue = $request->input('search')['value'];
 
         $query = Product::with(['postMeta', 'productMeta'])
-                        ->whereHas('postMeta', function($query){
-                            $query->where('meta_key', 'shopee_slug')
-                                  ->where('meta_value', 'LIKE', '%'.addslashes('product\/'.getSettingConfig('shopee_id')).'%'); 
+                        ->whereHas('postMeta', function($query) use ($request){
+                            $query->where('meta_key', ProductMeta::SHOPEE_STORE)
+                                  ->where('meta_value', 'LIKE', '%'.'\"shop_id\":\"'.$request->shop_id.'\"%'); 
                         })
                         ->whereHas('productMeta', function($query){
                             $query->where('product_stock', '>', 0);
@@ -92,8 +97,10 @@ class ShopeeController extends CoreController
             $i = 0;
             foreach ($this->data['posts'] as $key => $post) 
             {
+                $shopee_store = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
+
                 $data[$i][] = $post->getKey();
-                $data[$i][] = '<a class="item-promotion" href="javascript:void(0)" data-status="'.$post->productMeta->availability.'" data-name="'.$post->post_title.'" data-shopee-url="'.$post->postMeta->where('meta_key', 'shopee_slug')->first()->meta_value.'" data-id="'.$post->getKey().'">'.$post->post_title.'</a>';
+                $data[$i][] = '<a class="item-promotion" href="javascript:void(0)" data-status="'.$post->productMeta->availability.'" data-name="'.$post->post_title.'" data-merchant="'.$shopee_store->shop_id.'" data-product="'.$shopee_store->product_id.'" data-id="'.$post->getKey().'">'.$post->post_title.'</a>';
 
                 if(!empty($post->productMeta->product_sale) && $post->productMeta->product_sale < $post->productMeta->product_price)
                 {
@@ -113,7 +120,12 @@ class ShopeeController extends CoreController
         return ['data' => $data, 'draw' => (integer)$request->input('draw'), 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $filteredTotal];
     }
 
-    public function shopeePromotion()
+    public function marketplace()
+    {
+        return view('ecommerce::admin.'.$this->data['theme_cms']->value.'.content.Shopee.marketplace', $this->data);        
+    }
+
+    public function scheduleItem()
     {
         $items = [];
 
@@ -127,129 +139,7 @@ class ShopeeController extends CoreController
             }
         }
 
-
-        $this->data['items'] = $items;
-
-        return view('ecommerce::admin.'.$this->data['theme_cms']->value.'.content.Shopee.master', $this->data);        
-    }
-
-    public function getCatChildren($item, $shop_cat)
-    {
-        $tmp = $shop_cat->filter(function($child, $key) use ($item){
-            return $child->parent_id == $item->category_id; 
-        });
-
-        if($tmp->count() > 0)
-        {
-            $col_cat = collect(array_values($tmp->toArray()));
-            $self = $this;
-
-            $item->children = array_values($col_cat->map(function($item, $key) use ($shop_cat, $self){
-                                return $self->getCatChildren($item, $shop_cat);
-                            })
-                            ->sortBy('category_name')
-                            ->toArray());
-
-        }
-        else
-        {
-            $item->children = [];
-        }
-
-        return $item;
-    }
-
-    public function getAttrChildren($item, $shop_attr)
-    {
-        $tmp = $shop_attr->filter(function($child, $key) use ($item){
-            return $child->mask_channel_id == $item->logistic_id; 
-        });
-
-        if($tmp->count() > 0)
-        {
-            $col_cat = collect(array_values($tmp->toArray()));
-            $self = $this;
-
-            $item->children = array_values($col_cat->map(function($item, $key) use ($shop_attr, $self){
-                return $self->getAttrChildren($item, $shop_attr);
-            })->toArray());
-
-        }
-        else
-        {
-            $item->children = [];
-        }
-
-        return $item;
-    }
-
-    public function getCategories(Request $request)
-    {
-        $request->merge([
-            'language' => 'id'
-        ]);
-
-        $data = MarketPlace::driver('shopee')->item->getCategories($request->input());
-
-        $content = $data;
-
-        $tmp = collect($content->categories);
-
-        $cat_data = $tmp->filter(function($value, $key){
-            return $value->parent_id == 0;
-        });
-
-        $col_cat = collect(array_values($cat_data->toArray()))->sortBy('category_name');
-
-        $self = $this;
-
-        $categories = $col_cat->map(function($item, $key) use ($tmp, $self){
-                            return $self->getCatChildren($item, $tmp);
-                        });
-
-        return array_values($categories->toArray());
-    }
-
-    public function getAttributes(Request $request)
-    {
-        $request->merge([
-            'language' => 'id'
-        ]);
-
-        $data = MarketPlace::driver('shopee')->item->getAttributes($request->input());
-
-        $content = $data;
-
-        $content = collect($content);
-
-        return $content;
-    }
-
-    public function getLogistics(Request $request)
-    {
-        $request->merge([
-            'language' => 'id'
-        ]);
-
-        $data = MarketPlace::driver('shopee')->logistics->getLogistics($request->input());
-
-        $content = $data;
-
-        $tmp = collect($content->logistics);
-
-        $cat_data = $tmp->filter(function($value, $key){
-            return $value->mask_channel_id == 0;
-        });
-
-        $col_log = collect(array_values($cat_data->toArray()));
-
-        $self = $this;
-
-        $logistics = $col_log->map(function($item, $key) use ($tmp, $self){
-            return $self->getAttrChildren($item, $tmp);
-        });
-
-        return $logistics;
+        return response()->json($items);
     }
 
     public function saveItemScheduled(Request $request)
@@ -262,7 +152,7 @@ class ShopeeController extends CoreController
         $config->value = $request->input('items');
         $config->save();
 
-        return$this->publishItemPromotion();
+        return$this->publishItemPromotion($request);
     }
 
     public function publishItemPromotion(Request $request)
@@ -281,10 +171,8 @@ class ShopeeController extends CoreController
             if($posts->count() > 0)
             {
                 foreach ($posts as $key => $post) {
-                    $url = $post->postMeta->where('meta_key', 'shopee_slug')->first()->meta_value;
-                    $part = explode( '/', $url);
-                    $id = (int) $part[2];
-                    array_push($item_id, $id);
+                    $shopee_store = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
+                    array_push($item_id, (int) $shopee_store->shop_id);
                 }
 
                 $request->merge([
@@ -297,10 +185,5 @@ class ShopeeController extends CoreController
         }
 
         return redirect()->back()->with('global_message',['status' => 200, 'message' => 'Success To Update Setting']);
-    }
-
-    protected final function getSignature($base_string)
-    {
-      return hash_hmac('SHA256', $base_string, config('cms-ecommerce.SHOPEE_PARTNER_SECRET'));
     }
 }

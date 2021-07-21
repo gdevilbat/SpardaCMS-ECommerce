@@ -63,6 +63,7 @@
               </td>
               <td>
                 <input class="form-control w-100" type="number" v-bind:name="'meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT}}][children]['+index+'][price]'" v-model="child.price" min="0">
+                <input class="form-control w-100" type="number" v-bind:name="'meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT}}][children]['+index+'][sale]'" v-model="child.sale" min="0">
               </td>
               <td>
                 <input class="form-control w-100" type="number" v-bind:name="'meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::PRODUCT_VARIANT}}][children]['+index+'][stock][stock]'" v-model="child.stock.stock" v-model="child.stock" min="0">
@@ -139,7 +140,7 @@
                 });
 
                 if(self.children[index] == undefined){
-                  self.$set(self.children, index, {'tier_index' : val,'name' : name, 'price': '', 'stock': {stock: ''}});
+                  self.$set(self.children, index, {'tier_index' : val,'name' : name, 'price': 0, 'sale': 0,'stock': {stock: 0}});
                 }else{
                   let old_data = self.children[index];
                   old_data.tier_index = val;
