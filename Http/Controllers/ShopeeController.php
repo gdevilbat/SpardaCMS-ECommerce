@@ -172,7 +172,7 @@ class ShopeeController extends CoreController
             {
                 foreach ($posts as $key => $post) {
                     $shopee_store = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
-                    array_push($item_id, (int) $shopee_store->shop_id);
+                    array_push($item_id, (int) $shopee_store->product_id);
                 }
 
                 $request->merge([
