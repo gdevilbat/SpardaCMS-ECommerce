@@ -19,5 +19,5 @@ use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceImageInterface;
  */
 interface MarketPlaceInterface
 {
-	public function __construct(MarketPlaceShopInterface $shop, MarketPlaceItemInterface $item, MarketPlaceLogisticsInterface $logistics, MarketPlaceImageInterface $image);
+	//public function __construct(MarketPlaceShopInterface $shop, MarketPlaceItemInterface $item, MarketPlaceLogisticsInterface $logistics, MarketPlaceImageInterface $image);
 }

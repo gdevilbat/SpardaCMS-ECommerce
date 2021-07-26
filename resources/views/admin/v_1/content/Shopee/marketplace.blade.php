@@ -96,8 +96,13 @@
                         <div class="m-portlet__head-tools">
                             <ul class="nav nav-tabs m-tabs-line m-tabs-line--primary" role="tablist">
                                 <li class="nav-item m-tabs__item">
-                                    <a class="nav-link m-tabs__link active show" data-toggle="tab" href="#promotion" role="tab" aria-selected="false">
-                                        <i class="la la-cog"></i> Promotion
+                                    <a class="nav-link m-tabs__link active show" data-toggle="tab" href="#discount" role="tab" aria-selected="false">
+                                        <i class="fab fa-hotjar"></i> Discount
+                                    </a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#promotion" role="tab" aria-selected="false">
+                                        <i class="fa fa-rocket"></i> Promotion
                                     </a>
                                 </li>
                             </ul>
@@ -105,7 +110,10 @@
                     </div>
                     <div class="m-portlet__body">
                         <div class="tab-content">
-                            <div class="tab-pane active show" id="promotion" role="tabpanel">
+                            <div class="tab-pane active show" id="discount" role="tabpanel">
+                                @include('ecommerce::admin.v_1.partials.shopee.discount')
+                            </div>
+                            <div class="tab-pane" id="promotion" role="tabpanel">
                                 @include('ecommerce::admin.v_1.partials.shopee.promotion')
                             </div>
                         </div>

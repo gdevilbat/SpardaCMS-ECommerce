@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 
 use Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\CoreController;
 use Gdevilbat\SpardaCMS\Modules\Core\Entities\Setting;
+use use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
@@ -64,7 +65,7 @@ class ShopeeController extends CoreController
         $query = Product::with(['postMeta', 'productMeta'])
                         ->whereHas('postMeta', function($query) use ($request){
                             $query->where('meta_key', ProductMeta::SHOPEE_STORE)
-                                  ->where('meta_value', 'LIKE', '%'.'\"shop_id\":\"'.$request->shop_id.'\"%'); 
+                                  ->whereRaw("meta_value REGEXP('shop_id(.{2,3})".$request->shop_id."(.{0,1})\,')"); 
                         })
                         ->whereHas('productMeta', function($query){
                             $query->where('product_stock', '>', 0);
@@ -185,5 +186,150 @@ class ShopeeController extends CoreController
         }
 
         return redirect()->back()->with('global_message',['status' => 200, 'message' => 'Success To Update Setting']);
+    }
+
+    public function getDiscountsList(Request $request)
+    {
+        $this->validate($request, [
+            'page' => 'required',
+        ]);
+
+        $per_page = 10;
+
+        $request->merge([
+            'discount_status' => 'ALL',
+            'pagination_offset' => ($request->page - 1) * $per_page, 
+            'pagination_entries_per_page' => $per_page
+        ]);
+
+        $data = Marketplace::driver('shopee')->discount->getDiscountsList($request->input());
+
+        return response()->json($data);
+    }
+
+    public function getDiscountDetail(Request $request)
+    {
+        $this->validate($request, [
+            'page' => 'required',
+        ]);
+
+        $per_page = 100;
+
+        $request->merge([
+            'pagination_offset' => ($request->page - 1) * $per_page, 
+            'pagination_entries_per_page' => $per_page
+        ]);
+
+        $discount_item = Marketplace::driver('shopee')->discount->getDiscountDetail($request->input());
+
+        $items = $discount_item->items;
+
+        $arr_id = [];
+
+        foreach ($items as $key => $value) {
+            $arr_id[$key] = $value->item_id;
+        }
+
+        $exclude_id = implode('|', $arr_id);
+
+        $query = Product::with(['postMeta', 'productMeta'])
+                        ->where(function($query) use ($request, $exclude_id){
+                            $query->where(function($query) use ($request, $exclude_id) {
+                                    $query->where(function($query) use ($request, $exclude_id){
+                                        $query->whereHas('postMeta', function($query) use ($request, $exclude_id){
+                                                $query->where(function($query) use ($request){
+                                                            $query->where('meta_key', ProductMeta::SHOPEE_STORE)
+                                                              ->whereRaw("meta_value REGEXP('shop_id(.{2,3})".$request->shop_id."(.{0,1})\,')"); 
+                                                        })
+                                                      ->where(function($query) use ($exclude_id){
+                                                            if($exclude_id != '')
+                                                            {
+                                                                $query->where('meta_key', ProductMeta::SHOPEE_STORE)
+                                                                  ->whereRaw("meta_value NOT REGEXP('product_id(.{2,3})(".$exclude_id.")')");
+                                                              }
+                                                      });
+                                            })
+                                            ->whereHas('postMeta', function($query) use ($request, $exclude_id){
+                                                $query->where(function($query){
+                                                        $query->where('meta_key', ProductMeta::PRODUCT_VARIANT)
+                                                              ->whereRaw("meta_value REGEXP('sale(.{3})[^0]')");
+                                                    });
+                                            });
+                                    });
+                            })->orWhereHas('productMeta', function($query){
+                                $query->where('product_sale', '>', 0);
+                            });
+                        })
+                        ->whereHas('productMeta', function($query){
+                            $query->where('product_stock', '>', 0);
+                        });
+
+        $available_items = $query->get();
+
+        $data = [
+            'discount' => $discount_item,
+            'available_items' => $available_items
+        ];
+
+        return response()->json($data);
+    }
+
+    public function addDiscountItem(Request $request)
+    {
+        $this->validate($request, [
+            'post_id' => 'required'
+        ]);
+
+        $post = Product::with('productMeta')->findOrFail($request->post_id);
+
+        $shopee = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
+
+        $data = [];
+
+        $data['discount_id'] = $request->discount_id;
+
+        $data['items'][0]['item_id'] = $shopee->product_id;
+        $data['items'][0]['purchase_limit'] = 0;
+
+        $variant = $post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT);
+
+        $childrens = $variant->children;
+        $shopee_childrens = $shopee->children;
+
+        $i = 0;
+        foreach ($childrens as $key => $children) {
+            if((int) $children->sale > 0)
+            {
+                if(array_key_exists($key, $shopee_childrens))
+                {
+                    $data['items'][0]['variations'][$i]['variation_id'] = $shopee_childrens[$key]->product_id;
+                    $data['items'][0]['variations'][$i]['variation_promotion_price'] = $children->sale;
+                    $i++;
+                }
+            }
+        }
+
+        if($post->productMeta->product_sale > 0)
+        {
+            $data['items'][0]['variation_promotion_price'] = $post->productMeta->product_sale;
+        }
+
+        $request->merge($data);
+        
+        $data = $request->input();
+
+        $data = Marketplace::driver('shopee')->discount->addDiscountItems($request->input());
+
+        if(!property_exists($data, 'discount_id')){
+            throw new HttpResponseException(response()->json([
+                'errors'  => [
+                    'msg' => [
+                        $data->msg
+                    ]
+                ]
+            ], 422));
+        }
+
+        return response()->json($data);
     }
 }

@@ -41,6 +41,7 @@ class MarketPlace extends Manager implements MarketPlaceDriver
                 new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API\ItemRepository,
                 new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API\LogisticsRepository,
                 new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API\ImageRepository,
+                new \Gdevilbat\SpardaCMS\Modules\Ecommerce\Repositories\Shopee\API\DiscountRepository,
             ]
         );
     }

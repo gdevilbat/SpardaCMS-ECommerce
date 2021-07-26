@@ -7,6 +7,7 @@ use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceShopInterface;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceItemInterface;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceLogisticsInterface;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceImageInterface;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceDiscountInterface;
 
 /**
  * Class EloquentCoreRepository
@@ -15,11 +16,12 @@ use Gdevilbat\SpardaCMS\Modules\Ecommerce\Contracts\MarketPlaceImageInterface;
  */
 class ShopeeRepository implements MarketPlaceInterface
 {
-	public function __construct(MarketPlaceShopInterface $shop, MarketPlaceItemInterface $item, MarketPlaceLogisticsInterface $logistics, MarketPlaceImageInterface $image)
+	public function __construct(MarketPlaceShopInterface $shop, MarketPlaceItemInterface $item, MarketPlaceLogisticsInterface $logistics, MarketPlaceImageInterface $image, MarketPlaceDiscountInterface $discount)
 	{
 		$this->shop = $shop;
 		$this->item = $item;
 		$this->logistics = $logistics;
 		$this->image = $image;
+		$this->discount = $discount;
 	}
 }

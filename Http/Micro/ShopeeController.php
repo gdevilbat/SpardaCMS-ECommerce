@@ -265,6 +265,66 @@ class ShopeeController
         
         /*=====  End of Update Item Info  ======*/
 
+        /*=============================================
+        =            Update Item Promotion            =
+        =============================================*/
+        
+
+            $discount_id = $data->item->discount_id;
+
+            if($discount_id == 0)
+            {
+                $group = collect($data->item->variations)->groupBy('discount_id');
+
+                if($group->count() > 0)
+                {
+                    $discount_id = $group->keys()->first();
+                }
+            }
+
+            if($discount_id > 0)
+            {
+                $parameter = [];
+            
+                $parameter['shop_id'] = $request->input('shop_id');
+                $parameter['items'][0]['item_id'] = (int) $request->input('product_id');
+                $parameter['discount_id'] = $discount_id;
+
+                $variant = $post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT);
+
+                $shopee = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
+
+                $childrens = $variant->children;
+                $shopee_childrens = $shopee->children;
+
+                $i = 0;
+                foreach ($childrens as $key => $children) {
+                    if((int) $children->sale > 0)
+                    {
+                        if(array_key_exists($key, $shopee_childrens))
+                        {
+                            $parameter['items'][0]['variations'][$i]['variation_id'] = $shopee_childrens[$key]->product_id;
+                            $parameter['items'][0]['variations'][$i]['variation_promotion_price'] = $children->sale;
+                            $i++;
+                        }
+                    }
+                }
+
+                if($post->productMeta->product_sale > 0)
+                {
+                    $parameter['items'][0]['variation_promotion_price'] = $post->productMeta->product_sale;
+                }
+
+                $data = Marketplace::driver('shopee')->discount->updateDiscountItems($parameter);
+
+                array_push($response, $data);
+            }
+
+
+
+        /*=====  End of Update Item Promotion  ======*/
+        
+
         return response()->json($response);
     }
 

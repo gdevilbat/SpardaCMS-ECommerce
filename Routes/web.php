@@ -40,7 +40,16 @@ Route::group(['middleware' => 'core.auth'], function() {
 					Route::get('marketplace', 'ShopeeController@marketplace')->middleware('core.menu')->name('marketplace-shopee');
 					Route::group(['prefix' => 'api'], function() {
 					    Route::get('master', 'ShopeeController@serviceMaster')->middleware('can:menu-ecommerce');
-					    Route::get('schedule-item', 'ShopeeController@scheduleItem')->middleware('can:menu-ecommerce');
+
+					    Route::group(['prefix' => 'schedule'], function() {
+						    Route::get('item', 'ShopeeController@scheduleItem')->middleware('can:menu-ecommerce');
+					    });
+
+					    Route::group(['prefix' => 'discount'], function() {
+						    Route::get('list', 'ShopeeController@getDiscountsList')->middleware('can:menu-ecommerce');
+						    Route::get('detail', 'ShopeeController@getDiscountDetail')->middleware('can:menu-ecommerce');
+						    Route::post('add-item', 'ShopeeController@addDiscountItem')->middleware('can:menu-ecommerce');
+					    });
 				    });
 			    });
 
