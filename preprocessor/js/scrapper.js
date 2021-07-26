@@ -265,7 +265,7 @@ window.tokopediaScrap = function(){
                 =            Lazada            =
                 =================================*/
 
-                    if($('#lazada-store-'+$(self).attr('data-index')).attr('data-url') != undefined)
+                    if($('#lazada-store-'+$(self).attr('data-index')).attr('data-merchant') != undefined)
                     {
                         let config_lazada = {
                               method: 'post',
@@ -274,7 +274,7 @@ window.tokopediaScrap = function(){
                                 "Accept": "application/json",
                                 "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content') 
                               },
-                              data: {'slug': $('#lazada-store-'+$(self).attr('data-index')).attr('data-slug')}
+                              data: {'product_id': $('#lazada-store-'+$(self).attr('data-index')).attr('data-product')}
                             };
 
                         axios(config_lazada)

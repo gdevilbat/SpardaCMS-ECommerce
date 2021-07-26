@@ -92,10 +92,10 @@
       </div>
       <div class="col">
           <input type="text" class="form-control m-input" placeholder="Lazada Seller" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][shop_id]" v-model="lazada_supplier.shop_id" readonly>
-          <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][slug]" v-model="lazada_supplier.slug" v-on:change="resetLazadaData('lazada_supplier')">
-          <div class="col-12 d-flex mx-0 px-0" v-if="Boolean(lazada_supplier.slug)">
+          {{-- <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][slug]" v-model="lazada_supplier.slug" v-on:change="resetLazadaData('lazada_supplier')"> --}}
+          <div class="col-12 d-flex mx-0 px-0">
               <div class="col pl-0">
-                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][product_id]" v-model="lazada_supplier.product_id" readonly>
+                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][product_id]" v-model="lazada_supplier.product_id">
               </div>
               <button type="button" class="btn btn-success" v-on:click="getLazadaData('lazada_supplier')">Get Data</button>
           </div>
@@ -224,10 +224,10 @@
       </div>
       <div class="col">
           <input type="text" class="form-control m-input" placeholder="Lazada Seller" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][shop_id]" v-model="lazada_store.shop_id" readonly>
-          <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][slug]" v-model="lazada_store.slug" v-on:change="resetLazadaData('lazada_store')">
-          <div class="col-12 d-flex mx-0 px-0" v-if="Boolean(lazada_store.slug)">
+          {{-- <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][slug]" v-model="lazada_store.slug" v-on:change="resetLazadaData('lazada_store')"> --}}
+          <div class="col-12 d-flex mx-0 px-0">
               <div class="col pl-0">
-                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][product_id]" v-model="lazada_store.product_id" readonly>
+                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][product_id]" v-model="lazada_store.product_id">
               </div>
               <button type="button" class="btn btn-success" v-on:click="getLazadaData('lazada_store')">Get Data</button>
           </div>
@@ -344,14 +344,12 @@
                         "Accept": "application/json",
                             "Authorization": "Bearer "+ $("meta[name='api-token']").attr('content')
                       },
-                      data: {slug: self[$attr].slug}
+                      data: {product_id: self[$attr].product_id}
                     }).done(function(response){
                         if(response.errors == null)
                         {
                             self.$set( self[$attr], 'shop_id', response.primaryKey.sellerId);
-                            self.$set( self[$attr], 'product_id', response.primaryKey.itemId);
                             self.$set( self[$attr], 'is_variant', true);
-
 
                             if(self[$attr].is_variant)
                             {

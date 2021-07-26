@@ -17,9 +17,9 @@
 	<span data-index="{{$post->getKey()}}" id="shopee-weight-{{$post->getKey()}}">
 	</span>
 	<hr>
-	@if(!empty($lazada_store) && $lazada_store->slug != '')
-		<a href="{{url('https://www.lazada.co.id/'.$lazada_store->slug.'.html')}}" title="" target="_blank">
-			<span data-index="{{$post->getKey()}}" class="lazada-store" id="lazada-store-{{$post->getKey()}}" data-url="{{url('https://www.lazada.co.id/'.$lazada_store->slug.'.html')}}" data-slug="{{ $lazada_store->slug }}">
+	@if(!empty($lazada_store) && $lazada_store->shop_id != '')
+		<a href="{{url('https://www.lazada.co.id/i'.$lazada_store->product_id.'.html')}}" title="" target="_blank">
+			<span data-index="{{$post->getKey()}}" class="lazada-store" id="lazada-store-{{$post->getKey()}}"data-merchant="{{$lazada_store->shop_id}}"  data-product="{{ $lazada_store->product_id }}">
 			</span>
 			Lazada
 		</a>

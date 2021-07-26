@@ -77,13 +77,13 @@ class ScrappingController extends Controller
     public function scrappingLazada(Request $request)
     {
       $this->validate($request, [
-          'slug' => 'required',
+          'product_id' => 'required',
       ]);
 
       $curl = curl_init();
 
       curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://www.lazada.co.id/'.$request->slug.'.html',
+        CURLOPT_URL => 'https://www.lazada.co.id/i'.$request->product_id.'.html',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -121,20 +121,23 @@ class ScrappingController extends Controller
         $skus = collect($data->productOption->skuBase->skus);
 
         foreach ($skus as $key_sku => $value) {
-          $list_path = [];
-          $path = explode(';', $value->propPath);
-
-          foreach ($path as $key => $value) {
-            $list_path[$key] = explode(':', $value);
-          }
-
           $name = '';
+          $list_path = [];
 
-          $properties = collect($data->productOption->skuBase->properties);
-          foreach ($list_path as $key => $value) {
-            $item = $properties->where('pid', $value[0])->first();
-            $item = collect($item->values)->where('vid', $value[1])->first();
-            $name .= $item->name.', ';
+          if(property_exists($value, 'propPath'))
+          {
+            $path = explode(';', $value->propPath);
+
+            foreach ($path as $key => $value) {
+              $list_path[$key] = explode(':', $value);
+            }
+
+            $properties = collect($data->productOption->skuBase->properties);
+            foreach ($list_path as $key => $value) {
+              $item = $properties->where('pid', $value[0])->first();
+              $item = collect($item->values)->where('vid', $value[1])->first();
+              $name .= $item->name.', ';
+            }
           }
 
           $data->productOption->skuBase->skus[$key_sku]->name = trim($name);
