@@ -163,15 +163,15 @@
           <div v-if="tokopedia_store.is_variant">
               <div class="col-12 d-flex" v-for="(children, index) in tokopedia_store.children">
                   <div class="col">
-                      <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
+                      <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::TOKPED_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID" readonly>
                   </div>
-                  <div class="col-2">
+                  {{-- <div class="col-2">
                       <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeChildren('tokopedia_store',index)"><span><i class="fa fa-minus"></i></span></button>
-                  </div>
+                  </div> --}}
               </div>
-              <div class="col-md-6 mt-2">
+              {{-- <div class="col-md-6 mt-2">
                   <button type="button" class="btn btn-success" v-on:click="addChildren('tokopedia_store')">Add Children</button>
-              </div>
+              </div> --}}
           </div>
       </div>
   </div>
@@ -206,15 +206,15 @@
           <div v-if="shopee_store.is_variant">
               <div class="col-12 d-flex" v-for="(children, index) in shopee_store.children">
                   <div class="col">
-                      <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
+                      <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::SHOPEE_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID" readonly>
                   </div>
-                  <div class="col-2">
+                  {{-- <div class="col-2">
                       <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeChildren('shopee_store',index)"><span><i class="fa fa-minus"></i></span></button>
-                  </div>
+                  </div> --}}
               </div>
-              <div class="col-md-6 mt-2">
+              {{-- <div class="col-md-6 mt-2">
                   <button type="button" class="btn btn-success" v-on:click="addChildren('shopee_store')">Add Children</button>
-              </div>
+              </div> --}}
           </div>
       </div>
   </div>
@@ -250,15 +250,15 @@
           <div v-if="lazada_store.is_variant">
               <div class="col-12 d-flex" v-for="(children, index) in lazada_store.children">
                   <div class="col">
-                      <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID">
+                      <input  class="form-control" type="text" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][children][][product_id]" v-model="children.product_id" placeholder="Product ID" readonly>
                   </div>
-                  <div class="col-2">
+                  {{-- <div class="col-2">
                       <button type="button" class="btn m-btn--pill btn-metal" v-on:click="removeChildren('lazada_store',index)"><span><i class="fa fa-minus"></i></span></button>
-                  </div>
+                  </div> --}}
               </div>
-              <div class="col-md-6 mt-2">
+              {{-- <div class="col-md-6 mt-2">
                   <button type="button" class="btn btn-success" v-on:click="addChildren('lazada_store')">Add Children</button>
-              </div>
+              </div> --}}
           </div>
       </div>
   </div>
@@ -355,7 +355,7 @@
 
                             if(self[$attr].is_variant)
                             {
-                                children = response.skuInfosSortByName;
+                                children = response.skuInfosSortById;
                                 
                                 $.each(children, function(index, val) {
                                      children[index]['product_id'] = val.skuId;
@@ -389,7 +389,7 @@
                         {
                             self.$set( self[$attr], 'is_variant', true);
 
-                            children = response.item.models;
+                            children = response.item.sorted_models_by_id;
 
                             if(self[$attr].is_variant)
                             {

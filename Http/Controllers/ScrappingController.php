@@ -59,9 +59,11 @@ class ScrappingController extends Controller
         if(!empty($response->item))
         {
           $children = collect($response->item->models);
-          $sorted = array_values($children->sortBy('name')->toArray());
+          $sorted_models_by_name = array_values($children->sortBy('name')->toArray());
+          $sorted_models_by_id = array_values($children->sortBy('modelid')->toArray());
 
-          $response->item->sorted_models_by_name = $sorted;
+          $response->item->sorted_models_by_name = $sorted_models_by_name;
+          $response->item->sorted_models_by_id = $sorted_models_by_id;
         }
 
         return json_encode($response);
