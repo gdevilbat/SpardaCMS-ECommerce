@@ -10,14 +10,14 @@
         <tr v-for="(item, index) in items">
             <td>@{{ item.discount_name }}</td>
             <td>@{{ item.status }}</td>
-            <td><a href="javascript:void(0)" v-on:click="DiscountItem.showItem(item.discount_id)">Show</a></td>
+            <td><a href="javascript:void(0)" v-on:click="DiscountItem.showItem(item.discount_id)" v-if="item.status == 'ongoing' || item.status == 'upcoming'">Show</a></td>
         </tr>
     </tbody>
 </table>
 
 <hr> 
 
-<div class="row" id="discount-item">
+<div class="row" id="discount-item" v-cloak>
     <table class="w-100 table table-striped table-bordered display responsive nowrap">
         <thead>
             <tr>
@@ -42,12 +42,14 @@
     <hr>
 
     <div class="col-md-3 my-1 position-relative" v-for="item in items">
-        <img class="img-fluid" v-bind:src="item.images[0]" alt="">
-        <div class="position-absolute text-light bg-info px-1" style="bottom: 0px;left: 0px;margin: 0px 15px">
-            @verbatim
-                <span>{{ item.name }}</span>
-            @endverbatim
-        </div>
+        <a v-bind:href="'https://shopee.co.id/product/'+item.shopid+'/'+item.item_id" target="_blank">
+            {{-- <img class="img-fluid" v-bind:src="item.images[0]" alt=""> --}}
+            <div class="text-light bg-info px-1" style="bottom: 0px;left: 0px;margin: 0px 15px">
+                @verbatim
+                    <span>{{ item.name }}</span>
+                @endverbatim
+            </div>
+        </a>
     </div>
 </div>
 
