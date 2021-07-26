@@ -54,14 +54,14 @@ class ShopeeController
             =            Update Price            =
             ====================================*/
 
-                if($post->productMeta->product_sale > 0 && $post->productMeta->product_sale < $post->productMeta->product_price)
+                /*if($post->productMeta->product_sale > 0 && $post->productMeta->product_sale < $post->productMeta->product_price)
                 {
                     $price = $post->productMeta->product_sale;
                 }
                 else
                 {
-                    $price = $post->productMeta->product_price;
-                }
+                }*/
+                $price = $post->productMeta->product_price;
 
                 $parameter = [];
             
