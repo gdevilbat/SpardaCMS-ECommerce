@@ -296,7 +296,7 @@ class ShopeeController
 
                 if(!empty($variant))
                 {
-                    $childrens = $variant;
+                    $childrens = $variant->children;
                     $shopee_childrens = $shopee->children;
 
                     $i = 0;
