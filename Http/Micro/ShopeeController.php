@@ -274,7 +274,7 @@ class ShopeeController
 
             if($discount_id == 0)
             {
-                $group = collect($data->item->variations)->groupBy('discount_id');
+                $group = collect($data->item->variations)->groupBy('discount_id')->forget(0);
 
                 if($group->count() > 0)
                 {

@@ -256,8 +256,23 @@ class ShopeeController extends CoreController
                                                     });
                                             });
                                     });
-                            })->orWhereHas('productMeta', function($query){
-                                $query->where('product_sale', '>', 0);
+                            })->orWhere(function($query) use ($request, $exclude_id){
+                                $query->whereHas('productMeta', function($query){
+                                        $query->where('product_sale', '>', 0);
+                                    })
+                                     ->whereHas('postMeta', function($query) use ($request, $exclude_id){
+                                                $query->where(function($query) use ($request){
+                                                            $query->where('meta_key', ProductMeta::SHOPEE_STORE)
+                                                              ->whereRaw("meta_value REGEXP('shop_id(.{2,3})".$request->shop_id."(.{0,1})\,')"); 
+                                                        })
+                                                      ->where(function($query) use ($exclude_id){
+                                                            if($exclude_id != '')
+                                                            {
+                                                                $query->where('meta_key', ProductMeta::SHOPEE_STORE)
+                                                                  ->whereRaw("meta_value NOT REGEXP('product_id(.{2,3})(".$exclude_id.")')");
+                                                              }
+                                                      });
+                                            });
                             });
                         })
                         ->whereHas('productMeta', function($query){
