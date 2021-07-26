@@ -308,21 +308,25 @@ class ShopeeController extends CoreController
 
         $variant = $post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT);
 
-        $childrens = $variant->children;
-        $shopee_childrens = $shopee->children;
+        if(!empty($variant))
+        {
+            $childrens = $variant;
+            $shopee_childrens = $shopee->children;
 
-        $i = 0;
-        foreach ($childrens as $key => $children) {
-            if((int) $children->sale > 0)
-            {
-                if(array_key_exists($key, $shopee_childrens))
+            $i = 0;
+            foreach ($childrens as $key => $children) {
+                if((int) $children->sale > 0)
                 {
-                    $data['items'][0]['variations'][$i]['variation_id'] = $shopee_childrens[$key]->product_id;
-                    $data['items'][0]['variations'][$i]['variation_promotion_price'] = $children->sale;
-                    $i++;
+                    if(array_key_exists($key, $shopee_childrens))
+                    {
+                        $data['items'][0]['variations'][$i]['variation_id'] = $shopee_childrens[$key]->product_id;
+                        $data['items'][0]['variations'][$i]['variation_promotion_price'] = $children->sale;
+                        $i++;
+                    }
                 }
             }
         }
+
 
         if($post->productMeta->product_sale > 0)
         {
