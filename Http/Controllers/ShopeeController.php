@@ -7,7 +7,7 @@ use Illuminate\Http\Response;
 
 use Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\CoreController;
 use Gdevilbat\SpardaCMS\Modules\Core\Entities\Setting;
-use use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product;
 use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
