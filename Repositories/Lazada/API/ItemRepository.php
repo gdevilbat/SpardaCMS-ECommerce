@@ -110,6 +110,9 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
             'Product.Attributes' => 'required|array',
             'Product.Skus' => 'required|array',
             'Product.Skus.Sku' => 'required|array',
+            'Product.Images' => 'required|array',
+            'Product.Images.Image' => 'required|array',
+            'Product.Images.Image.*' => 'required|url',
             'access_token' => 'required'
         ]);
 

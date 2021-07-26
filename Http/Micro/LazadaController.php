@@ -357,7 +357,7 @@ class LazadaController
             }
 
             foreach ($images_data->images as $image) {
-                $data['Product']['Images']['Url'][] = $image->url;    
+                $data['Product']['Images']['Image'][] = $image->url;    
             }
         
         /*=====  End of Parsing Image  ======*/
@@ -376,18 +376,18 @@ class LazadaController
             ], 422));
         }
 
-        $value = ['shop_id' => $response->item->shopid, 'product_id' => $response->item->item_id, 'is_variant' =>  false];
+        $value = ['shop_id' => $request->shop_id, 'product_id' => $response->data->item_id, 'is_variant' =>  false];
 
         PostMeta::unguard();
 
         PostMeta::updateOrCreate(
-            ['meta_key' => ProductMeta::SHOPEE_STORE, Product::FOREIGN_KEY => decrypt($request->id_posts)],
+            ['meta_key' => ProductMeta::LAZADA_STORE, Product::FOREIGN_KEY => decrypt($request->id_posts)],
             ['meta_value' => $value]
         );
 
         PostMeta::reguard();
 
-        if($request->has('meta.product_variant'))
+        /*if($request->has('meta.product_variant'))
         {
             $tiers = [];
 
@@ -418,7 +418,7 @@ class LazadaController
             $data[Product::FOREIGN_KEY] = decrypt($request->input(Product::getPrimaryKey()));
 
             $this->addVariation($data);
-        }
+        }*/
 
         return response()->json([
                 'status' => 'Success'
