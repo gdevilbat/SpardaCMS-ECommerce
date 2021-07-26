@@ -330,7 +330,7 @@ class ShopeeController extends CoreController
 
         if($post->productMeta->product_sale > 0)
         {
-            $data['items'][0]['variation_promotion_price'] = $post->productMeta->product_sale;
+            $data['items'][0]['item_promotion_price'] = $post->productMeta->product_sale;
         }
 
         $request->merge($data);

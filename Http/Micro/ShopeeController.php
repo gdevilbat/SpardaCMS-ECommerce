@@ -294,25 +294,29 @@ class ShopeeController
 
                 $shopee = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
 
-                $childrens = $variant->children;
-                $shopee_childrens = $shopee->children;
+                if(!empty($variant))
+                {
+                    $childrens = $variant;
+                    $shopee_childrens = $shopee->children;
 
-                $i = 0;
-                foreach ($childrens as $key => $children) {
-                    if((int) $children->sale > 0)
-                    {
-                        if(array_key_exists($key, $shopee_childrens))
+                    $i = 0;
+                    foreach ($childrens as $key => $children) {
+                        if((int) $children->sale > 0)
                         {
-                            $parameter['items'][0]['variations'][$i]['variation_id'] = $shopee_childrens[$key]->product_id;
-                            $parameter['items'][0]['variations'][$i]['variation_promotion_price'] = $children->sale;
-                            $i++;
+                            if(array_key_exists($key, $shopee_childrens))
+                            {
+                                $parameter['items'][0]['variations'][$i]['variation_id'] = $shopee_childrens[$key]->product_id;
+                                $parameter['items'][0]['variations'][$i]['variation_promotion_price'] = $children->sale;
+                                $i++;
+                            }
                         }
                     }
                 }
 
+
                 if($post->productMeta->product_sale > 0)
                 {
-                    $parameter['items'][0]['variation_promotion_price'] = $post->productMeta->product_sale;
+                    $parameter['items'][0]['item_promotion_price'] = $post->productMeta->product_sale;
                 }
 
                 $data = Marketplace::driver('shopee')->discount->updateDiscountItems($parameter);
