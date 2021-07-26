@@ -29,12 +29,14 @@
 <hr>
 <div class="row" id="boosted-item" data-url="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetBoosted') }}" data-url-item="{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetDetail') }}" v-cloak>
     <div class="col-md-3 my-1 position-relative" v-for="item in items">
-        <img class="img-fluid" v-bind:src="item.images[0]" alt="">
-        <div class="position-absolute text-light bg-info px-1" style="bottom: 0px;left: 0px;margin: 0px 15px">
-            @verbatim
-                <span>{{ item.name }}</span>
-            @endverbatim
-        </div>
+        <a v-bind:href="'https://shopee.co.id/product/'+ item.shopid +'/'+item.item_id" title="" target="_blank">
+            <img class="img-fluid" v-bind:src="item.images[0]" alt="">
+            <div class="position-absolute text-light bg-info px-1" style="bottom: 0px;left: 0px;margin: 0px 15px">
+                @verbatim
+                    <span>{{ item.name }}</span>
+                @endverbatim
+            </div>
+        </a>
     </div>
 </div>
 

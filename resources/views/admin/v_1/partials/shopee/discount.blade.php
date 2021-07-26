@@ -42,11 +42,11 @@
     <hr>
 
     <div class="col-md-3 my-1 position-relative" v-for="item in items">
-        <a v-bind:href="'https://shopee.co.id/product/'+item.shopid+'/'+item.item_id" target="_blank">
+        <a v-bind:href="'https://shopee.co.id/product/'+ $('[name=\'shop_id\']').val()+'/'+item.item_id" target="_blank">
             {{-- <img class="img-fluid" v-bind:src="item.images[0]" alt=""> --}}
             <div class="text-light bg-info px-1" style="bottom: 0px;left: 0px;margin: 0px 15px">
                 @verbatim
-                    <span>{{ item.name }}</span>
+                    <span>{{ item.item_name }}</span>
                 @endverbatim
             </div>
         </a>
@@ -120,9 +120,9 @@
                         data: {shop_id: $("[name='shop_id']").val(), discount_id: self.discount_id, page: page},
                     })
                     .done(function(response) {
-                       let items = response.discount.items;
+                       self.items = response.discount.items;
                        self.available_items = response.available_items;
-                       self.items = [];
+                       /*self.items = [];
                         $.each(items, function(index, el) {
                             $.ajax({
                                 url: "{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Micro\ShopeeController@itemGetDetail') }}",
@@ -135,7 +135,7 @@
                             }).done(function(response){
                                 self.items.push(response);
                             });
-                        });
+                        });*/
                     })
                     .fail(function() {
                         console.log("error");
