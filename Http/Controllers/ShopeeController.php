@@ -292,50 +292,52 @@ class ShopeeController extends CoreController
     public function addDiscountItem(Request $request)
     {
         $this->validate($request, [
-            'post_id' => 'required'
+            'post_id' => 'required|array'
         ]);
-
-        $post = Product::with('productMeta')->findOrFail($request->post_id);
-
-        $shopee = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
 
         $data = [];
 
         $data['discount_id'] = $request->discount_id;
 
-        $data['items'][0]['item_id'] = $shopee->product_id;
-        $data['items'][0]['purchase_limit'] = 0;
+        $posts = Product::with('productMeta')->whereIn(Product::getPrimaryKey(), $request->post_id)->get();
 
-        $variant = $post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT);
+        foreach ($posts as $key_post => $post) {
+            $shopee = $post->meta->getMetaData(ProductMeta::SHOPEE_STORE);
 
-        if(!empty($variant))
-        {
-            $childrens = $variant->children;
-            $shopee_childrens = $shopee->children;
+            $data['items'][$key_post]['item_id'] = $shopee->product_id;
+            $data['items'][$key_post]['purchase_limit'] = 0;
 
-            $i = 0;
-            foreach ($childrens as $key => $children) {
-                if((int) $children->sale > 0)
-                {
-                    if(array_key_exists($key, $shopee_childrens))
+            $variant = $post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT);
+
+            if(!empty($variant))
+            {
+                $childrens = $variant->children;
+                $shopee_childrens = $shopee->children;
+
+                $i = 0;
+                foreach ($childrens as $key => $children) {
+                    if((int) $children->sale > 0)
                     {
-                        $data['items'][0]['variations'][$i]['variation_id'] = $shopee_childrens[$key]->product_id;
-                        $data['items'][0]['variations'][$i]['variation_promotion_price'] = $children->sale;
-                        $i++;
+                        if(array_key_exists($key, $shopee_childrens))
+                        {
+                            $data['items'][$key_post]['variations'][$i]['variation_id'] = $shopee_childrens[$key]->product_id;
+                            $data['items'][$key_post]['variations'][$i]['variation_promotion_price'] = $children->sale;
+                            $i++;
+                        }
                     }
                 }
             }
-        }
 
 
-        if($post->productMeta->product_sale > 0)
-        {
-            $data['items'][0]['item_promotion_price'] = $post->productMeta->product_sale;
+            if($post->productMeta->product_sale > 0)
+            {
+                $data['items'][$key_post]['item_promotion_price'] = $post->productMeta->product_sale;
+            }
         }
 
         $request->merge($data);
         
-        $data = $request->input();
+        $data = $request->except('post_id');
 
         $data = Marketplace::driver('shopee')->discount->addDiscountItems($request->input());
 

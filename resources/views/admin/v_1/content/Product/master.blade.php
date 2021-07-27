@@ -133,7 +133,7 @@
                     <thead>
                         <tr>
                         	<th class="no-sort" data-priority="1"></th>
-                            <th data-priority="2">
+                            <th data-priority="2" class="no-sort">
                             	<input id="data-checklist" type="checkbox">
 							</th>
                             <th data-priority="3">ID</th>

@@ -198,15 +198,6 @@ class ProductController extends AbstractPost
 
         $post = $this->post_repository->with(['productMeta', 'postMeta'])->findOrFail(decrypt($request->input('id_posts')));
 
-        if($post->productMeta->product_sale > 0 && ($post->productMeta->product_sale < $post->productMeta->product_price))
-        {
-            $post->price = $post->productMeta->product_sale;
-        }
-        else
-        {
-            $post->price = $post->productMeta->product_price;
-        }
-
         $photo = [];
 
         if(!empty($post->postMeta->where('meta_key', 'cover_image')->first()) && $post->postMeta->where('meta_key', 'cover_image')->first()->meta_value['file'] != null)
@@ -225,6 +216,8 @@ class ProductController extends AbstractPost
         $post->product_weight = $post->meta->getMetaData(ProductMeta::PRODUCT_WEIGHT);
         $post->product_stock = $post->productMeta->product_stock;
         $post->product_variant = !empty($post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT)) ? $post->meta->getMetaData(ProductMeta::PRODUCT_VARIANT)->get() : [];
+        $post->price = $post->productMeta->product_price;
+        $post->sale = $post->productMeta->product_sale;
 
         return $post;
 
