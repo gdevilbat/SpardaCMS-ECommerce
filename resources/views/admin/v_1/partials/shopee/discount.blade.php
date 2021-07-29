@@ -114,6 +114,7 @@
                     })
                     .done(function(response) {
                         self.showItem(self.discount_id);
+                        DiscountList.showDiscounts();
                     })
                     .fail(function() {
                         console.log("error");
