@@ -62,8 +62,8 @@
                 items: [],
                 page: 1
             },
-            mounted: function(){
-                this.$nextTick(function(){
+            methods:{
+                showDiscounts: function(){
                     let self = this;
                     $.ajax({
                         url: "{{ action('\Gdevilbat\SpardaCMS\Modules\Ecommerce\Http\Controllers\ShopeeController@getDiscountsList') }}",
@@ -77,7 +77,11 @@
                     .fail(function() {
                         console.log("error");
                     });
-                    
+                }
+            },
+            mounted: function(){
+                this.$nextTick(function(){
+                    this.showDiscounts();
                 });
             }
         });
