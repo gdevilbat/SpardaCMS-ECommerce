@@ -18,7 +18,7 @@
 <hr> 
 
 <div class="row" id="discount-item" v-cloak>
-    <button type="button" class="btn m-btn m-btn--gradient-from-success m-btn--gradient-to-accent ml-auto mb-2" v-on:click="addDiscountItem()" v-if="available_items.length > 0">Upload Discount</button>
+    <button type="button" class="btn m-btn m-btn--gradient-from-success m-btn--gradient-to-accent ml-auto mb-2" v-on:click="addDiscountItem()" v-if="available_items.length > 0 && DiscountItem.discount_id != '' && DiscountItem.items.length < 80">Upload Discount</button>
     <table class="w-100 table table-striped table-bordered display responsive nowrap">
         <thead>
             <tr>
@@ -71,6 +71,7 @@
                     })
                     .done(function(response) {
                         self.items = response.discount;
+                        DiscountItem.available_items = response.available_items;
                         self.page++;
                     })
                     .fail(function() {
@@ -128,7 +129,6 @@
                     })
                     .done(function(response) {
                        self.items = response.discount.items;
-                       self.available_items = response.available_items;
                     })
                     .fail(function() {
                         console.log("error");

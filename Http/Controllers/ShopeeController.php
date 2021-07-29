@@ -204,25 +204,23 @@ class ShopeeController extends CoreController
 
         $data = Marketplace::driver('shopee')->discount->getDiscountsList($request->input());
 
-        return response()->json($data);
-    }
+        $discounts = collect($data->discount)->whereIn('status', ['ongoing', 'upcoming']);
 
-    public function getDiscountDetail(Request $request)
-    {
-        $this->validate($request, [
-            'page' => 'required',
-        ]);
+        $items = [];
 
-        $per_page = 100;
+        foreach ($discounts as $key => $discount) {
+            $param = ['discount_id' => $discount->discount_id, 'pagination_offset' => 0, 'pagination_entries_per_page' => 80];
 
-        $request->merge([
-            'pagination_offset' => ($request->page - 1) * $per_page, 
-            'pagination_entries_per_page' => $per_page
-        ]);
+            $request->merge($param);
 
-        $discount_item = Marketplace::driver('shopee')->discount->getDiscountDetail($request->input());
+            $response = Marketplace::driver('shopee')->discount->getDiscountDetail($request->input());
 
-        $items = $discount_item->items;
+            $collapse = collect([$items, $response->items])->collapse();
+
+            $items = $collapse->toArray();
+        }
+
+        $items = collect($items)->unique('item_id');
 
         $arr_id = [];
 
@@ -281,9 +279,25 @@ class ShopeeController extends CoreController
 
         $available_items = $query->get();
 
+        return response()->json([
+            'discount' => $data->discount,
+            'available_items' => $available_items
+        ]);
+    }
+
+    public function getDiscountDetail(Request $request)
+    {
+        $per_page = 80;
+
+        $request->merge([
+            'pagination_offset' => 0, 
+            'pagination_entries_per_page' => $per_page
+        ]);
+
+        $discount_item = Marketplace::driver('shopee')->discount->getDiscountDetail($request->input());
+
         $data = [
             'discount' => $discount_item,
-            'available_items' => $available_items
         ];
 
         return response()->json($data);
