@@ -6,7 +6,7 @@
                     <div class="col-md-10">
                         <div class="input-group">
                            <span class="input-group-btn">
-                             <a v-bind:data-input="'input-photo-'+(index)" v-bind:data-index="index" v-bind:data-name="'photo'" v-bind:data-preview="'image-photo-'+(index)" class="btn btn-file btn-accent m-btn m-btn--air m-btn--custom lfm-input">
+                             <a v-bind:data-input="'input-photo-'+(index)" v-bind:data-index="index" v-bind:data-name="'photo'" v-bind:data-preview="'image-photo-'+(index)" class="btn btn-file btn-accent m-btn m-btn--air m-btn--custom" v-on:click="browseFileManager(event)">
                                <i class="fa fa-picture-o"></i> Choose
                              </a>
                            </span>
