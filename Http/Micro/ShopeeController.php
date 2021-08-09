@@ -313,7 +313,6 @@ class ShopeeController
                     }
                 }
 
-
                 if($post->productMeta->product_sale > 0)
                 {
                     $parameter['items'][0]['item_promotion_price'] = $post->productMeta->product_sale;
@@ -322,6 +321,28 @@ class ShopeeController
                 $data = Marketplace::driver('shopee')->discount->updateDiscountItems($parameter);
 
                 array_push($response, $data);
+
+                if(property_exists($data, 'errors'))
+                {
+                    $parameter['items'][0]['purchase_limit'] = 0;
+
+                    $variation_error = collect($data->errors);
+
+                    $variation_id = $variation_error->pluck('variation_id')->toArray();
+
+                    $variation = collect($parameter['items'][0]['variations']);
+
+                    $filtered = $variation->whereIn('variation_id', $variation_id);
+
+                    $filtered_variation = array_values($filtered->toArray());
+
+                    $parameter['items'][0]['variations'] = $filtered_variation;
+
+                    $data = Marketplace::driver('shopee')->discount->addDiscountItems($parameter);
+
+                    array_push($response, $data);
+                }
+
             }
 
 

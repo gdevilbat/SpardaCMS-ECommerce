@@ -72,7 +72,6 @@
                     .done(function(response) {
                         self.items = response.discount;
                         DiscountItem.available_items = response.available_items;
-                        self.page++;
                     })
                     .fail(function() {
                         console.log("error");
