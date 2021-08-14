@@ -145,6 +145,11 @@ window.tokopediaScrap = function(){
                     $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + (supplier_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span></div>');
                 }
 
+                if(response.data.pdpGetLayout.components[3].data[0].preorder.isActive)
+                {
+                    $(self).append('<div class="mb-3"> <span class="badge badge-secondary">preorder</span></div>');
+                }
+
                 /*=================================
                 =            Tokopedia            =
                 =================================*/
@@ -229,6 +234,11 @@ window.tokopediaScrap = function(){
                                                     $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span>' + val.name + '<span><br/>' + currencyFormat(child_shopee_store[index].price) + (child_shopee_store[index].is_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +'<br/><span class="badge '+(child_shopee_store[index].status == "empty" ? "badge-dark" : "badge-info")+'">' + child_shopee_store[index].status + '</span></div>');
                                                 }
                                             });
+                                        }
+
+                                        if(html.item.is_pre_order)
+                                        {
+                                            $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span class="badge badge-seconday">preorder</span></div>');
                                         }
 
                                     }
