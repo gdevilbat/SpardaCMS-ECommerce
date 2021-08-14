@@ -95,7 +95,7 @@
           {{-- <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][slug]" v-model="lazada_supplier.slug" v-on:change="resetLazadaData('lazada_supplier')"> --}}
           <div class="col-12 d-flex mx-0 px-0">
               <div class="col pl-0">
-                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][product_id]" v-model="lazada_supplier.product_id">
+                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_SUPPLIER}}][product_id]" v-model="lazada_supplier.product_id" v-on:change="resetLazadaData('lazada_supplier')">
               </div>
               <button type="button" class="btn btn-success" v-on:click="getLazadaData('lazada_supplier')">Get Data</button>
           </div>
@@ -227,7 +227,7 @@
           {{-- <input type="text" class="form-control m-input slug-me" placeholder="Lazada Slug" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][slug]" v-model="lazada_store.slug" v-on:change="resetLazadaData('lazada_store')"> --}}
           <div class="col-12 d-flex mx-0 px-0">
               <div class="col pl-0">
-                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][product_id]" v-model="lazada_store.product_id">
+                  <input type="text" class="form-control m-input" placeholder="Lazada Product ID" name="meta[{{Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::LAZADA_STORE}}][product_id]" v-model="lazada_store.product_id" v-on:change="resetLazadaData('lazada_store')">
               </div>
               <button type="button" class="btn btn-success" v-on:click="getLazadaData('lazada_store')">Get Data</button>
           </div>
@@ -292,7 +292,6 @@
                 },
                 resetLazadaData: function($attr){
                     this.$set( this[$attr], 'shop_id', '');
-                    this.$set( this[$attr], 'product_id', '');
                     this.$set( this[$attr], 'is_variant', false);
                 },
                 resetShopeeData: function($attr){

@@ -238,7 +238,7 @@ window.tokopediaScrap = function(){
 
                                         if(html.item.is_pre_order)
                                         {
-                                            $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span class="badge badge-seconday">preorder</span></div>');
+                                            $('#shopee-store-'+$(self).attr('data-index')).append('<div class="mb-3"><span class="badge badge-secondary">preorder</span></div>');
                                         }
 
                                     }
