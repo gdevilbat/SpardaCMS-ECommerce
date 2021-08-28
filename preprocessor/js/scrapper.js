@@ -110,8 +110,9 @@ window.tokopediaScrap = function(){
             {
                 let supplier_status;
                 let supplier_price;
-                let child_supplier = [];
                 let supplier_discount;
+                let supplier_stock;
+                let child_supplier = [];
 
                 if(response.data.pdpGetLayout.components[3].data[0].campaign.discountedPrice > 0)
                 {
@@ -133,16 +134,18 @@ window.tokopediaScrap = function(){
                         child_supplier[index] = {
                             price: val.campaignInfo.discountPrice > 0 ? val.campaignInfo.discountPrice : val.price,
                             status: val.stock.isBuyable ? 'available' : 'empty',
+                            stock: parseInt(val.stock.stock),
                             is_discount: val.campaignInfo.discountPrice > 0 ? true : false
                         }
 
-                        $(self).append('<div class="mb-3"><span>'+ val.name + '</span><br/>' + currencyFormat(child_supplier[index]['price']) + (child_supplier[index].is_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +', <br/><span class="badge '+ (child_supplier[index]['status'] == "empty" ? "badge-dark" : "badge-info") +'">' + child_supplier[index]['status'] + '</span></div>'); 
+                        $(self).append('<div class="mb-3"><span>'+ val.name + '</span><br/>' + currencyFormat(child_supplier[index]['price']) + (child_supplier[index].is_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +', <br/><span class="badge '+ (child_supplier[index]['status'] == "empty" ? "badge-dark" : "badge-info") +'">' + child_supplier[index]['status'] + '</span> / ' + child_supplier[index]['stock'] + '</div>'); 
                     });
                 }
                 else
                 {
                     supplier_status = response.data.pdpGetLayout.basicInfo.status== "ACTIVE" && response.data.pdpGetLayout.components[3].data[0].stock.useStock ? 'available' : 'empty';
-                    $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + (supplier_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span></div>');
+                    supplier_stock = parseInt(response.data.pdpGetLayout.components[3].data[0].stock.value);
+                    $(self).append('<div class="mb-3">' + currencyFormat(supplier_price) + (supplier_discount ? ' - <i class="fab fa-hotjar"></i>' : '') +', <br/><span class="badge '+ (supplier_status == "empty" ? "badge-dark" : "badge-info") +'">' + supplier_status + '</span> / ' + supplier_stock + '</div>');
                 }
 
                 if(response.data.pdpGetLayout.components[3].data[0].preorder.isActive)
