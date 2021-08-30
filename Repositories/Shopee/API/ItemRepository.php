@@ -113,6 +113,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
             'images' => 'required',
             'attributes' => 'required',
             'condition' => 'required',
+            'days_to_ship' => 'required_with:is_pre_order'
         ]);
 
         $path = '/api/v1/item/adds';
@@ -155,6 +156,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
           'item_id' => 'required',
           'name' => 'required',
           'description' => 'required',
+          'days_to_ship' => 'required_with:is_pre_order'
         ]);
 
         /*========================================
@@ -166,6 +168,12 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
             $parameter['item_id'] = (int) $request['item_id'];
             $parameter['name'] = $request['name'];
             $parameter['description'] = $request['description'];
+
+            if(array_key_exists('is_pre_order', $request))
+            {
+                $parameter['days_to_ship'] = $request['days_to_ship'];
+                $parameter['is_pre_order'] = $request['is_pre_order'];
+            }
 
             $base_string = $this->getBaseString($path, $parameter);
             $sign = $this->getSignature($base_string);

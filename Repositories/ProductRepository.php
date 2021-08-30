@@ -83,7 +83,7 @@ class ProductRepository extends AbstractRepository
                 'product_meta.product_stock' => 'required|numeric|min:0|digits_between:1,5',
                 'product_meta.availability' => [
                         //'required',
-                        Rule::in(['in stock', 'out of stock', 'preorder', 'available for order', 'discontinued'])
+                        Rule::in([/*'in stock', 'out of stock', */'preorder', 'available for order', 'discontinued'])
                     ],
                 'product_meta.condition' => [
                         'required',
@@ -128,6 +128,11 @@ class ProductRepository extends AbstractRepository
         foreach ($request->input('product_meta') as $key => $value) 
         {
             $product_meta->$key = $value;
+        }
+
+        if(!$request->has('product_meta.availability'))
+        {
+            $product_meta->availability = '';
         }
 
         if(!$request->has('meta.'.ProductMeta::PRODUCT_VARIANT))

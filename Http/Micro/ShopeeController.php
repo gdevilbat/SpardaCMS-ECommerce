@@ -237,6 +237,16 @@ class ShopeeController
             $parameter['name'] = $post->post_title;
             $parameter['description'] = html_entity_decode(strip_tags($post->post_content));
 
+            if($post->availability == ProductMeta::STAT_PREORDER)
+            {
+                $parameter['is_pre_order'] = true;
+                $parameter['days_to_ship'] = 15;
+            }
+            else
+            {
+                $parameter['is_pre_order'] = false;
+            }
+
             $data = MarketPlace::driver('shopee')->item->itemUpdate($parameter);
 
             $data_item = $data;

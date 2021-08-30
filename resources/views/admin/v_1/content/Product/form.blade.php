@@ -139,37 +139,52 @@
                                                 <input type="number" class="form-control m-input" placeholder="Product Stock" name="product_meta[product_stock]" value="{{old('product_meta.product_stock') ? old('product_meta.product_stock') : (!empty($post) && !empty($post->productMeta) ? $post->productMeta->product_stock : '')}}">
                                             </div>
                                         </div>
-                                        {{-- <div class="form-group m-form__group d-flex px-0">
-                                            <div class="col-4 d-flex justify-content-end py-3">
-                                                <label for="exampleInputEmail1">Product Availablity<span class="ml-1 m--font-warning" aria-required="true">*</span></label>
+                                        <div id="availability" v-cloak>
+                                            <div class="form-group m-form__group d-flex px-0 flex-wrap">
+                                                <div class="col-4 d-flex justify-content-end py-3">
+                                                    <label for="exampleInputEmail1">Availability Status<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
+                                                </div>
+                                                <div class="col">
+                                                    <span class="m-switch m-switch--icon m-switch--danger">
+                                                        <label>
+                                                            <input type="checkbox" v-model="availability_status">
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div class="col d-flex align-items-center">
-                                                <div class="m-form__group form-group">
-                                                    <div class="m-radio-inline">
-                                                        <label class="m-radio">
-                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'in stock') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'in stock') ? 'checked' : '')}} value="in stock"> In Stock
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="m-radio">
-                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'out of stock') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'out of stock') ? 'checked' : '')}} value="out of stock"> Out Of Stock
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="m-radio">
-                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'preorder') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'preorder') ? 'checked' : '')}} value="preorder"> Preorder
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="m-radio">
-                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'available for order') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'available for order') ? 'checked' : '')}} value="available for order"> Available For Order
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="m-radio">
-                                                            <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'discontinued') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'discontinued') ? 'checked' : '')}} value="discontinued"> Discontinued
-                                                            <span></span>
-                                                        </label>
+                                            <div class="form-group m-form__group d-flex px-0" v-if="availability_status">
+                                                <div class="col-4 d-flex justify-content-end py-3">
+                                                    <label for="exampleInputEmail1">Product Availablity</label>
+                                                </div>
+                                                <div class="col d-flex align-items-center">
+                                                    <div class="m-form__group form-group">
+                                                        <div class="m-radio-inline">
+                                                            {{-- <label class="m-radio">
+                                                                <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'in stock') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'in stock') ? 'checked' : '')}} value="in stock"> In Stock
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="m-radio">
+                                                                <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'out of stock') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'out of stock') ? 'checked' : '')}} value="out of stock"> Out Of Stock
+                                                                <span></span>
+                                                            </label> --}}
+                                                            <label class="m-radio">
+                                                                <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'preorder') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'preorder') ? 'checked' : '')}} value="preorder"> Preorder
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="m-radio">
+                                                                <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'available for order') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'available for order') ? 'checked' : '')}} value="available for order"> Available For Order
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="m-radio">
+                                                                <input type="radio" name="product_meta[availability]" {{old('product_meta.availability') && (old('product_meta.availability') == 'discontinued') ? 'checked' : (!empty($post) && !empty($post->productMeta) && ($post->productMeta->availability == 'discontinued') ? 'checked' : '')}} value="discontinued"> Discontinued
+                                                                <span></span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> --}}
+                                        </div>
                                         <div class="form-group m-form__group d-flex px-0">
                                             <div class="col-4 d-flex justify-content-end py-3">
                                                 <label for="exampleInputEmail1">Product Condition<span class="ml-1 m--font-warning" aria-required="true">*</span></label>
@@ -310,5 +325,15 @@
                 });
             });
         }(jQuery));
+    </script>
+    <script type="text/javascript">
+        (function($){
+        })(jQuery);
+        var Availability = new Vue({
+          el: "#availability",
+          data: {
+            availability_status : {{old('product_meta.availability') && in_array(old('product_meta.availability'), [\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::STAT_PREORDER, \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::STAT_AVAILABLE, \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::STAT_DISCONTINUED]) ? 1 : (!empty($post) && in_array($post->productMeta->availability, [\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::STAT_PREORDER, \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::STAT_AVAILABLE, \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::STAT_DISCONTINUED]) ? 1 : 0)}}
+          }
+        })
     </script>
 @endsection

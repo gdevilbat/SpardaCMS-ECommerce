@@ -90,12 +90,44 @@ class ProductMeta extends Model
         return 'http://schema.org/NewCondition';;
     }
 
-    public function getAvailabilityAttribute()
+    public function getAvailabilityAttribute($value)
     {
+        if($value == SELF::STAT_PREORDER)
+            return $value;
+
+        if($value == SELF::STAT_AVAILABLE)
+            return $value;
+
+        if($value == SELF::STAT_DISCONTINUED)
+            return $value;
+
         if($this->product_stock > 0)
             return SELF::STAT_IN_STOCK;
 
         return SELF::STAT_OUT_STOCK;
+    }
+
+    /**
+     * Set the user's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setAvailabilityAttribute($value)
+    {
+        if($value == SELF::STAT_PREORDER)
+            return $this->attributes['availability'] = $value;
+
+        if($value == SELF::STAT_AVAILABLE)
+            return $this->attributes['availability'] = $value;
+
+        if($value == SELF::STAT_DISCONTINUED)
+            return $this->attributes['availability'] = $value;
+
+        if($this->product_stock > 0)
+            return $this->attributes['availability'] = SELF::STAT_IN_STOCK;
+
+        return $this->attributes['availability'] = SELF::STAT_OUT_STOCK;
     }
     
     public function setProductPriceAttribute($value)
