@@ -113,7 +113,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
             'images' => 'required',
             'attributes' => 'required',
             'condition' => 'required',
-            'days_to_ship' => 'required_with:is_pre_order'
+            'days_to_ship' => 'required_if:is_pre_order,true'
         ]);
 
         $path = '/api/v1/item/adds';
@@ -156,7 +156,7 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
           'item_id' => 'required',
           'name' => 'required',
           'description' => 'required',
-          'days_to_ship' => 'required_with:is_pre_order'
+          'days_to_ship' => 'required_if:is_pre_order,true'
         ]);
 
         /*========================================
