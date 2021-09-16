@@ -59,15 +59,16 @@ class BlogProductController extends AbstractBlog
                                                 })
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
-                                                ->latest('created_at')
-                                                ->limit(3);
+                                                ->latest('created_at');
 
             if(!Auth::check())
             {
                 $query = $query->where('post_status',  'publish');
             }
 
-            $this->data['recent_posts'] = $query->get();
+            $this->data['recent_posts_query'] = $query;
+            $this->data['recent_posts'] = (clone $query)->limit(3)
+                                                ->get();
         
         /*=====  End of Recent Suggest Product  ======*/
         
@@ -82,10 +83,15 @@ class BlogProductController extends AbstractBlog
                                                     $query->where('product_stock', '>', 0);
                                                 })
                                                 ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
-                                                ->inRandomOrder()
-                                                ->limit(3);
+                                                ->inRandomOrder();
 
-            $this->data['related_posts'] = $query->get();
+            if(!Auth::check())
+            {
+                $query = $query->where('post_status',  'publish');
+            }
+
+            $this->data['related_posts_query'] = $query;                              
+            $this->data['related_posts'] = (clone $query)->limit(3)->get();
         
         /*=====  End of Related Product  ======*/
 
@@ -100,15 +106,15 @@ class BlogProductController extends AbstractBlog
                                                     $query->where('product_stock', '>', 0);
                                                 })
                                                 ->where(Product::getPrimaryKey(), '!=', $this->data['post']->getKey())
-                                                ->inRandomOrder()
-                                                ->limit(3);
+                                                ->inRandomOrder();
 
             if(!Auth::check())
             {
                 $query = $query->where('post_status',  'publish');
             }
 
-            $this->data['recomended_posts'] = $query->get();
+            $this->data['recomended_posts_query'] = $query;
+            $this->data['recomended_posts'] = (clone $query)->limit(3)->get();
         
         /*=====  End of Recomended Product  ======*/
 
