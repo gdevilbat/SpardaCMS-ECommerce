@@ -209,7 +209,7 @@ class ShopeeController extends CoreController
         $items = [];
 
         foreach ($discounts as $key => $discount) {
-            $param = ['discount_id' => $discount->discount_id, 'pagination_offset' => 0, 'pagination_entries_per_page' => 80];
+            $param = ['discount_id' => $discount->discount_id, 'pagination_offset' => 0, 'pagination_entries_per_page' => 100];
 
             $request->merge($param);
 
