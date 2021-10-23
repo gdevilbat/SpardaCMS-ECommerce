@@ -287,7 +287,7 @@ class ShopeeController extends CoreController
 
     public function getDiscountDetail(Request $request)
     {
-        $per_page = 80;
+        $per_page = 100;
 
         $request->merge([
             'pagination_offset' => 0, 
