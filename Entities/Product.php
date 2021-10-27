@@ -79,16 +79,16 @@ class Product extends Post
 
             if(!empty($request->input('order_by')) && !empty($request->input('order_mode')))
             {
-                $query = $query->orderBy($request->input('order_by'), $request->input('order_mode'));
+                $query->orderByRaw('(CASE WHEN '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'.availability = "'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::STAT_PREORDER.'" THEN 1 '.' WHEN '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'.product_stock > 0 THEN 0 ELSE 2 END) ASC, '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableWithPrefix().'.'.$request->input('order_by').' '.$request->input('order_mode'));
             }
             else
             {
-                $query = $query->orderBy(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'.created_at', 'desc');
+                $query = $query->orderByRaw('(CASE WHEN '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'.availability = "'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::STAT_PREORDER.'" THEN 1 '.' WHEN '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'.product_stock > 0 THEN 0 ELSE 2 END) ASC, '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableWithPrefix().'.created_at DESC');
             }
         }
         else
         {
-            $query = $query->orderBy(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'.created_at', 'desc');
+            $query = $query->orderByRaw('(CASE WHEN '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'.availability = "'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::STAT_PREORDER.'" THEN 1 '.' WHEN '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'.product_stock > 0 THEN 0 ELSE 2 END) ASC, '.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableWithPrefix().'.created_at DESC');
         }
 
         return $query;
