@@ -65,11 +65,12 @@ class Product extends Post
 
     public function scopeFilterSort($query, \Illuminate\Http\Request $request)
     {
+        $query = $query->leftJoin(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName(), function($join){
+                            $join->on(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'.'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '=', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName().'.'.'product_id');
+                        });
+
         if(count($request->input()) > 0)
         {
-            $query = $query->leftJoin(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName(), function($join){
-                                $join->on(\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableName().'.'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getPrimaryKey(), '=', \Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableName().'.'.'product_id');
-                            });
 
             if(!empty($request->input('lowest_price')) && !empty($request->input('highest_price')))
             {
@@ -79,7 +80,7 @@ class Product extends Post
 
             if(!empty($request->input('order_by')) && !empty($request->input('order_mode')))
             {
-                $query->orderByRaw('(CASE WHEN `'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'`.`availability` = "'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::STAT_PREORDER.'" THEN 1 '.' WHEN `'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'`.`product_stock` > 0 THEN 0 ELSE 2 END) ASC, `'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::getTableWithPrefix().'`.`'.$request->input('order_by').'` '.$request->input('order_mode'));
+                $query->orderByRaw('(CASE WHEN `'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'`.`availability` = "'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\Product::STAT_PREORDER.'" THEN 1 '.' WHEN `'.\Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta::getTableWithPrefix().'`.`product_stock` > 0 THEN 0 ELSE 2 END) ASC, '.$request->input('order_by').' '.$request->input('order_mode'));
             }
             else
             {
