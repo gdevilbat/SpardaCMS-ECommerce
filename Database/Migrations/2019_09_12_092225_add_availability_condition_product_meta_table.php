@@ -27,14 +27,16 @@ class AddAvailabilityConditionProductMetaTable extends Migration
     public function down()
     {
         Schema::table('product_meta', function (Blueprint $table) {
-            if (Schema::hasColumn('product_meta', 'availability'))
-            {
-                $table->dropColumn('availability');
-            }
-
             if (Schema::hasColumn('product_meta', 'condition'))
             {
                 $table->dropColumn('condition');
+            }
+        });
+
+        Schema::table('product_meta', function (Blueprint $table) {
+            if (Schema::hasColumn('product_meta', 'availability'))
+            {
+                $table->dropColumn('availability');
             }
         });
     }
