@@ -30,8 +30,8 @@ class EcommerceTableSeeder extends Seeder
                 'post_title' => $faker->word,
                 'post_content' => $faker->text,
                 'post_excerpt' => $faker->word,
-                'post_status' => 'draft',
                 'post_type' => 'product',
+                'post_status' => 'draft',
                 'created_by' => 1,
                 'modified_by' => 1,
                 'created_at' => \Carbon\Carbon::now()

@@ -110,6 +110,14 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
             'Product.Attributes' => 'required|array',
             'Product.Skus' => 'required|array',
             'Product.Skus.Sku' => 'required|array',
+            'Product.Skus.Sku.*.price' => 'required',
+            'Product.Skus.Sku.*.quantity' => 'required',
+            'Product.Skus.Sku.*.package_length' => 'required',
+            'Product.Skus.Sku.*.package_width' => 'required',
+            'Product.Skus.Sku.*.package_height' => 'required',
+            'Product.Skus.Sku.*.special_price' => 'lt:'.'Product.Skus.Sku.*.price',
+            'Product.Skus.Sku.*.special_from_date' => 'date|date_format:Y-m-d H:i',
+            'Product.Skus.Sku.*.special_to_date' => 'date|date_format:Y-m-d H:i|after:'.'Product.Skus.Sku.*.special_from_date',
             'Product.Images' => 'required|array',
             'Product.Images.Image' => 'required|array',
             'Product.Images.Image.*' => 'required|url',
@@ -117,10 +125,12 @@ class ItemRepository extends AbstractRepository implements MarketPlaceItemInterf
         ]);
 
         $path = '/product/create';
-        $parameter = $this->getPrimaryParameter();
-        $parameter['access_token'] =  $request['access_token'];
 
-        $parameter['payload'] = ArrayToXml::convert(['Product' => $request['Product']], 'Request');
+        $arrayToXml = new ArrayToXml(['Product' => $request['Product']], ['rootElementName' => 'Request',]);
+        $parameter['payload'] = $arrayToXml->dropXmlDeclaration()->toXml();
+
+        $parameter = array_merge($parameter, $this->getPrimaryParameter());
+        $parameter['access_token'] =  $request['access_token'];
 
         $base_string = $this->getBaseString($path, $parameter);
         $sign = $this->getSignature($base_string);

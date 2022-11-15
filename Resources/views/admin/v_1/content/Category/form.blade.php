@@ -131,13 +131,13 @@
 @endsection
 
 @section('page_level_js')
-    {{Html::script(module_asset_url('core:assets/js/autosize.min.js'))}}
-    {{Html::script(module_asset_url('core:assets/js/slugify.js'))}}
+    {{Html::script(module_asset_url('Core:assets/js/autosize.min.js'))}}
+    {{Html::script(module_asset_url('Core:assets/js/slugify.js'))}}
 @endsection
 
 @section('page_script_js')
     <script type="text/javascript">
         var states = {!!($suggestion_name)!!};
     </script>
-    {{Html::script(module_asset_url('taxonomy:resources/views/admin/'.$theme_cms->value.'/js/taxonomy.js').'?id='.filemtime(module_asset_path('taxonomy:resources/views/admin/'.$theme_cms->value.'/js/taxonomy.js')))}}
+    {{Html::script(module_asset_url('Taxonomy:resources/views/admin/'.$theme_cms->value.'/js/taxonomy.js').'?id='.filemtime(module_asset_path('taxonomy:resources/views/admin/'.$theme_cms->value.'/js/taxonomy.js')))}}
 @endsection

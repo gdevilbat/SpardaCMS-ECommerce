@@ -336,13 +336,56 @@ class LazadaController
 
                 if($value['attribute_type'] == 'sku')
                 {
-                    $data['Product']['Skus']['Sku'][$value['attribute_name']] = $value['value'];
+                    $sku[$value['attribute_name']] = $value['value'];
                 }
             }
-
         
         /*=====  End of Parsing Attribute  ======*/
 
+        $start_date = \Carbon\Carbon::now();
+        $end_date = (clone $start_date)->addDays(7);
+
+        if($request->has('meta.product_variant'))
+        {
+            $start_children = 0;
+            foreach ($request->input('meta.product_variant.children') as $key => $children) 
+            {
+                $data['Product']['Skus']['Sku'][$start_children]['SellerSku'] = $sku['SellerSku'].'-'.\Str::random(8);
+                $data['Product']['Skus']['Sku'][$start_children]['price'] = $children['price'];
+                $data['Product']['Skus']['Sku'][$start_children]['Variation'] = $children['name'];
+                $data['Product']['Skus']['Sku'][$start_children]['quantity'] = $children['stock']['stock'];
+                $data['Product']['Skus']['Sku'][$start_children]['package_weight'] = $sku['package_weight'];
+                $data['Product']['Skus']['Sku'][$start_children]['package_length'] = $sku['package_length'];
+                $data['Product']['Skus']['Sku'][$start_children]['package_width'] = $sku['package_width'];
+                $data['Product']['Skus']['Sku'][$start_children]['package_height'] = $sku['package_height'];
+
+                if($children['sale'] > 0 && $children['sale'] < $children['price'])
+                {
+                    $data['Product']['Skus']['Sku'][$start_children]['special_price'] = $children['sale'];
+                    $data['Product']['Skus']['Sku'][$start_children]['special_from_date'] = $start_date->format('Y-m-d H:i');
+                    $data['Product']['Skus']['Sku'][$start_children]['special_to_date'] = $end_date->format('Y-m-d H:i');
+                }
+
+                $start_children++;
+            }
+        }
+        else
+        {
+            $data['Product']['Skus']['Sku'][0]['SellerSku'] = $sku['SellerSku'];
+            $data['Product']['Skus']['Sku'][0]['price'] = $sku['price'];
+            $data['Product']['Skus']['Sku'][0]['quantity'] = $sku['quantity'];
+            $data['Product']['Skus']['Sku'][0]['package_weight'] = $sku['package_weight'];
+            $data['Product']['Skus']['Sku'][0]['package_length'] = $sku['package_length'];
+            $data['Product']['Skus']['Sku'][0]['package_width'] = $sku['package_width'];
+            $data['Product']['Skus']['Sku'][0]['package_height'] = $sku['package_height'];
+
+            if($request->product_sale > 0 && $request->product_sale < $request->product_price)
+            {
+                $data['Product']['Skus']['Sku'][0]['special_price'] = $request->product_sale;
+                $data['Product']['Skus']['Sku'][0]['special_from_date'] = $start_date->format('Y-m-d H:i');
+                $data['Product']['Skus']['Sku'][0]['special_to_date'] = $end_date->format('Y-m-d H:i');
+            }
+        }
 
         /*=====================================
         =            Parsing Image            =
@@ -387,38 +430,11 @@ class LazadaController
 
         PostMeta::reguard();
 
-        /*if($request->has('meta.product_variant'))
-        {
-            $tiers = [];
+        $param[Product::FOREIGN_KEY] = decrypt($request->id_posts);
+        $param['data'] = $response->data;
+        $param['shop_id'] = $request->shop_id;
 
-            foreach ($request->input('meta.product_variant.variants') as $key_variant => $variant) {
-                $tiers[$key_variant]['name'] = $variant['name'];
-                foreach ($variant['option'] as $key_option => $option) {
-                    $tiers[$key_variant]['options'][$key_option] = $option['value'];
-                }
-            };
-
-            $variations = [];
-
-            foreach ($request->input('meta.product_variant.children') as $key_child => $child) {
-                $tmp = explode(",", $child['tier_index']);
-
-                foreach ($tmp as $key => $value) {
-                    $variations[$key_child]['tier_index'][$key] = (integer) $value;
-                }
-
-                $variations[$key_child]['price'] = (integer) $child['price'];
-                $variations[$key_child]['stock'] = (integer) $child['stock']['stock'];
-            }
-
-            $data['shop_id'] = $request->input('shop_id');
-            $data['item_id'] = $response->item->item_id;
-            $data['tier_variation'] = $tiers;
-            $data['variation'] = $variations;
-            $data[Product::FOREIGN_KEY] = decrypt($request->input(Product::getPrimaryKey()));
-
-            $this->addVariation($data);
-        }*/
+        $this->addVariation($param);
 
         return response()->json([
                 'status' => 'Success'
@@ -536,34 +552,33 @@ class LazadaController
     {
         Validator::validate($data, [
             Product::FOREIGN_KEY => 'required',
+            'shop_id' => 'required',
+            'data' => 'required',
         ]);
 
-        $request = resolve(Request::class);
-        $request->merge($data);
 
-        $response = MarketPlace::driver('shopee')->item->itemInitTierVariations($request->input());
-        $response_variant = $response;
-
-        if(property_exists($response_variant, 'variation_id_list'))
+        if(property_exists($data['data'], 'sku_list'))
         {
+            $sku = array_values(collect($data['data']->sku_list)->sortBy('sku_id')->toArray());
+
             $variant = [];
 
-            foreach ($response_variant->variation_id_list as $key => $value) {
-                $variant[$key] = ['product_id' => $value->variation_id];
+            foreach ($sku as $key => $value) {
+                $variant[$key] = ['product_id' => $value->sku_id];
             }
 
-            $value = ['shop_id' => $data['shop_id'], 'product_id' => $response_variant->item_id, 'is_variant' =>  true, 'children' => $variant];
+            $value = ['shop_id' => $data['shop_id'], 'product_id' => $data['data']->item_id, 'is_variant' =>  true, 'children' => $variant];
 
             PostMeta::unguard();
 
             PostMeta::updateOrCreate(
-                ['meta_key' => ProductMeta::SHOPEE_STORE, Product::FOREIGN_KEY => $data[Product::FOREIGN_KEY]],
+                ['meta_key' => ProductMeta::LAZADA_STORE, Product::FOREIGN_KEY => $data[Product::FOREIGN_KEY]],
                 ['meta_value' => $value]
             );
 
             PostMeta::reguard();
         }
 
-        return $response;
+        return true;
     }
 }

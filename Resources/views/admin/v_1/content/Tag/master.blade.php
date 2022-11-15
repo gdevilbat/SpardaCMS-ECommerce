@@ -1,7 +1,7 @@
 @extends('core::admin.'.$theme_cms->value.'.templates.parent')
 
 @section('page_level_css')
-    {{Html::style(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css'))}}
+    {{Html::style(module_asset_url('Core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css'))}}
 @endsection
 
 @section('title_dashboard', ' Tags')
@@ -113,7 +113,6 @@
 @endsection
 
 @section('page_level_js')
-    {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js'))}}
-    {{Html::script(module_asset_url('core:assets/js/autosize.min.js'))}}
-    {{Html::script('vendor/laravel-filemanager/js/lfm.js')}}
+    {{Html::script(module_asset_url('Core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js'))}}
+    {{Html::script(module_asset_url('Core:assets/js/autosize.min.js'))}}
 @endsection

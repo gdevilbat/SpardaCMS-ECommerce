@@ -1,9 +1,9 @@
 @extends('core::admin.'.$theme_cms->value.'.templates.parent')
 
 @section('page_level_css')
-    {{Html::style(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css'))}}
-    {{Html::style(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'))}}
-    {{Html::style(module_asset_url('core:assets/metronic-v5/global/plugins/typeahead/typeaheadjs.css'))}}
+    {{Html::style(module_asset_url('Core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css'))}}
+    {{Html::style(module_asset_url('Core:assets/metronic-v5/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'))}}
+    {{Html::style(module_asset_url('Core:assets/metronic-v5/global/plugins/typeahead/typeaheadjs.css'))}}
 @endsection
 
 @section('title_dashboard', 'Product')
@@ -280,13 +280,12 @@
 @endsection
 
 @section('page_level_js')
-    {{Html::script(module_asset_url('core:assets/js/autosize.min.js'))}}
-    {{Html::script(module_asset_url('core:assets/js/slugify.js'))}}
-    {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/ckeditor_4/ckeditor.js'))}}
-    {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js'))}}
-    {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'))}}
-    {{Html::script(module_asset_url('core:assets/metronic-v5/global/plugins/typeahead/typeahead.bundle.min.js'))}}
-    {{Html::script('vendor/laravel-filemanager/js/lfm.js')}}
+    {{Html::script(module_asset_url('Core:assets/js/autosize.min.js'))}}
+    {{Html::script(module_asset_url('Core:assets/js/slugify.js'))}}
+    {{Html::script(module_asset_url('Core:assets/metronic-v5/global/plugins/ckeditor_4/ckeditor.js'))}}
+    {{Html::script(module_asset_url('Core:assets/metronic-v5/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js'))}}
+    {{Html::script(module_asset_url('Core:assets/metronic-v5/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'))}}
+    {{Html::script(module_asset_url('Core:assets/metronic-v5/global/plugins/typeahead/typeahead.bundle.min.js'))}}
 @endsection
 
 @section('page_script_js')
