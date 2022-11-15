@@ -18,7 +18,7 @@ class ProductTest extends DuskTestCase
      */
     public function testCreateProduct()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
         $faker = \Faker\Factory::create();
 
         $this->browse(function (Browser $browser) use ($user, $faker) {
@@ -59,7 +59,7 @@ class ProductTest extends DuskTestCase
      */
     public function testEditProduct()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
         $faker = \Faker\Factory::create();
 
         $this->browse(function (Browser $browser) use ($user, $faker) {
@@ -102,7 +102,7 @@ class ProductTest extends DuskTestCase
      */
     public function testDeleteProduct()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $faker = \Faker\Factory::create();
 

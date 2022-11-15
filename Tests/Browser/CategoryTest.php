@@ -18,7 +18,7 @@ class CategoryTest extends DuskTestCase
      */
     public function testCreateCategory()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
         $faker = \Faker\Factory::create();
 
         $this->browse(function (Browser $browser) use ($user, $faker) {
@@ -46,7 +46,7 @@ class CategoryTest extends DuskTestCase
      */
     public function testEditCategory()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $faker = \Faker\Factory::create();
 
@@ -77,7 +77,7 @@ class CategoryTest extends DuskTestCase
      */
     public function testDeleteCategory()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $faker = \Faker\Factory::create();
 

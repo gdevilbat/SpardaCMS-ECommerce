@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 use DB;
 
+use Gdevilbat\SpardaCMS\Modules\Post\Entities\Post;
+use Gdevilbat\SpardaCMS\Modules\Ecommerce\Entities\ProductMeta;
+use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermRelationships;
+
 class EcommerceTableSeeder extends Seeder
 {
     /**
@@ -20,10 +24,10 @@ class EcommerceTableSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
 
-        $id = DB::table('posts')->insertGetId(
+        $post = Post::firstOrCreate(
+            ['post_slug' => \Str::slug($faker->word)],
             [
                 'post_title' => $faker->word,
-                'post_slug' => str_slug($faker->word),
                 'post_content' => $faker->text,
                 'post_excerpt' => $faker->word,
                 'post_status' => 'draft',
@@ -34,20 +38,22 @@ class EcommerceTableSeeder extends Seeder
             ]
         );
 
-        DB::table('product_meta')->insert([
+        ProductMeta::firstOrCreate(
+            ['product_id' => $post->getKey()],
             [
-                'product_id' => $id,
                 'product_price' => 100000,
                 'created_at' => \Carbon\Carbon::now()
             ]
-        ]);
+        );
 
-        DB::table('term_relationships')->insert([
+        TermRelationships::firstOrCreate(
             [
                 'term_taxonomy_id' => 3,
-                'object_id' => $id,
+                'object_id' => $post->getKey(),
+            ],
+            [
                 'created_at' => \Carbon\Carbon::now()
             ]
-        ]);
+        );
     }
 }

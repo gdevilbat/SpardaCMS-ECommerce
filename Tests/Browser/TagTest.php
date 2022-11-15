@@ -18,7 +18,7 @@ class TagTest extends DuskTestCase
      */
     public function testCreateTag()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
         $faker = \Faker\Factory::create();
 
         $this->browse(function (Browser $browser) use ($user, $faker) {
@@ -44,7 +44,7 @@ class TagTest extends DuskTestCase
      */
     public function testEditTag()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
         $faker = \Faker\Factory::create();
 
         $this->browse(function (Browser $browser) use ($user, $faker) {
@@ -73,7 +73,7 @@ class TagTest extends DuskTestCase
      */
     public function testDeleteTag()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $faker = \Faker\Factory::create();
 
