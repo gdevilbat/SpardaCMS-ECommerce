@@ -1,0 +1,25 @@
+[
+    {
+        "text": "Product",
+        "type": "dropdown",
+        "icon": "flaticon-price-tag",
+        "childrens": [
+            {
+                "text": "All Product",
+                "name": "product-master"
+            },
+            {
+                "text": "Categories",
+                "name": "product-category-master"
+            },
+            {
+                "text": "Tags",
+                "name": "product-tag-master"
+            },
+            {
+                "text": "Shopee",
+                "name": "shopee-marketplace"
+            }
+        ]
+    }
+]

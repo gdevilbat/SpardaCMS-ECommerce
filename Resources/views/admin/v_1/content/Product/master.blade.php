@@ -183,7 +183,7 @@
 @endsection
 
 @section('page_script_js')
-    {{Html::script(module_asset_url('Ecommerce:resources/views/admin/v_1/js/scrapper.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/scrapper.js')))}}
+    {{Html::script(module_asset_url('Ecommerce:Resources/views/admin/v_1/js/scrapper.js').'?id='.filemtime(module_asset_path('ecommerce:Resources/views/admin/v_1/js/scrapper.js')))}}
 
     <script type="text/javascript">
         (function($){

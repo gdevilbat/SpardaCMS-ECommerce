@@ -130,5 +130,5 @@
 </div>
 
 @push('page_script_js')
-    {{Html::script(module_asset_url('Ecommerce:resources/views/admin/v_1/js/lazada.js').'?id='.filemtime(module_asset_path('ecommerce:resources/views/admin/v_1/js/lazada.js')))}}
+    {{Html::script(module_asset_url('Ecommerce:Resources/views/admin/v_1/js/lazada.js').'?id='.filemtime(module_asset_path('ecommerce:Resources/views/admin/v_1/js/lazada.js')))}}
 @endpush
